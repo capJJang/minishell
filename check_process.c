@@ -6,13 +6,13 @@
 /*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:12:57 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/12 19:12:58 by seyang           ###   ########.fr       */
+/*   Updated: 2022/12/16 17:57:22 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	is_child(char *path, char **command)
+void	is_child_1(char *path, char **command)
 {
 	if (execve(path, command, NULL) == -1)
 	{
@@ -20,7 +20,7 @@ void	is_child(char *path, char **command)
 	}
 }
 
-int	is_parent(pid_t pid, char *path, char *command)
+int	is_parent_1(pid_t pid, char *path, char *command)
 {
 	int	status;
 

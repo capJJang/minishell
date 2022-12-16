@@ -13,8 +13,9 @@
 NAME = minishell
 
 SRCS =	main.c ft_fork.c path.c check_process.c read_line.c \
-		ft_free.c parsing.c set_node.c print_node.c ft_find_after_chr.c \
-		is_empty_line.c ft_malloc.c set_single_or_double.c
+		ft_free.c parsing.c set_node.c print.c ft_find_after_chr.c \
+		is_empty_line.c ft_malloc.c set_single_or_double.c node_to_command.c execute_command.c \
+		print_error.c
 
 
 CFLAGS = -g3 -fsanitize=address -Wall -Wextra -Werror -o
