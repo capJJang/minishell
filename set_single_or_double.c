@@ -14,27 +14,27 @@
 
 char	set_single_or_double(char *arr, int start)
 {
-	int	i_single_1;
-	int	i_single_2;
-	int	i_double_1;
-	int	i_double_2;
+	int	sqoute_start;
+	int	sqoute_end;
+	int	dqoute_start;
+	int	dqoute_end;
 
 	if (arr == NULL || arr[0] == 0) // 20221216 seyang : add
 		return (-1);
-	i_single_1 = ft_find_after_chr(arr, start, '\'');
-	i_double_1 = ft_find_after_chr(arr, start, '\"');
-	if (arr[i_single_1] != 0)
-		i_single_2 = ft_find_after_chr(arr, i_single_1 + 1, '\'');
-	if (arr[i_double_1] != 0)
-		i_double_2 = ft_find_after_chr(arr, i_double_1 + 1, '\"');
-	if ((arr[i_single_1] == 0 || arr[i_single_2] == 0) \
-		&& (arr[i_double_1] == 0 || arr[i_double_2] == 0))
+	sqoute_start = ft_find_after_chr(arr, start, '\'');
+	dqoute_start = ft_find_after_chr(arr, start, '\"');
+	if (arr[sqoute_start] != 0)
+		sqoute_end = ft_find_after_chr(arr, sqoute_start + 1, '\'');
+	if (arr[dqoute_start] != 0)
+		dqoute_end = ft_find_after_chr(arr, dqoute_start + 1, '\"');
+ 	if ((arr[sqoute_start] == 0 || arr[sqoute_end] == 0) \
+		&& (arr[dqoute_start] == 0 || arr[dqoute_end] == 0))
 		return (0);
-	else if (arr[i_single_1] == 0 || arr[i_single_2] == 0)
+	else if (arr[sqoute_start] == 0 || arr[sqoute_end] == 0)
 		return ('\"');
-	else if (arr[i_double_1] == 0 || arr[i_double_2] == 0)
+	else if (arr[dqoute_start] == 0 || arr[dqoute_end] == 0)
 		return ('\'');
-	if (i_single_1 > i_double_1)
+	if (sqoute_start > dqoute_start)
 		return ('\"');
 	else
 		return ('\'');

@@ -24,8 +24,7 @@ LIBS = -lreadline -L ./libft -l ft
 
 all :
 	make -C libft
-	$(CC) $(LIBS) $(CFLAGS) $(NAME) $(SRCS)
-
+	$(CC)  $(SRCS) $(LIBS) $(CFLAGS) $(NAME)
 clean :
 
 fclean:

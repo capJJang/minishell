@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <string.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 # include <sys/stat.h>
 
 # define IS_NOT_COMMAND 1
