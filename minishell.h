@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2022/12/16 17:58:45 by seyang           ###   ########.fr       */
+/*   Updated: 2022/12/24 03:26:25 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include "minishell.h"
 # include <errno.h>
 # include <string.h>
 # include <fcntl.h>
@@ -52,6 +51,7 @@ size_t		ft_strlen(const char *s);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strtrim(char const *s1, char const *set);
 void		*ft_calloc(size_t count, size_t size);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -72,10 +72,14 @@ t_node_inf	*parsing(char *read_line);
 t_node_inf	*free_node_inf(t_node_inf *node_inf);
 int			is_empty_line(char *read_line);
 char		***node_to_command(t_node_inf *node_inf);
-void		execute_command(char **path_env, char ***command);
-void		print_error(int error, char *command);
+void		execute_command(char **path_env, char ***command, t_node_inf *node_inf);
+void		print_cmd_nfound(int error, char *command);
 
 void		print_node(t_node_inf *node_inf);
 void		print_command(char ***command);
+
+//builtin funcs start
+void	builtin_cd(char **command);
+//builtin funcs end
 
 #endif

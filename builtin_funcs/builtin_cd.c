@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 21:08:01 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/24 03:13:08 by segan            ###   ########.fr       */
+/*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
+/*   Updated: 2022/12/24 02:28:18 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	print_cmd_nfound(int error, char *command)
+void	builtin_cd(char **command)
 {
-	if (error == IS_NOT_FOUND)
-		printf("bash: %s: command not found\n", command);
-	exit (127);
+	int	cd_ret;
+
+	cd_ret = chdir(command[1]);
+	if (cd_ret == -1)
+	{
+		perror(strerror(errno));
+		exit(1);
+	}
+	exit(0);
 }
