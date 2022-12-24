@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/25 04:19:26 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/25 07:21:40 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,7 @@ void	execute_command(char **path_env, char ***command, t_node_inf *node_inf)
 		else
 			is_parent(pid);
 		launch_count++;
+		free(path);
+		path = NULL;
 	}
 }

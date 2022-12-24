@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2022/12/25 04:19:41 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/25 06:29:22 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int			ft_atoi(const char *str);
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
 int			ft_find_after_chr(char *arr, int start, char c);
+void		ft_free_2d(char **arr);
+void		ft_free_3d(char ***arr);
 char		set_single_or_double(char *arr, int start);
 
 char		**get_path_env(void);

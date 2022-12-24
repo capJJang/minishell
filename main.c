@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2022/12/24 03:25:32 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/25 07:22:45 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	control_process(char **path_env)
 		command = node_to_command(node_inf);
 		// print_command(command);	// print_test
 		execute_command(path_env, command, node_inf);
+		ft_free_3d(command);
+		free_node_inf(node_inf);
 	}
 }
 
