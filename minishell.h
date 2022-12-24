@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2022/12/24 03:26:25 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/25 04:19:41 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strtrim(char const *s1, char const *set);
 void		*ft_calloc(size_t count, size_t size);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_isdigit(int c);
+int			ft_atoi(const char *str);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -80,6 +82,7 @@ void		print_command(char ***command);
 
 //builtin funcs start
 void	builtin_cd(char **command);
+void	builtin_exit(t_node_inf *node_inf);
 //builtin funcs end
 
 #endif

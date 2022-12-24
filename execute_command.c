@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/24 03:44:55 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/25 04:19:26 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void	execute_command(char **path_env, char ***command, t_node_inf *node_inf)
 	launch_count = 0;
 	while (command[launch_count])
 	{
-		if (!ft_strncmp(*command[launch_count], "exit", 4))
-			exit(0);
+		if (!ft_strncmp(*command[launch_count], "exit", ft_strlen(*command[launch_count])))
+			builtin_exit(node_inf);
 		pid = ft_fork();
 		if (pid == -1)
 			exit (-1);
