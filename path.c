@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/16 18:01:28 by seyang           ###   ########.fr       */
+/*   Updated: 2022/12/24 18:34:31 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	*get_path(char **path_env, char *command)
 		if (access(path, X_OK) == 0)
 			return (path);
 		i++;
+		free(path);
 	}
 	return (IS_NOT_FOUND);
 }
