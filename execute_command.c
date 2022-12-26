@@ -6,28 +6,28 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/25 07:21:40 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/27 01:26:54 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	set_pipe_fd(char ***command, int launch_count, int *pipe[2])
+// void	set_pipe_fd(char ***command, int launch_cnt, int *pipe[2])
 // {
 
 // }
 
-void	is_child(char *path, char ***command, int launch_count, int pipe[2])
+void	is_child(char *path, char ***command, int launch_cnt, int pipe[2])
 {
-	// set_pipe_fd(command, launch_count, &pipe);
+	// set_pipe_fd(command, launch_cnt, &pipe);
 	int	read_fd;
 	int	write_fd;
 	//char	buffer[4096];
 
 	if (path == IS_NOT_FOUND)
-		printf("bash: %s: command not found\n", command[launch_count][0]);
-//		print_cmd_nfound(IS_NOT_FOUND, command[launch_count][0]);
-	if (command[launch_count + 1] == 0)
+		printf("bash: %s: command not found\n", command[launch_cnt][0]);
+//		print_cmd_nfound(IS_NOT_FOUND, command[launch_cnt][0]);
+	if (command[launch_cnt + 1] == 0)
 	{
 		read_fd = dup2(pipe[P_READ], STDIN_FILENO);
 		close(pipe[P_READ]);
@@ -39,7 +39,7 @@ void	is_child(char *path, char ***command, int launch_count, int pipe[2])
 		// buffer[ret] = 0;
 		// write(STDOUT_FILENO, buffer, ft_strlen(buffer));
 	}
-	else if (launch_count == 0)
+	else if (launch_cnt == 0)
 	{
 		close(pipe[P_READ]);
 		write_fd = dup2(pipe[P_WRITE], STDOUT_FILENO);
@@ -55,7 +55,7 @@ void	is_child(char *path, char ***command, int launch_count, int pipe[2])
 		close(pipe[P_WRITE]);
 		pipe[P_WRITE] = write_fd;
 	}
-	if (execve(path, command[launch_count], NULL) == -1)
+	if (execve(path, command[launch_cnt], NULL) == -1)
 		exit (-1);
 	exit(0);
 }
@@ -71,26 +71,28 @@ void	execute_command(char **path_env, char ***command, t_node_inf *node_inf)
 {
 	pid_t	pid;
 	int		fd[2];
-	int		launch_count;
+	int		launch_cnt;
 	char	*path;
-	
-	(void) node_inf;
+
 	if (pipe(fd) == -1)
 		exit (-1);
-	launch_count = 0;
-	while (command[launch_count])
+	launch_cnt = 0;
+	while (command[launch_cnt])
 	{
-		if (!ft_strncmp(*command[launch_count], "exit", ft_strlen(*command[launch_count])))
-			builtin_exit(node_inf);
-		pid = ft_fork();
-		if (pid == -1)
-			exit (-1);
-		path = get_path(path_env, command[launch_count][0]);
-		if (pid == 0)
-			is_child(path, command, launch_count, fd);
+		if (is_builtin(command[launch_cnt]) && !ft_node_strncmp(node_inf, "|"))
+			exe_builtin(node_inf);
 		else
-			is_parent(pid);
-		launch_count++;
+		{
+			pid = ft_fork();
+			if (pid == -1)
+				exit (-1);
+			path = get_path(path_env, command[launch_cnt][0]);
+			if (pid == 0)
+				is_child(path, command, launch_cnt, fd);
+			else
+				is_parent(pid);
+		}
+		launch_cnt++;
 		free(path);
 		path = NULL;
 	}

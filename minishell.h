@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2022/12/25 06:29:22 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/27 03:03:43 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int			ft_find_after_chr(char *arr, int start, char c);
 void		ft_free_2d(char **arr);
 void		ft_free_3d(char ***arr);
 char		set_single_or_double(char *arr, int start);
+int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
 
 char		**get_path_env(void);
 char		*get_path(char **path_env, char *command);
@@ -83,8 +84,11 @@ void		print_node(t_node_inf *node_inf);
 void		print_command(char ***command);
 
 //builtin funcs start
-void	builtin_cd(char **command);
-void	builtin_exit(t_node_inf *node_inf);
+void		exe_builtin(t_node_inf *node_inf);
+int			is_builtin(char **command);
+void		builtin_cd(t_node_inf *node_inf);
+void		builtin_exit(t_node_inf *node_inf);
+void		builtin_echo(t_node_inf *node_inf);
 //builtin funcs end
 
 #endif

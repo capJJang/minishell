@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   ft_node_strncmp.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2022/12/27 00:25:15 by segan            ###   ########.fr       */
+/*   Created: 2022/12/26 23:18:10 by segan             #+#    #+#             */
+/*   Updated: 2022/12/26 23:47:04 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	builtin_cd(t_node_inf *node_inf)
+int	ft_node_strncmp(t_node_inf *node_inf, const char *s2)
 {
-	int	cd_ret;
+	t_node	*temp;
 
-	cd_ret = chdir(node_inf->head->next->arr);
-	if (cd_ret == -1)
-		perror(strerror(errno));
+	temp = node_inf->head;
+	while (1)
+	{
+		if (!ft_strncmp(temp->arr, s2, ft_strlen(temp->arr)))
+			return (1);
+		if (temp == node_inf->tail)
+			break ;
+		temp = temp->next;
+	}
+	return (0);
 }
