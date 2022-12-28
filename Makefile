@@ -6,19 +6,20 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2022/12/27 01:26:12 by segan            ###   ########.fr        #
+#    Updated: 2022/12/28 19:50:37 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS =	main.c ft_fork.c path.c check_process.c read_line.c \
-		ft_free.c parsing.c set_node.c print.c ft_find_after_chr.c \
+		ft_free.c parsing.c set_node.c print.c ft_find.c \
 		is_empty_line.c ft_malloc.c set_single_or_double.c node_to_command.c \
 		execute_command.c print_error.c ft_node_strncmp.c\
 		builtin_funcs/is_builtin.c builtin_funcs/exe_builtin.c\
 		builtin_funcs/builtin_cd.c builtin_funcs/builtin_exit.c\
-		builtin_funcs/builtin_echo.c
+		builtin_funcs/builtin_echo.c builtin_funcs/builtin_pwd.c\
+		builtin_funcs/builtin_env.c
 
 
 CFLAGS = -g3 -fsanitize=address -Wall -Wextra -Werror -o

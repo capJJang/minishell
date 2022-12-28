@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/27 03:03:30 by segan            ###   ########.fr       */
+/*   Created: 2022/12/27 03:21:51 by segan             #+#    #+#             */
+/*   Updated: 2022/12/27 03:30:53 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	ft_free_2d(char **arr)
+void	builtin_pwd(void)
 {
-	int	i;
+	char	*getcwd_ret;
 
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-void	ft_free_3d(char ***arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		ft_free_2d(arr[i++]);
-	free(arr);
+	getcwd_ret = NULL;
+	getcwd_ret = getcwd(NULL, 0);
+	if (!getcwd_ret)
+		perror(strerror(errno));
+	else
+	{
+		printf("%s\n", getcwd_ret);
+		free(getcwd_ret);
+	}
 }

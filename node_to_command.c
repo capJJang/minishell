@@ -26,6 +26,8 @@ void	new_command2(t_node_inf *node_inf, char ***command)
 		while (curr->arr[0] != '|')
 		{
 			size++;
+			if (curr->arr[0] == '<' || curr->arr[0] == '>' || curr->is_file == 1)
+				size--;
 			if (curr == node_inf->tail)
 				break ;
 			curr = curr->next;
@@ -78,6 +80,12 @@ void	set_command(char ***command, t_node_inf *node_inf)
 			if (curr == node_inf->tail)
 				break ;
 			curr = curr->next;
+			while (curr->arr[0] == '<' || curr->arr[0] == '>' || curr->is_file == 1)
+			{
+				if (curr == node_inf->tail)
+					return ;
+				curr = curr->next;
+			}
 		}
 		if (curr == node_inf->tail)
 			break ;
