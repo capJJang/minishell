@@ -31,3 +31,21 @@ void	ft_free_3d(char ***arr)
 		ft_free_2d(arr[i++]);
 	free(arr);
 }
+
+void	ft_free(t_node_inf *node_inf)
+{
+	t_node	*curr;
+	t_node	*next;
+
+	curr = node_inf->head;
+	node_inf->tail->next = 0;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->check_malloc == 1)
+			free(curr->arr);
+		free(curr);
+		curr = next;
+	}
+	free(node_inf);
+}

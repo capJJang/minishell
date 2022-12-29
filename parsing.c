@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/28 15:32:11 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/24 19:12:05 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,10 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	arr_end = ft_strlen(arr);
 	if (arr[end] != 0)
 		add_next_node(node_inf, curr, new_node(ft_substr(arr, end + 1, arr_end - end)));
-	curr->arr = ft_strdup(getenv(env));
+	curr->arr = getenv(env);
 	if (curr->arr == NULL)
 		curr->arr = "";
+	curr->check_malloc = 0;
 	free(env);
 	free(arr);
 }
@@ -305,6 +306,24 @@ void	parsing_redirection(t_node_inf *node_inf)
 	}
 }
 
+void	set_command_num(t_node_inf *node_inf)
+{
+	t_node *curr;
+	int		command_num;
+
+	command_num = 1;
+	curr = node_inf->head;
+	while (1)
+	{
+		curr->command_num = command_num;
+		if (curr->arr[0] == '|')
+			command_num++;
+		curr = curr->next;
+		if (curr == node_inf->head)
+			break ;
+	}
+}
+
 void	line_to_node(t_node_inf *node_inf, char *read_line)
 {
 	parsing_pipe(node_inf, read_line);
@@ -318,6 +337,7 @@ void	line_to_node(t_node_inf *node_inf, char *read_line)
 	parsing_normal_arr(node_inf);
 	replace_env(node_inf);
 	adhere_some_node(node_inf);
+	set_command_num(node_inf);
 }
 
 t_node_inf	*parsing(char *read_line)

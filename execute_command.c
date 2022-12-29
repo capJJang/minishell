@@ -6,44 +6,120 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/28 19:49:40 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/27 01:26:54 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	set_pipe_fd(char ***command, int launch_cnt, int *pipe[2])
+// void	redirect_pipe(t_child child, t_node *curr)
 // {
+// 	int	fd;
 
+// 	fd = open(curr->arr, O_RDWR);
+// 	if (curr->prev->arr[0] == '<' && curr->prev->arr[1] == '<')
+// 	{
+
+// 	}
+// 	else if (curr->prev->arr[0] == '>' && curr->prev->arr[1] == '>')
+// 	{
+
+// 	}
+// 	else if (curr->prev->arr[0] == '<')
+// 	{
+// 		dup2(fd, STDIN_FILENO);
+// 		close(child.fd[child.launch_cnt][P_READ]);
+// 	}
+// 	else if (curr->prev->arr[0] == '>')
+// 	{
+// 		dup2(fd, STDOUT_FILENO);
+// 		close(child.fd[child.launch_cnt][P_WRITE]);
+// 	}
 // }
 
-void	is_child(char *path, char ***command, int launch_count, int **pipe)
+t_node	*is_redirection(t_child child)
 {
-	int	check_error;
+	t_node	*curr;
 
-	check_error = 0;
-	if (launch_count == 0)
+	curr = find_node(child.node_inf, child.launch_cnt + 1);
+	while (1)
 	{
-		if (command[launch_count + 1] != 0)
+		if (curr->is_file == 1)
+			return (curr);
+		if (curr->command_num != curr->next->command_num || curr == child.node_inf->tail)
+			break ;
+		curr = curr->next;
+	}
+	return (0);
+}
+
+void	redirect_pipe(t_child child, t_node *curr, int *check_error)
+{
+	int	fd;
+
+	while (curr != 0)
+	{
+		if (ft_strncmp(curr->prev->arr, ">", 2) == 0)
 		{
-			check_error += dup2(pipe[launch_count][P_WRITE], STDOUT_FILENO);
-			close(pipe[launch_count][P_WRITE]);
+			fd = open(curr->arr, O_TRUNC | O_WRONLY);
+			if (fd == -1)
+				print_errno_in_child(curr->arr);
+			*check_error += dup2(fd, STDOUT_FILENO);
+			close(fd);
+			close(child.fd[child.launch_cnt][P_WRITE]);
+		}
+		else if (ft_strncmp(curr->prev->arr, "<", 2) == 0)
+		{
+			fd = open(curr->arr, O_RDONLY);
+			if (fd == -1)
+				print_errno_in_child(curr->arr);
+			*check_error = dup2(fd, STDIN_FILENO);
+			close(fd);
+			close(child.fd[child.launch_cnt][P_READ]);
+		}
+		curr->is_file = 0;
+		curr = is_redirection(child);
+	}
+	// heredoc
+}
+
+void	is_child(t_child child)
+{
+	t_node	*curr;
+	int		check_error;
+
+	curr = is_redirection(child);
+	check_error = 0;
+	if (child.launch_cnt == 0)
+	{
+		if (curr != 0)
+			redirect_pipe(child, curr, &check_error);
+		else if (child.command[child.launch_cnt + 1] != 0)
+		{
+			check_error += dup2(child.fd[child.launch_cnt][P_WRITE], STDOUT_FILENO);
+			close(child.fd[child.launch_cnt][P_WRITE]);
 		}
 	}
-	else if (command[launch_count + 1] == 0)
+	else if (child.command[child.launch_cnt + 1] == 0)
 	{
-		check_error += dup2(pipe[launch_count - 1][P_READ], STDIN_FILENO);
-		close(pipe[launch_count - 1][P_READ]);
+		if (curr != 0)
+			redirect_pipe(child, curr, &check_error);
+		else
+		{
+			check_error += dup2(child.fd[child.launch_cnt - 1][P_READ], STDIN_FILENO);
+			close(child.fd[child.launch_cnt - 1][P_READ]);
+		}
 	}
 	else
 	{
-		check_error += dup2(pipe[launch_count - 1][P_READ], STDIN_FILENO);
-		close(pipe[launch_count - 1][P_READ]);
-		check_error += dup2(pipe[launch_count][P_WRITE], STDOUT_FILENO);
-		close(pipe[launch_count][P_WRITE]);
+		check_error += dup2(child.fd[child.launch_cnt - 1][P_READ], STDIN_FILENO);
+		close(child.fd[child.launch_cnt - 1][P_READ]);
+		check_error += dup2(child.fd[child.launch_cnt][P_WRITE], STDOUT_FILENO);
+		close(child.fd[child.launch_cnt][P_WRITE]);
 	}
-	if (check_error < 0 || execve(path, command[launch_count], NULL) == -1)
-		exit (-1);
+	// set_redirection(child);
+	if (check_error < 0 || execve(child.path, child.command[child.launch_cnt], NULL) == -1)
+		print_errno_in_child(0);
 }
 
 void	is_parent(pid_t pid)
@@ -51,8 +127,10 @@ void	is_parent(pid_t pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	if (WEXITSTATUS(status) == -1)
-		perror(strerror(errno));
+	if (WEXITSTATUS(status) != 0)
+	{
+
+	}
 }
 
 int	**new_pipe(char ***command)
@@ -89,36 +167,44 @@ void	close_pipe(int **fd)
 void	execute_command(char **path_env, char ***command, t_node_inf *node_inf)
 {
 	pid_t	pid;
-	int		**fd;
-	int		launch_cnt;
-	char	*path;
+	t_child	child;
+	// int		**fd;
+	// int		launch_cnt;
+	// char	*path;
 
-	fd = new_pipe(command);
-	launch_cnt = 0;
-	while (command[launch_cnt])
+	child.fd = new_pipe(command);
+	child.launch_cnt = 0;
+	child.command = command;
+	child.node_inf = node_inf;
+	while (command[child.launch_cnt])
 	{
-		path = get_path(path_env, command[launch_cnt][0]);
-		if (path == IS_NOT_FOUND)
+		child.path = get_path(path_env, command[child.launch_cnt][0]);
+		// if (is_builtin(command[child.launch_cnt]) && !ft_node_strncmp(node_inf, "|"))
+			// exe_builtin(node_inf);
+		if (child.path == IS_NOT_FOUND)
 		{
-			print_cmd_nfound(IS_NOT_FOUND, command[launch_cnt][0]);
+			print_cmd_nfound(IS_NOT_FOUND, command[child.launch_cnt][0]);
 			break ;
 		}
 		(void) node_inf;
-		if (is_builtin(command[launch_cnt]) && !ft_node_strncmp(node_inf, "|"))
-			exe_builtin(node_inf);
-		else
+		if (child.launch_cnt != 0)
+			close(child.fd[child.launch_cnt - 1][P_WRITE]);
+
+		// else
 		{
 			pid = ft_fork();
 			if (pid == -1)
 				exit (-1);
-			path = get_path(path_env, command[launch_cnt][0]);
+			child.path = get_path(path_env, command[child.launch_cnt][0]);
 			if (pid == 0)
-				is_child(path, command, launch_cnt, fd);
+				is_child(child);
 			else
 				is_parent(pid);
 		}
-		launch_cnt++;
-		free(path);
-		path = NULL;
+		child.launch_cnt++;
+		free(child.path);
+		child.path = NULL;
 	}
+	close_pipe(child.fd);
 }
+// 

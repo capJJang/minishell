@@ -20,7 +20,7 @@ void	print_node(t_node_inf *node_inf)
 	printf("%s", "\n\n_________intput_________\n\n");
 	while (1)
 	{
-		printf("%s %d\n", curr->arr, curr->is_file);
+		printf("%s %d\n", curr->arr, curr->command_num);
 		if (curr == node_inf->tail)
 			break ;
 		curr = curr->next;

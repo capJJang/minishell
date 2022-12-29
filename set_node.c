@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_node.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 17:37:25 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/28 15:33:14 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/13 18:20:46 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_node	*new_node(char *arr)
 
 	new_node = ft_malloc(sizeof(t_node));
 	new_node->arr = arr;
+	new_node->check_malloc = 1;
 	new_node->check_adhere_back = 0;
 	new_node->is_file = 0;
 	new_node->next = NULL;
@@ -91,6 +92,21 @@ void	delete_node(t_node_inf *node_inf, t_node *dst_node)
 	{
 		node_inf->tail = dst_node->prev;
 	}
-	free(dst_node->arr);
+	if (dst_node->check_malloc == 1)
+		free(dst_node->arr);
 	free(dst_node);
+}
+
+t_node	*find_node(t_node_inf *node_inf, int command_num)
+{
+	t_node	*curr;
+
+	curr = node_inf->head;
+	while (curr->command_num != command_num)
+	{
+		if (curr == node_inf->tail)
+			return (0);
+		curr = curr->next;
+	}
+	return (curr);
 }

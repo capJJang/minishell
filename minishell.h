@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2022/12/28 20:02:15 by segan            ###   ########.fr       */
+/*   Updated: 2022/12/27 03:27:10 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,25 @@
 # define EMPTY_LINE 0
 # define P_READ 0
 # define P_WRITE 1
+# define SUCCESS 0
+# define PERMISSION_DENIED 13
 
 typedef struct s_node		t_node;
 typedef struct s_node_inf	t_node_inf;
+typedef struct s_child		t_child;
+
+struct s_child {
+	char		*path;
+	char		***command;
+	int			launch_cnt;
+	int			**fd;
+	t_node_inf	*node_inf;
+} ;
 
 struct s_node {
+	int		command_num;
 	char	*arr;
+	int		check_malloc;
 	int		check_adhere_back;
 	int		is_file;
 	t_node	*next;
@@ -56,7 +69,6 @@ void		*ft_calloc(size_t count, size_t size);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
-char		*ft_strdup(const char *s1);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -66,6 +78,9 @@ void		ft_free_3d(char ***arr);
 int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
+
+void		ft_free(t_node_inf *node_inf);
+
 
 char		**get_path_env(void);
 char		*get_path(char **path_env, char *command);
@@ -79,6 +94,7 @@ void		add_back_node(t_node_inf *node_inf, t_node *src_node);
 void		add_prev_node(t_node_inf *node_inf, t_node *dst_node, t_node *src_node);
 void		add_next_node(t_node_inf *node_inf, t_node *dst_node, t_node *src_node);
 void		delete_node(t_node_inf *node_inf, t_node *dst_node);
+t_node		*find_node(t_node_inf *node_inf, int command_num);
 
 t_node_inf	*parsing(char *read_line);
 int			is_empty_line(char *read_line);
@@ -96,9 +112,9 @@ void		builtin_cd(t_node_inf *node_inf);
 void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
-void		builtin_env(void);
 //builtin funcs end
 
+void		print_errno_in_child(char *command);
 
 void		print_node(t_node_inf *node_inf);
 void		print_command(char ***command);

@@ -16,7 +16,8 @@ char	**get_path_env(void)
 {
 	char	**path_env;
 
-	path_env = ft_split(getenv("PATH"), ':');
+	// path_env = ft_split(getenv("PATH"), ':');
+	path_env = ft_split("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
 	if (path_env == NULL)
 		exit(-1);
 	return (path_env);
@@ -43,5 +44,8 @@ char	*get_path(char **path_env, char *command)
 		i++;
 		free(path);
 	}
+	temp = ft_strjoin(ft_strjoin(getcwd(NULL, 0), "/"), command);
+	if (access(temp, X_OK) == 0)
+		return (temp);
 	return (IS_NOT_FOUND);
 }
