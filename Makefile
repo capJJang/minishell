@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2022/12/27 03:22:15 by segan            ###   ########.fr        #
+#    Updated: 2023/01/09 13:05:18 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS =	main.c ft_fork.c path.c check_process.c read_line.c \
 		builtin_funcs/builtin_echo.c builtin_funcs/builtin_pwd.c\
 
 
-CFLAGS = -g3 -fsanitize=address -Wall -Wextra -Werror -o
+CFLAGS = -g -Wall -Wextra -Werror -o
 
 LIBS = -lreadline -L ./libft -l ft
 

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/27 03:03:30 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/09 13:04:48 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	ft_free(t_node_inf *node_inf)
 	while (curr)
 	{
 		next = curr->next;
-		if (curr->check_malloc == 1)
-			free(curr->arr);
+		// if (curr->check_malloc == 1)
+		// 	free(curr->arr);
 		free(curr);
 		curr = next;
 	}
