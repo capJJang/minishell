@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/24 18:34:31 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/09 18:36:33 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ char	**get_path_env(void)
 {
 	char	**path_env;
 
-	// path_env = ft_split(getenv("PATH"), ':');
-	path_env = ft_split("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
+	path_env = ft_split(getenv("PATH"), ':');
 	if (path_env == NULL)
 		exit(-1);
 	return (path_env);
@@ -44,8 +43,17 @@ char	*get_path(char **path_env, char *command)
 		i++;
 		free(path);
 	}
-	temp = ft_strjoin(ft_strjoin(getcwd(NULL, 0), "/"), command);
+	temp = getcwd(NULL, 0);
+	if (temp == NULL)
+		exit(-1);
+	path = ft_strjoin(temp, "/");
+	if (path == NULL)
+		exit(-1);
+	free(temp);
+	temp = ft_strjoin(path, command);
+	free(path);
 	if (access(temp, X_OK) == 0)
 		return (temp);
+	free(temp);
 	return (IS_NOT_FOUND);
 }

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2022/12/27 03:27:10 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/09 18:02:42 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void		*ft_calloc(size_t count, size_t size);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
+char		*ft_strdup(const char *s1);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);

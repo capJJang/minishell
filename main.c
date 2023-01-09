@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2022/12/27 03:07:36 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/09 18:38:54 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	control_process(char **path_env)
 	t_node_inf	*node_inf;
 	char		***command;
 
-	(void) path_env;
 	while (1)
 	{
 		node_inf = parsing(readline("minishell $ "));
@@ -50,14 +49,12 @@ void	control_process(char **path_env)
 		command = node_to_command(node_inf);
 		// print_command(command);	// print_test
 		execute_command(path_env, command, node_inf);
-		// ft_free_3d(command);
+		ft_free_3d(command);
 		ft_free(node_inf);
 	}
 }
 
 int	main(void)
 {
-	// extern char **environ;
-	// printf("%s\n", environ[0]);
 	control_process(get_path_env());
 }

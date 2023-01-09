@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/09 13:04:32 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/09 19:01:11 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ void	is_child(t_child child)
 		close(child.fd[child.launch_cnt][P_WRITE]);
 	}
 	// set_redirection(child);
-	if (check_error < 0 || execve(child.path, child.command[child.launch_cnt], NULL) == -1)
+	if ( !(check_error < 0) && is_builtin(child.command[child.launch_cnt]))
+		exe_builtin(child.node_inf);
+	else if (check_error < 0 || execve(child.path, child.command[child.launch_cnt], NULL) == -1)
 		print_errno_in_child(0);
 }
 
@@ -178,35 +180,30 @@ void	execute_command(char **path_env, char ***command, t_node_inf *node_inf)
 	child.node_inf = node_inf;
 	while (command[child.launch_cnt])
 	{
-		child.path = get_path(path_env, command[child.launch_cnt][0]);
-		// if (is_builtin(command[child.launch_cnt]) && !ft_node_strncmp(node_inf, "|"))
-			// exe_builtin(node_inf);
-		if (child.path == IS_NOT_FOUND)
-		{
-			print_cmd_nfound(IS_NOT_FOUND, command[child.launch_cnt][0]);
-			break ;
-		}
-		(void) node_inf;
 		if (child.launch_cnt != 0)
 			close(child.fd[child.launch_cnt - 1][P_WRITE]);
-
-		// else
+		if (is_builtin(command[child.launch_cnt]) && !ft_node_strncmp(node_inf, "|"))
+			exe_builtin(node_inf);
+		else
 		{
+			child.path = get_path(path_env, command[child.launch_cnt][0]);
+			if (child.path == IS_NOT_FOUND && !is_builtin(command[child.launch_cnt]))
+			{
+				print_cmd_nfound(IS_NOT_FOUND, command[child.launch_cnt][0]);
+				break ;
+			}
 			pid = ft_fork();
 			if (pid == -1)
 				exit (-1);
-			child.path = get_path(path_env, command[child.launch_cnt][0]);
 			if (pid == 0)
 				is_child(child);
 			else
 				is_parent(pid);
+			free(child.path);
 		}
 		child.launch_cnt++;
-		free(child.path);
 		child.path = NULL;
 	}
 	close_pipe(child.fd);
 	ft_free_2d((char **)child.fd);
-	ft_free_3d(command);
 }
-// 

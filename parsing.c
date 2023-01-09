@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/24 19:12:05 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/09 15:59:21 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,9 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	arr_end = ft_strlen(arr);
 	if (arr[end] != 0)
 		add_next_node(node_inf, curr, new_node(ft_substr(arr, end + 1, arr_end - end)));
-	curr->arr = getenv(env);
+	curr->arr = ft_strdup(getenv(env));
 	if (curr->arr == NULL)
-		curr->arr = "";
+		curr->arr = ft_strdup("");
 	curr->check_malloc = 0;
 	free(env);
 	free(arr);
@@ -346,6 +346,7 @@ t_node_inf	*parsing(char *read_line)
 
 	if (is_empty_line(read_line))
 		return (EMPTY_LINE);
+	add_history(read_line);
 	node_inf = new_node_inf();
 	line_to_node(node_inf, read_line);
 	free(read_line);

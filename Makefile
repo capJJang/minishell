@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/01/09 13:05:18 by segan            ###   ########.fr        #
+#    Updated: 2023/01/09 18:09:30 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,10 @@ CFLAGS = -g -Wall -Wextra -Werror -o
 LIBS = -lreadline -L ./libft -l ft
 
 all :
-	make -C libft
+	make bonus -C libft
 	$(CC)  $(SRCS) $(LIBS) $(CFLAGS) $(NAME)
 clean :
+	make clean -C ./libft
 
 fclean:
 	make fclean -C ./libft
