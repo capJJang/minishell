@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/09 18:02:42 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/11 18:55:51 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ struct s_node {
 struct s_node_inf {
 	t_node	*head;
 	t_node	*tail;
+	char	**env;
 } ;
 
 char		**ft_split(char const *s, char c);
@@ -70,6 +71,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 char		*ft_strdup(const char *s1);
+char		*ft_strchr(const char *s, int o);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -114,6 +116,16 @@ void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
 //builtin funcs end
+
+//env_funcs start
+char		**init_env(void);
+void		print_environ(char **environ);
+int			ft_strlen_2d(char	**arr);
+void		ft_strcpy_2d(char **dst, char **src);
+char		*ft_getenv(const char **env, const char *str);
+void		ft_setenv(t_node_inf *node_inf, char *val);
+void		ft_unsetenv(t_node_inf *node_inf, char *val);
+//env_funcs end
 
 void		print_errno_in_child(char *command);
 
