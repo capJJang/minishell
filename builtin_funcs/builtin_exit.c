@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 02:44:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/09 15:29:13 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/12 18:28:46 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	builtin_exit(t_node_inf *node_inf)
 		}
 		exit_status = ft_atoi(temp->arr);
 	}
+	printf("exit\n");
 	exit(exit_status);
 }

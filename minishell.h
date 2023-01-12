@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/11 18:55:51 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/12 18:17:09 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,14 @@ void		builtin_cd(t_node_inf *node_inf);
 void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
+void		builtin_env(char **environ);
 //builtin funcs end
 
 //env_funcs start
 char		**init_env(void);
 void		print_environ(char **environ);
 int			ft_strlen_2d(char	**arr);
-void		ft_strcpy_2d(char **dst, char **src);
+char		**ft_strdup_2d(char **src);
 char		*ft_getenv(const char **env, const char *str);
 void		ft_setenv(t_node_inf *node_inf, char *val);
 void		ft_unsetenv(t_node_inf *node_inf, char *val);
