@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/01/12 18:15:05 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/20 05:56:22 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exe_builtin(t_node_inf *node_inf)
 	// if (!ft_strncmp(node_inf->head->arr, "unset", ft_strlen(node_inf->head->arr)))
 	// 	builtin_unset(node_inf);
 	if (!ft_strncmp(node_inf->head->arr, "env", ft_strlen(node_inf->head->arr)))
-		builtin_env(node_inf->env);
+		builtin_env(node_inf->vars->env);
 	if (!ft_strncmp(node_inf->head->arr, "exit", ft_strlen(node_inf->head->arr)))
 		builtin_exit(node_inf);
 }

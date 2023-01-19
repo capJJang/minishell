@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   init_var.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/13 18:55:44 by segan            ###   ########.fr       */
+/*   Created: 2023/01/20 00:40:54 by segan             #+#    #+#             */
+/*   Updated: 2023/01/20 05:57:43 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	builtin_cd(t_node_inf *node_inf)
+t_vars	*init_var(void)
 {
-	int	cd_ret;
+	t_vars	*var;
 
-	cd_ret = chdir(node_inf->head->next->arr);
-	if (cd_ret == -1)
-		perror(strerror(errno));
+	var = ft_malloc(sizeof(t_vars));
+	var->env = init_env();
+	var->sh_var = NULL;
+	return (var);
 }

@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/13 18:55:44 by segan            ###   ########.fr       */
+/*   Created: 2023/01/11 17:54:00 by segan             #+#    #+#             */
+/*   Updated: 2023/01/20 06:55:58 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	builtin_cd(t_node_inf *node_inf)
+char	*ft_getenv(char **env, const char *str)
 {
-	int	cd_ret;
+	int	i;
 
-	cd_ret = chdir(node_inf->head->next->arr);
-	if (cd_ret == -1)
-		perror(strerror(errno));
+	i = 0;
+	while (env[i])
+	{
+		if (!ft_strncmp(env[i], str, ft_strlen(str)))
+			return ((ft_strchr(env[i], '=') + 1));
+		i++;
+	}
+	return (NULL);
 }

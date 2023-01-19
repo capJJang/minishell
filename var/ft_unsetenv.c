@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/13 18:55:44 by segan            ###   ########.fr       */
+/*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
+/*   Updated: 2023/01/11 18:56:23 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+// #include "../minishell.h"
 
-void	builtin_cd(t_node_inf *node_inf)
-{
-	int	cd_ret;
-
-	cd_ret = chdir(node_inf->head->next->arr);
-	if (cd_ret == -1)
-		perror(strerror(errno));
-}
+// void	ft_unsetenv(t_node_inf *node_inf, char *val)
+// {
+	
+// }

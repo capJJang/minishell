@@ -6,11 +6,18 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/09 13:04:48 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/20 07:19:23 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free_vars(t_vars *vars)
+{
+	ft_free_2d(vars->env);
+	ft_free_2d(vars->sh_var);
+	free(vars);
+}
 
 void	ft_free_2d(char **arr)
 {

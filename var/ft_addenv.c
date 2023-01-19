@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   ft_addtenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/13 18:55:44 by segan            ###   ########.fr       */
+/*   Created: 2023/01/11 18:11:53 by segan             #+#    #+#             */
+/*   Updated: 2023/01/13 17:55:09 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	builtin_cd(t_node_inf *node_inf)
+void	ft_addenv(t_vars *var, char *val)
 {
-	int	cd_ret;
+	char	**new_env;
+	int		len;
 
-	cd_ret = chdir(node_inf->head->next->arr);
-	if (cd_ret == -1)
-		perror(strerror(errno));
+	len = ft_strlen_2d(var->env) + 1;
+	new_env = (char **)ft_malloc(sizeof(char *) * (len + 1));
+	new_env = ft_strdup_2d(var->env);
+	new_env[len - 1] = ft_strdup(val);
+	new_env[len] = 0;
+	ft_free_2d(var->env);
+	var->env = new_env;
 }

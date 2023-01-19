@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/12 18:17:09 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/20 06:53:29 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 typedef struct s_node		t_node;
 typedef struct s_node_inf	t_node_inf;
 typedef struct s_child		t_child;
+typedef struct s_vars		t_vars;
 
 struct s_child {
 	char		*path;
@@ -58,7 +59,12 @@ struct s_node {
 struct s_node_inf {
 	t_node	*head;
 	t_node	*tail;
+	t_vars	*vars;
+} ;
+
+struct s_vars {
 	char	**env;
+	char	**sh_var;
 } ;
 
 char		**ft_split(char const *s, char c);
@@ -72,6 +78,7 @@ int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 char		*ft_strdup(const char *s1);
 char		*ft_strchr(const char *s, int o);
+char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -85,7 +92,7 @@ int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
 void		ft_free(t_node_inf *node_inf);
 
 
-char		**get_path_env(void);
+char		**get_path_env(char **env);
 char		*get_path(char **path_env, char *command);
 char		**get_readline(void);
 // int			is_parent_1(pid_t pid, char *path, char *command);
@@ -116,16 +123,18 @@ void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
 void		builtin_env(char **environ);
+void		builtin_export(t_node_inf *node_inf);
 //builtin funcs end
 
 //env_funcs start
+t_vars		*init_var(void);
 char		**init_env(void);
 void		print_environ(char **environ);
 int			ft_strlen_2d(char	**arr);
 char		**ft_strdup_2d(char **src);
-char		*ft_getenv(const char **env, const char *str);
-void		ft_setenv(t_node_inf *node_inf, char *val);
-void		ft_unsetenv(t_node_inf *node_inf, char *val);
+char		*ft_getenv(char **env, const char *str);
+void		ft_addenv(t_vars *var, char *val);
+void		ft_unsetenv(t_vars *var, char *val);
 //env_funcs end
 
 void		print_errno_in_child(char *command);

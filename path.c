@@ -6,17 +6,17 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/09 18:36:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/20 06:52:18 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_path_env(void)
+char	**get_path_env(char **env)
 {
 	char	**path_env;
 
-	path_env = ft_split(getenv("PATH"), ':');
+	path_env = ft_split(ft_getenv(env, "PATH"), ':');
 	if (path_env == NULL)
 		exit(-1);
 	return (path_env);

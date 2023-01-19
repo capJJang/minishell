@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/11 17:32:43 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/20 07:20:48 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,11 @@
 // 	return (ret);
 // }
 
-void	control_process(char **path_env)
+void	control_process(t_vars *vars)
 {
 	t_node_inf	*node_inf;
 	char		***command;
-	char		**env;
 
-	env = init_env();
 	while (1)
 	{
 		node_inf = parsing(readline("minishell $ "));
@@ -50,8 +48,8 @@ void	control_process(char **path_env)
 		// print_node(node_inf);	// print_test
 		command = node_to_command(node_inf);
 		// print_command(command);	// print_test
-		node_inf->env = env;
-		execute_command(path_env, command, node_inf);
+		node_inf->vars = vars;
+		execute_command(get_path_env(vars->env), command, node_inf);
 		ft_free_3d(command);
 		ft_free(node_inf);
 	}
@@ -59,5 +57,9 @@ void	control_process(char **path_env)
 
 int	main(void)
 {
-	control_process(get_path_env());
+	t_vars	*vars;
+
+	vars = init_var();
+	control_process(vars);
+	ft_free_vars(vars);
 }
