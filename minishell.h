@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/24 14:40:43 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/24 17:33:08 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
 void		builtin_env(char **environ);
 void		builtin_export(t_node_inf *node_inf);
+void		builtin_unset(t_node_inf *node_inf);
 //builtin funcs end
 
 //env_funcs start
@@ -140,6 +141,7 @@ void		ft_add_sh_var(t_vars *var, char *val);
 char		*ft_getkey(char *var);
 void		ft_append_env(t_vars *vars, char *key, char *value);
 void		ft_unset_sh_var(t_vars *vars, char *key);
+void		ft_unset_env(t_vars *vars, char *key);
 void		print_sh_var(t_vars *vars);
 //env_funcs end
 

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/23 08:17:34 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/24 14:58:37 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	is_child(t_child child)
 	// set_redirection(child);
 	if ( !(check_error < 0) && is_builtin(child.command[child.launch_cnt]))
 		exe_builtin(child.node_inf);
-	else if (check_error < 0 || execve(child.path, child.command[child.launch_cnt], NULL) == -1)
+	else if (check_error < 0 || execve(child.path, child.command[child.launch_cnt], child.node_inf->vars->env) == -1)
 		print_errno_in_child(0);
 }
 
