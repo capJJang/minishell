@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:08:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/12 18:16:27 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/24 13:36:25 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,32 @@ void	print_environ(char **environ)
 	int	i;
 
 	i = 0;
+	if (!environ)
+		return ;
 	while (environ[i])
 		printf("%s\n", environ[i++]);
+}
+
+void	print_sh_var(t_vars *vars)
+{
+	int	i;
+	
+	i = 0;
+	while (vars->env[i])
+		printf("declare -x %s\n", vars->env[i++]);
+	if (!vars->sh_var)
+		return ;
+	i = 0;
+	while (vars->sh_var[i])
+		printf("declare -x %s\n", vars->sh_var[i++]);
 }
 
 int	ft_strlen_2d(char **arr)
 {
 	int	i;
 
+	if (arr == NULL)
+		return (0);
 	i = 0;
 	while (arr[i])
 		i++;

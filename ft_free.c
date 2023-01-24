@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/20 07:19:23 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/23 13:03:37 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	ft_free_2d(char **arr)
 {
 	int	i;
 
+	if (!arr)
+		return ;
 	i = 0;
 	while (arr[i])
 		free(arr[i++]);
@@ -33,6 +35,8 @@ void	ft_free_3d(char ***arr)
 {
 	int	i;
 
+	if (!arr)
+		return ;
 	i = 0;
 	while (arr[i])
 		ft_free_2d(arr[i++]);

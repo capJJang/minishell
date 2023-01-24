@@ -6,15 +6,32 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:54:00 by segan             #+#    #+#             */
-/*   Updated: 2023/01/20 06:55:58 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/24 13:10:34 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// int	ft_get_keyidx(t_vars *vars)
+
+char	*ft_getkey(char *var)
+{
+	char	*key;
+	int		len;
+
+	len = 0;
+	while (var[len] != '+' && var[len] != '=' && var[len])
+		len++;
+	if (len <= 0)
+		return (ft_strdup(var));
+	key = ft_malloc(sizeof(char) * (len + 1));
+	ft_strlcpy(key, var, len + 1);
+	return (key);
+}
+
 char	*ft_getenv(char **env, const char *str)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (env[i])

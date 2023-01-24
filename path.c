@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/20 06:52:18 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/23 07:57:21 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*get_path(char **path_env, char *command)
 	char	*temp;
 	int		i;
 
+	if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
 	i = 0;
 	while (path_env[i])
 	{

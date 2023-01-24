@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/20 06:53:29 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/24 14:40:43 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int			ft_atoi(const char *str);
 char		*ft_strdup(const char *s1);
 char		*ft_strchr(const char *s, int o);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
+size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -90,7 +91,7 @@ char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
 
 void		ft_free(t_node_inf *node_inf);
-
+void		ft_free_vars(t_vars *vars);
 
 char		**get_path_env(char **env);
 char		*get_path(char **path_env, char *command);
@@ -130,11 +131,16 @@ void		builtin_export(t_node_inf *node_inf);
 t_vars		*init_var(void);
 char		**init_env(void);
 void		print_environ(char **environ);
-int			ft_strlen_2d(char	**arr);
+int			ft_strlen_2d(char **arr);
 char		**ft_strdup_2d(char **src);
 char		*ft_getenv(char **env, const char *str);
-void		ft_addenv(t_vars *var, char *val);
+void		ft_addenv(t_vars *var, char *key, char *val);
 void		ft_unsetenv(t_vars *var, char *val);
+void		ft_add_sh_var(t_vars *var, char *val);
+char		*ft_getkey(char *var);
+void		ft_append_env(t_vars *vars, char *key, char *value);
+void		ft_unset_sh_var(t_vars *vars, char *key);
+void		print_sh_var(t_vars *vars);
 //env_funcs end
 
 void		print_errno_in_child(char *command);
