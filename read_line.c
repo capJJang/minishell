@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:07 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/16 18:02:02 by seyang           ###   ########.fr       */
+/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 char	**get_readline(void)
 {
 	char	*str;
-	char	**command;
+	char	**cmd;
 
 	str = readline("minishell $ ");
-	command = ft_split(str, ' ');
+	cmd = ft_split(str, ' ');
 	free(str);
-	return (command);
+	return (cmd);
 }

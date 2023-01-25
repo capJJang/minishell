@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_node.c                                       :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:50:26 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/16 18:02:16 by seyang           ###   ########.fr       */
+/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ void	print_node(t_node_inf *node_inf)
 	}
 }
 
-void	print_command(char ***command)
+void	print_command(char ***cmd)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	printf("%s", "\n\n_________third level command_________\n\n");
-	while (command[i])
+	while (cmd[i])
 	{
 		j = 0;
-		while (command[i][j])
+		while (cmd[i][j])
 		{
-			printf("%s\n", command[i][j]);
+			printf("%s\n", cmd[i][j]);
 			printf("%d%s", i, "______________\n");
 			j++;
 		}

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:14:10 by segan             #+#    #+#             */
-/*   Updated: 2023/01/12 18:19:52 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/25 18:18:07 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,3 +16,4 @@ void	builtin_env(char **environ)
 {
 	print_environ(environ);
 }
+//exit status

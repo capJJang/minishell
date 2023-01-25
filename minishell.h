@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/24 17:33:08 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <stdbool.h>
 
 # define IS_NOT_COMMAND 1
 # define IS_COMMAND 0
@@ -32,6 +33,8 @@
 # define P_WRITE 1
 # define SUCCESS 0
 # define PERMISSION_DENIED 13
+# define BREAK 1
+# define CONTINUE 2
 
 typedef struct s_node		t_node;
 typedef struct s_node_inf	t_node_inf;
@@ -40,7 +43,7 @@ typedef struct s_vars		t_vars;
 
 struct s_child {
 	char		*path;
-	char		***command;
+	char		***cmd;
 	int			launch_cnt;
 	int			**fd;
 	t_node_inf	*node_inf;
@@ -60,6 +63,7 @@ struct s_node_inf {
 	t_node	*head;
 	t_node	*tail;
 	t_vars	*vars;
+	char	**cmd;
 } ;
 
 struct s_vars {
@@ -80,6 +84,9 @@ char		*ft_strdup(const char *s1);
 char		*ft_strchr(const char *s, int o);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
+int			ft_isalnum(int c);
+void		ft_bzero(void *s, size_t n);
+
 
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
@@ -94,41 +101,43 @@ void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
 
 char		**get_path_env(char **env);
-char		*get_path(char **path_env, char *command);
+char		*get_path(char **path_env, char *cmd);
 char		**get_readline(void);
-// int			is_parent_1(pid_t pid, char *path, char *command);
-// void		is_child_1(char *path, char **command);
+// int			is_parent_1(pid_t pid, char *path, char *cmd);
+// void		is_child_1(char *path, char **cmd);
 
 t_node_inf	*new_node_inf(void);
 t_node		*new_node(char *arr);
 void		add_back_node(t_node_inf *node_inf, t_node *src_node);
-void		add_prev_node(t_node_inf *node_inf, t_node *dst_node, t_node *src_node);
-void		add_next_node(t_node_inf *node_inf, t_node *dst_node, t_node *src_node);
+void		add_prev_node(t_node_inf *node_inf, \
+	t_node *dst_node, t_node *src_node);
+void		add_next_node(t_node_inf *node_inf, \
+	t_node *dst_node, t_node *src_node);
 void		delete_node(t_node_inf *node_inf, t_node *dst_node);
 t_node		*find_node(t_node_inf *node_inf, int command_num);
 
 t_node_inf	*parsing(char *read_line);
 int			is_empty_line(char *read_line);
 char		***node_to_command(t_node_inf *node_inf);
-void		execute_command(char **path_env, char ***command, t_node_inf *node_inf);
-void		print_cmd_nfound(int error, char *command);
-void		print_error(int error, char *command);
+void		execute_command(char **path_env, \
+	char ***cmd, t_node_inf *node_inf);
+void		print_cmd_nfound(int error, char *cmd);
+void		print_error(int error, char *cmd);
 void		ft_free(t_node_inf *node_inf);
-
 
 //builtin funcs start
 void		exe_builtin(t_node_inf *node_inf);
-int			is_builtin(char **command);
+int			is_builtin(char **cmd);
 void		builtin_cd(t_node_inf *node_inf);
 void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
 void		builtin_env(char **environ);
 void		builtin_export(t_node_inf *node_inf);
-void		builtin_unset(t_node_inf *node_inf);
 //builtin funcs end
 
 //env_funcs start
+int			check_valid_key(char *key);
 t_vars		*init_var(void);
 char		**init_env(void);
 void		print_environ(char **environ);
@@ -141,13 +150,13 @@ void		ft_add_sh_var(t_vars *var, char *val);
 char		*ft_getkey(char *var);
 void		ft_append_env(t_vars *vars, char *key, char *value);
 void		ft_unset_sh_var(t_vars *vars, char *key);
-void		ft_unset_env(t_vars *vars, char *key);
 void		print_sh_var(t_vars *vars);
+int			check_valid_key(char *key);
 //env_funcs end
 
-void		print_errno_in_child(char *command);
+void		print_errno_in_child(char *cmd);
 
 void		print_node(t_node_inf *node_inf);
-void		print_command(char ***command);
+void		print_command(char ***cmd);
 
 #endif

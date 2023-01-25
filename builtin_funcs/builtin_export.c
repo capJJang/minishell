@@ -6,32 +6,58 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:24:08 by segan             #+#    #+#             */
-/*   Updated: 2023/01/24 14:41:45 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/25 19:26:44 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	check_valid_key(char *key)
+{
+	int	i;
+	int	len;
+	int	check;
+
+	check = 1;
+	i = 0;
+	len = ft_strlen(key);
+	while (i < len - 1)
+	{
+		if (!ft_isalnum(key[i]) || key[i] == '_')
+			check = 0;
+	}
+	if (!ft_isalnum(key[i]) || key[i] == '_' || key[i] == '+')
+		check = 0;
+	return (check);
+}
+
 void	builtin_export(t_node_inf *node_inf)
 {
-	t_node	*arg;
+	int		i;
 	char	*key;
 	char	*val;
-	
-	arg = node_inf->head->next;
-	if (node_inf->head == node_inf->tail)	//print export
+
+	i = 1;
+	if (node_inf->head == node_inf->tail)//print export
 		print_sh_var(node_inf->vars);
-	while (arg != node_inf->head)
+	while (node_inf->cmd[i])
 	{
-		key = ft_getkey(arg->arr);
-		val = ft_strchr(arg->arr, '=');
-		if (!val)												//셸 변수 등록 하는 경우
-			ft_add_sh_var(node_inf->vars, arg->arr);
-		else if (ft_strnstr(arg->arr, "+=", ft_strlen(arg->arr)))	//append 하는 경우
+		key = ft_getkey(node_inf->cmd[i]);
+		if (!check_valid_key(key))
+		{
+			printf("bash: export:`%s': not a valid identifier\n", node_inf->cmd[i]);
+			free(key);
+			break ;
+		}
+		val = ft_strchr(node_inf->cmd[i], '=');
+		if (!val)//셸 변수 등록 하는 경우
+			ft_add_sh_var(node_inf->vars, node_inf->cmd[i]);
+		else if (ft_strnstr(node_inf->cmd[i], "+=", ft_strlen(node_inf->cmd[i]))) //append 하는 경우
 			ft_append_env(node_inf->vars, key, val);
-		else													//새로 등록
+		else//새로 등록
 			ft_addenv(node_inf->vars, key, val);
-		arg = arg->next;
+		i++;
 		free(key);
 	}
 }
+//exit status

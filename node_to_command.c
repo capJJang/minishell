@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   node_to_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:49:41 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/16 18:01:01 by seyang           ###   ########.fr       */
+/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	new_command2(t_node_inf *node_inf, char ***command)
+void	new_command2(t_node_inf *node_inf, char ***cmd)
 {
 	t_node	*curr;
 	int		size;
@@ -26,15 +26,15 @@ void	new_command2(t_node_inf *node_inf, char ***command)
 		while (curr->arr[0] != '|')
 		{
 			size++;
-			if (curr->arr[0] == '<' || curr->arr[0] == '>' || curr->is_file == 1)
+			if (curr->arr[0] == '<' || \
+				curr->arr[0] == '>' || curr->is_file == 1)
 				size--;
 			if (curr == node_inf->tail)
 				break ;
 			curr = curr->next;
 		}
-		command[i] = ft_malloc(sizeof(char *) * (size + 2));
-		command[i][size] = 0;
-		command[i++][size] = 0;
+		cmd[i] = ft_malloc(sizeof(char *) * (size + 2));
+		cmd[i++][size] = 0;
 		if (curr == node_inf->tail)
 			break ;
 		curr = curr->next;
@@ -43,7 +43,7 @@ void	new_command2(t_node_inf *node_inf, char ***command)
 
 char	***new_command(t_node_inf *node_inf)
 {
-	char	***command;
+	char	***cmd;
 	t_node	*curr;
 	int		size;
 
@@ -57,13 +57,13 @@ char	***new_command(t_node_inf *node_inf)
 			size++;
 		curr = curr->next;
 	}
-	command = ft_malloc(sizeof(char **) * (size + 2));
-	command[size + 1] = 0;
-	new_command2(node_inf, command);
-	return (command);
+	cmd = ft_malloc(sizeof(char **) * (size + 2));
+	cmd[size + 1] = 0;
+	new_command2(node_inf, cmd);
+	return (cmd);
 }
 
-void	set_command(char ***command, t_node_inf *node_inf)
+void	set_command(char ***cmd, t_node_inf *node_inf)
 {
 	t_node	*curr;
 	int		i;
@@ -76,11 +76,19 @@ void	set_command(char ***command, t_node_inf *node_inf)
 		j = 0;
 		while (curr->arr[0] != '|')
 		{
-			command[i][j++] = curr->arr;
+			while (curr->arr[0] == '<' \
+				|| curr->arr[0] == '>' || curr->is_file == 1)
+			{
+				if (curr == node_inf->tail)
+					return ;
+				curr = curr->next;
+			}
+			cmd[i][j++] = curr->arr;
 			if (curr == node_inf->tail)
 				break ;
 			curr = curr->next;
-			while (curr->arr[0] == '<' || curr->arr[0] == '>' || curr->is_file == 1)
+			while (curr->arr[0] == '<' \
+				|| curr->arr[0] == '>' || curr->is_file == 1)
 			{
 				if (curr == node_inf->tail)
 					return ;
@@ -96,9 +104,9 @@ void	set_command(char ***command, t_node_inf *node_inf)
 
 char	***node_to_command(t_node_inf *node_inf)
 {
-	char	***command;
+	char	***cmd;
 
-	command = new_command(node_inf);
-	set_command(command, node_inf);
-	return (command);
+	cmd = new_command(node_inf);
+	set_command(cmd, node_inf);
+	return (cmd);
 }

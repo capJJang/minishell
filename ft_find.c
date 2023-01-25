@@ -18,8 +18,7 @@ int	ft_find_after_chr(char *arr, int start, char c)
 
 	i = start;
 	if (arr == NULL || arr[0] == 0)
-		return (-1);	//20221215 segan : can cause segfault!, case : echo "test"
-						//20221216 seyang : add arr[0] == 0 & in parsing_command, parsing_quote, set_single_or_double
+		return (-1);
 	while (*arr)
 	{
 		if (arr[i] == c || arr[i] == 0)

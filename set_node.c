@@ -78,7 +78,6 @@ void	delete_node(t_node_inf *node_inf, t_node *dst_node)
 {
 	dst_node->prev->next = dst_node->next;
 	dst_node->next->prev = dst_node->prev;
-
 	if (node_inf->head == node_inf->tail)
 	{
 		node_inf->head = NULL;
