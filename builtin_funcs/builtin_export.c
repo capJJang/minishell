@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:24:08 by segan             #+#    #+#             */
-/*   Updated: 2023/01/25 19:26:44 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/26 11:28:55 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	check_valid_key(char *key)
 	{
 		if (!ft_isalnum(key[i]) || key[i] == '_')
 			check = 0;
+		i++;
 	}
 	if (!ft_isalnum(key[i]) || key[i] == '_' || key[i] == '+')
 		check = 0;

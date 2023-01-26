@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/01/25 19:08:01 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/26 11:30:25 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	exe_builtin(t_node_inf *node_inf)
 		builtin_pwd();
 	if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
 		builtin_export(node_inf);
-	// if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
-	// 	builtin_unset(node_inf);
+	if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
+		builtin_unset(node_inf);
 	if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
 		builtin_env(node_inf->vars->env);
 	if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))

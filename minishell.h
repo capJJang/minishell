@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/26 11:54:35 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int			ft_isdigit(int c);
 int			ft_atoi(const char *str);
 char		*ft_strdup(const char *s1);
 char		*ft_strchr(const char *s, int o);
+char		*ft_strrchr(const char *s, int c);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int			ft_isalnum(int c);
@@ -96,6 +97,7 @@ void		ft_free_3d(char ***arr);
 int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
+char		*ft_strjoin2(char const *s1, char const *s2, int s1_f, int s2_f);
 
 void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
@@ -134,6 +136,7 @@ void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
 void		builtin_env(char **environ);
 void		builtin_export(t_node_inf *node_inf);
+void		builtin_unset(t_node_inf *node_inf);
 //builtin funcs end
 
 //env_funcs start
@@ -146,10 +149,10 @@ char		**ft_strdup_2d(char **src);
 char		*ft_getenv(char **env, const char *str);
 void		ft_addenv(t_vars *var, char *key, char *val);
 void		ft_unsetenv(t_vars *var, char *val);
+void		ft_unset_sh_var(t_vars *vars, char *key);
 void		ft_add_sh_var(t_vars *var, char *val);
 char		*ft_getkey(char *var);
 void		ft_append_env(t_vars *vars, char *key, char *value);
-void		ft_unset_sh_var(t_vars *vars, char *key);
 void		print_sh_var(t_vars *vars);
 int			check_valid_key(char *key);
 //env_funcs end
