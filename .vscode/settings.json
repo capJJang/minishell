@@ -1,13 +1,9 @@
 {
-    "makefile.launchConfigurations": [
-        {
-            "cwd": "/mnt/d/42SEOUL/minishell",
-            "binaryPath": "/mnt/d/42SEOUL/minishell/minishell",
-            "binaryArgs": []
-        }
-    ],
-    "files.associations": {
-        "readline.h": "c",
-        "minishell.h": "c"
-    }
+	"makefile.launchConfigurations": [
+		{
+			"cwd": "/Users/segan/minishell",
+			"binaryPath": "/Users/segan/minishell/minishell",
+			"binaryArgs": []
+		}
+	]
 }

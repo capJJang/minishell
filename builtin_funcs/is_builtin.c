@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:08:40 by segan             #+#    #+#             */
-/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:08:04 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	is_builtin(char **cmd)
 {
-	if (!ft_strncmp(cmd[0], "echo", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "echo"))
 		return (1);
-	if (!ft_strncmp(cmd[0], "cd", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "cd"))
 		return (1);
-	if (!ft_strncmp(cmd[0], "pwd", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "pwd"))
 		return (1);
-	if (!ft_strncmp(cmd[0], "export", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "export"))
 		return (1);
-	if (!ft_strncmp(cmd[0], "unset", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "unset"))
 		return (1);
-	if (!ft_strncmp(cmd[0], "env", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "env"))
 		return (1);
-	if (!ft_strncmp(cmd[0], "exit", ft_strlen(cmd[0])))
+	if (is_equal(cmd[0], "exit"))
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/01/26 11:30:25 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:29:48 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ void	exe_builtin(t_node_inf *node_inf)
 	char	*cmd;
 
 	cmd = node_inf->head->arr;
-	if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
+	if (is_equal(cmd, "echo"))
 		builtin_echo(node_inf);
-	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+	else if (is_equal(cmd, "cd"))
 		builtin_cd(node_inf);
-	if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
+	else if (is_equal(cmd, "pwd"))
 		builtin_pwd();
-	if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+	else if (is_equal(cmd, "export"))
 		builtin_export(node_inf);
-	if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
+	else if (is_equal(cmd, "unset"))
 		builtin_unset(node_inf);
-	if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
+	else if (is_equal(cmd, "env"))
 		builtin_env(node_inf->vars->env);
-	if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+	else if (is_equal(cmd, "exit"))
 		builtin_exit(node_inf);
 }

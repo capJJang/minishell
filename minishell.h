@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/26 11:54:35 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/27 13:27:14 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
 char		*ft_strjoin2(char const *s1, char const *s2, int s1_f, int s2_f);
+int			is_equal(const char *s1, const char *s2);
 
 void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
@@ -153,6 +154,7 @@ void		ft_unset_sh_var(t_vars *vars, char *key);
 void		ft_add_sh_var(t_vars *var, char *val);
 char		*ft_getkey(char *var);
 void		ft_append_env(t_vars *vars, char *key, char *value);
+void		ft_overwrite_env(t_vars *vars, char *key, char *val);
 void		print_sh_var(t_vars *vars);
 int			check_valid_key(char *key);
 //env_funcs end

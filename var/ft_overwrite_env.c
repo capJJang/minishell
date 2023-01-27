@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_setenv.c                                        :+:      :+:    :+:   */
+/*   ft_overwrite_env.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 18:11:53 by segan             #+#    #+#             */
-/*   Updated: 2023/01/12 18:23:08 by segan            ###   ########.fr       */
+/*   Created: 2023/01/27 12:36:57 by segan             #+#    #+#             */
+/*   Updated: 2023/01/27 14:03:57 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_setenv(t_node_inf *node_inf, char *val)
+void	ft_overwrite_env(t_vars *vars, char *key, char *val)
 {
-	char	**new_env;
-	int		len;
+	int		i;
+	char	*temp_key;
 
-	len = ft_strlen_2d(node_inf->env) + 1;
-	new_env = (char **)ft_malloc(sizeof(char *) * (len + 1));
-	new_env = ft_strdup_2d(node_inf->env);
-	new_env[len - 1] = ft_strdup(val);
-	new_env[len] = 0;
-	ft_free_2d(node_inf->env);
-	node_inf->env = new_env;
+	i = 0;
+	while (vars->env[i])
+	{
+		temp_key = ft_getkey(vars->env[i]);
+		if (is_equal(temp_key, key))
+		{
+			free(vars->env[i]);
+			vars->env[i] = ft_strjoin2(ft_strjoin(key, "="), val, 1, 0);
+			free(temp_key);
+			return ;
+		}
+		free(temp_key);
+		i++;
+	}
+	ft_addenv(vars, key, ft_strjoin("=", val));
 }
