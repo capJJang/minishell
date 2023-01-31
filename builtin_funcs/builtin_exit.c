@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 02:44:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/25 19:24:05 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/30 17:44:36 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	builtin_exit(t_node_inf *node_inf)
 	if (argc > 2)
 	{
 		printf("bash: exit: too many arguments\n");
-		//exit status 1
+		*node_inf->vars->stat = 1;
 	}
 	else
 		exit(ft_atoi(node_inf->cmd[1]));

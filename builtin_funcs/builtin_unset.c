@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:53:02 by segan             #+#    #+#             */
-/*   Updated: 2023/01/26 12:36:51 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:14:42 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ void	builtin_unset(t_node_inf *node_inf)
 		key = ft_getkey(node_inf->cmd[i]);
 		val = ft_getenv(node_inf->vars->env, key);
 		if (!check_valid_key(key))
-		{
-			printf("bash: unset `%s': not a valid identifier", node_inf->cmd[i]);
-			free(key);
-		}
+			return (print_invalid_id(node_inf, key, node_inf->cmd[i]));
 		if (!val)
 			ft_unset_sh_var(node_inf->vars, key);
 		else
@@ -35,4 +32,5 @@ void	builtin_unset(t_node_inf *node_inf)
 		free(key);
 		i++;
 	}
+	*node_inf->vars->stat = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:24:08 by segan             #+#    #+#             */
-/*   Updated: 2023/01/27 15:16:53 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:15:21 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	check_valid_key(char *key)
 	check = 1;
 	i = 0;
 	len = ft_strlen(key);
+	if (!ft_isalpha(*key))
+		return (0);
 	while (i < len - 1)
 	{
 		if (!ft_isalnum(key[i]) || key[i] == '_')
@@ -39,26 +41,24 @@ void	builtin_export(t_node_inf *node_inf)
 	char	*val;
 
 	i = 1;
-	if (node_inf->head == node_inf->tail)//print export
+	if (node_inf->head == node_inf->tail)
 		print_sh_var(node_inf->vars);
 	while (node_inf->cmd[i])
 	{
 		key = ft_getkey(node_inf->cmd[i]);
 		if (!check_valid_key(key))
-		{
-			printf("bash: export:`%s': not a valid identifier\n", node_inf->cmd[i]);
-			free(key);
-			break ;
-		}
+			return (print_invalid_id(node_inf, key, node_inf->cmd[i]));
 		val = ft_strchr(node_inf->cmd[i], '=');
-		if (!val)//셸 변수 등록 하는 경우
+		if (!val)
 			ft_add_sh_var(node_inf->vars, node_inf->cmd[i]);
-		else if (ft_strnstr(node_inf->cmd[i], "+=", ft_strlen(node_inf->cmd[i]))) //append 하는 경우
+		else if (ft_strnstr(node_inf->cmd[i], "+=", \
+		ft_strlen(node_inf->cmd[i])))
 			ft_append_env(node_inf->vars, key, val);
-		else//새로 등록
+		else
 			ft_addenv(node_inf->vars, key, val);
 		i++;
 		free(key);
 	}
+	*node_inf->vars->stat = 0;
 }
 //exit status
