@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 12:36:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/27 14:03:57 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:35:01 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_overwrite_env(t_vars *vars, char *key, char *val)
 	while (vars->env[i])
 	{
 		temp_key = ft_getkey(vars->env[i]);
-		if (is_equal(temp_key, key))
+		if (!ft_strncmp(temp_key, key, ft_strlen(key) + 1))
 		{
 			free(vars->env[i]);
 			vars->env[i] = ft_strjoin2(ft_strjoin(key, "="), val, 1, 0);

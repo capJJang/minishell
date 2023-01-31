@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 00:40:54 by segan             #+#    #+#             */
-/*   Updated: 2023/01/24 09:28:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 16:03:48 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 t_vars	*init_var(void)
 {
-	t_vars	*var;
+	t_vars	*vars;
 
-	var = ft_malloc(sizeof(t_vars));
-	var->env = init_env();
-	var->sh_var = NULL;
-	return (var);
+	vars = ft_malloc(sizeof(t_vars));
+	vars->env = init_env();
+	vars->sh_var = NULL;
+	vars->stat = ft_malloc(sizeof(int));
+	return (vars);
 }

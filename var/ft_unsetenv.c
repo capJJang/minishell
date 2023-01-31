@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/27 19:03:06 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:53:36 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ void	ft_unsetenv(t_vars *vars, char *key)
 	while (vars->env[i])
 	{
 		temp_key = ft_getkey(vars->env[i]);
-		if (is_equal(temp_key, key))
+		if (!ft_strncmp(temp_key, key, ft_strlen(key) + 1))
 			break ;
 		free(temp_key);
 		i++;
 	}
 	free(temp_key);
 	free(vars->env[i]);
-	vars->env[i] = NULL;
+	vars->env[i] = vars->env[i + 1];
 	while (vars->env[i] && i > 1)
 	{
 		vars->env[i] = vars->env[i + 1];
@@ -52,7 +52,7 @@ void	ft_unset_sh_var(t_vars *vars, char *key)
 	i = 0;
 	while (vars->sh_var[i])
 	{
-		if (is_equal(vars->sh_var[i], key))
+		if (!ft_strncmp(vars->sh_var[i], key, ft_strlen(key) + 1))
 		{
 			free(vars->sh_var[i]);
 			break ;
