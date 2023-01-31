@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/26 13:11:01 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 22:36:56 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ void	adhere_some_node(t_node_inf *node_inf)
 		{
 			temp = curr->arr;
 			curr->arr = ft_strjoin(curr->arr, curr->next->arr);
+			free(temp);
 			curr->check_adhere_back = curr->next->check_adhere_back;
 			delete_node(node_inf, curr->next);
 		}

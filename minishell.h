@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/31 17:14:42 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 22:36:28 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
