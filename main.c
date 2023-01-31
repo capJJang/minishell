@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/27 17:15:13 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 19:30:20 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,19 @@
 void	control_process(t_vars *vars)
 {
 	t_node_inf	*node_inf;
+	char		*input;
 	char		***cmd;
 
 	while (1)
 	{
-		node_inf = parsing(readline("minishell $ "));
-		if (node_inf == EMPTY_LINE)
+		input = readline("minishell $ ");
+		if (input == EMPTY_LINE)
+		{
+			rl_redisplay();
+			rl_on_new_line();
 			continue ;
+		}
+		node_inf = parsing(input);
 		// print_node(node_inf);	// print_test
 		cmd = node_to_command(node_inf);
 		// print_command(cmd);	// print_test

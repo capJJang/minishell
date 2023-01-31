@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_empty_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 20:41:22 by seyang            #+#    #+#             */
-/*   Updated: 2022/12/16 17:59:37 by seyang           ###   ########.fr       */
+/*   Updated: 2023/01/30 17:55:12 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_empty_line(char *read_line)
 {
-	if (read_line[0] == 0)
+	if (!read_line || read_line[0] == 0)
 	{
 		free(read_line);
 		return (1);

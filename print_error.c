@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:08:01 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:14:42 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,11 @@ void	print_errno_in_child(char *cmd)
 	else
 		perror(strerror(errno));
 	exit (errno);
+}
+
+void	print_invalid_id(t_node_inf *node_inf, char *key, char *arg)
+{
+	printf("bash: %s: `%s': not a valid identifier\n", node_inf->cmd[0], arg);
+	*(node_inf->vars->stat) = 1;
+	free(key);
 }

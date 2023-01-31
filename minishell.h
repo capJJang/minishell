@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/27 13:27:14 by segan            ###   ########.fr       */
+/*   Updated: 2023/01/31 17:14:42 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ struct s_node_inf {
 struct s_vars {
 	char	**env;
 	char	**sh_var;
+	int		*stat;
 } ;
 
 char		**ft_split(char const *s, char c);
@@ -86,7 +87,7 @@ char		*ft_strrchr(const char *s, int c);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int			ft_isalnum(int c);
-void		ft_bzero(void *s, size_t n);
+int			ft_isalpha(int c);
 
 
 void		*ft_malloc(size_t size);
@@ -98,7 +99,6 @@ int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
 char		*ft_strjoin2(char const *s1, char const *s2, int s1_f, int s2_f);
-int			is_equal(const char *s1, const char *s2);
 
 void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
@@ -126,12 +126,14 @@ void		execute_command(char **path_env, \
 	char ***cmd, t_node_inf *node_inf);
 void		print_cmd_nfound(int error, char *cmd);
 void		print_error(int error, char *cmd);
+void		print_invalid_id(t_node_inf *node_inf, char *key, char *arg);
 void		ft_free(t_node_inf *node_inf);
 
 //builtin funcs start
 void		exe_builtin(t_node_inf *node_inf);
 int			is_builtin(char **cmd);
 void		builtin_cd(t_node_inf *node_inf);
+int			check_argc(t_node_inf *node_inf);
 void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(void);
