@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   ft_getcwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 03:21:51 by segan             #+#    #+#             */
-/*   Updated: 2023/02/01 18:38:49 by segan            ###   ########.fr       */
+/*   Created: 2023/02/01 15:07:59 by segan             #+#    #+#             */
+/*   Updated: 2023/02/01 18:25:41 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	builtin_pwd(int	*stat)
+char	*ft_getcwd(int *stat)
 {
 	char	*pwd;
 
-	pwd = ft_getcwd(stat);
-	printf("%s\n", pwd);
-	free(pwd);
-	*stat = 0;
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		perror(strerror(errno));
+		*stat = 1;
+		exit(-1);
+	}
+	return (pwd);
 }
-//exit status

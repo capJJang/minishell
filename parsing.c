@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/31 22:36:56 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/01 15:16:28 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parsing_pipe(t_node_inf *node_inf, char *read_line)
 		finish = ft_find_after_chr(read_line, start, '|');
 		if (finish - start == 0)
 		{
-			arr = ft_calloc(sizeof(char), 1);
+			arr = ft_calloc(sizeof(char), 2);
 			arr[0] = '|';
 			add_back_node(node_inf, new_node(arr));
 			finish = ++start;
@@ -183,17 +183,16 @@ void	parsing_normal_arr(t_node_inf *node_inf)
 	}
 }
 
-int	init_set_env(t_node *curr, char *arr, char *temp, int *start)
+int	init_set_env(t_node *curr, char **arr, char *temp, int *start)
 {
-	arr = ft_strtrim(arr, "\"");
+	*arr = ft_strtrim(*arr, "\"");
 	free(temp);
-	*start = ft_find_after_chr(arr, 0, '$');
-	if (*start == -1 || arr[*start] == 0)
+	*start = ft_find_after_chr(*arr, 0, '$');
+	if (*start == -1 || (*arr)[*start] == 0)
 	{
-		curr->arr = arr;
+		curr->arr = *arr;
 		return (1);
 	}
-	*start = ft_find_after_chr(arr, 0, '$');
 	return (0);
 }
 
@@ -204,7 +203,7 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	int		end;
 	int		arr_end;
 
-	if (init_set_env(curr, arr, temp, &start) == 1)
+	if (init_set_env(curr, &arr, temp, &start) == 1)
 		return ;
 	end = start + 1;
 	while (arr[end] && (('a' <= arr[end] && arr[end] <= 'z') \
@@ -217,7 +216,7 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	if (arr[end] != 0)
 		add_next_node(node_inf, curr, \
 			new_node(ft_substr(arr, end + 1, arr_end - end)));
-	curr->arr = ft_strdup(getenv(env)); // slslsls
+	curr->arr = ft_strdup(getenv(env)); // ft_getenv
 	if (curr->arr == NULL)
 		curr->arr = ft_strdup("");
 	curr->check_malloc = 0;
@@ -240,7 +239,10 @@ void	replace_env(t_node_inf *node_inf)
 			free(temp);
 		}
 		else
-			set_env(node_inf, curr, curr->arr, temp);
+		{
+			if (ft_strncmp(curr->prev->arr, "<<", 3) != 0)
+				set_env(node_inf, curr, curr->arr, temp);
+		}
 		if (curr == node_inf->tail)
 			break ;
 		curr = curr->next;
@@ -292,7 +294,8 @@ int	parsing_redirection2(t_node_inf *node_inf, t_node *curr)
 	if (start != 0)
 		return (cut_front(node_inf, curr, start));
 	end = start;
-	while (curr->arr[end] == curr->arr[start])
+	// while (curr->arr[end] == curr->arr[start])
+	while (curr->arr[end] == '<' || curr->arr[end] == '>')
 		end++;
 	add_prev_node(node_inf, curr, \
 		new_node(ft_substr(curr->arr, start, end - start)));
@@ -378,12 +381,29 @@ void	line_to_node(t_node_inf *node_inf, char *read_line)
 	set_command_num(node_inf);
 }
 
+int	check_parse_error(t_node_inf *node_inf)
+{
+	t_node	*curr;
+	int		cmd_cnt;
+
+	curr = node_inf->head;
+	cmd_cnt = 1;
+	while (1)
+	{
+		while (curr->next->command_num != cmd_cnt || curr != node_inf->tail)
+			curr = curr->next;
+		if (curr->arr[0] == '<' || curr->arr[0] == '>')
+			return (1);
+		if (curr == node_inf->tail)
+			break ;
+	}
+	return (0);
+}
+
 t_node_inf	*parsing(char *read_line)
 {
 	t_node_inf	*node_inf;
 
-	if (is_empty_line(read_line))
-		return (EMPTY_LINE);
 	add_history(read_line);
 	node_inf = new_node_inf();
 	line_to_node(node_inf, read_line);

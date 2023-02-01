@@ -6,22 +6,22 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/31 17:37:20 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/01 18:33:10 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_argc(t_node_inf *node_inf)
-{
-	if (node_inf->cmd[2])
-	{
-		printf("bash: cd: %s:No such file of directory\n", node_inf->cmd[1]);
-		*node_inf->vars->stat = 1;
-		return (0);
-	}
-	return (1);
-}
+// int	check_argc(t_node_inf *node_inf)
+// {
+// 	if (node_inf->cmd[2])
+// 	{
+// 		printf("bash: cd: %s:No such file of directory\n", node_inf->cmd[1]);
+// 		*node_inf->vars->stat = 1;
+// 		return (0);
+// 	}
+// 	return (1);
+// }
 
 void	update_wd(t_vars *vars, char *pwd, char *oldpwd)
 {
@@ -37,25 +37,26 @@ void	builtin_cd(t_node_inf *node_inf)
 	char	*oldpwd;
 	char	*pwd;
 
-	if (!check_argc(node_inf))
-		return ;
-	oldpwd = getcwd(NULL, 0);
-	if (errno == ENOMEM)
-		exit(-1);
+	oldpwd = ft_getcwd(node_inf->vars->stat);
 	if (node_inf->cmd[1] == NULL || !ft_strncmp(node_inf->cmd[1], "~", 2))
 		pwd = ft_getenv(node_inf->vars->env, "HOME");
 	else
 		pwd = node_inf->cmd[1];
 	if (!pwd)
-		perror(strerror(errno));
+	{
+		printf("bash: cd: HOME not set\n");
+		*node_inf->vars->stat = 1;
+		return ;
+	}
 	cd_ret = chdir(pwd);
 	if (cd_ret == -1)
+	{
 		perror(strerror(errno));
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		perror(strerror(errno));
-	else
-		update_wd(node_inf->vars, pwd, oldpwd);
+		*node_inf->vars->stat = 1;
+		exit(1);
+	}
+	pwd = ft_getcwd(node_inf->vars->stat);
+	update_wd(node_inf->vars, pwd, oldpwd);
+	*node_inf->vars->stat = 0;
 }
-//exit status
-//~ 과 인자가 없는건 다르게 동작함...
+// 예외처리 고민해야함,,,,

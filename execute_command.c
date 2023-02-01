@@ -34,6 +34,7 @@ void	redirect_pipe(t_child child, t_node *curr, int *check_error)
 	int		fd;
 	bool	in;
 	bool	out;
+	char	*get_line;
 
 	while (curr != 0)
 	{
@@ -44,7 +45,7 @@ void	redirect_pipe(t_child child, t_node *curr, int *check_error)
 				print_errno_in_child(curr->arr);
 			*check_error += dup2(fd, STDOUT_FILENO);
 			close(fd);
-			close(child.fd[child.launch_cnt][P_WRITE]);
+			// close(child.fd[child.launch_cnt][P_WRITE]);
 			if (out == false)
 				out = true;
 		}
@@ -55,21 +56,61 @@ void	redirect_pipe(t_child child, t_node *curr, int *check_error)
 				print_errno_in_child(curr->arr);
 			*check_error = dup2(fd, STDIN_FILENO);
 			close(fd);
-			close(child.fd[child.launch_cnt][P_READ]);
+			// close(child.fd[child.launch_cnt][P_READ]);
 			if (in == false)
 				in = true;
 		}
+		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0)
+		{
+			int	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			while (1)
+			{
+				write(STDOUT_FILENO, "> ", 2);
+				get_line = get_next_line(STDIN_FILENO);
+				if (ft_strlen(get_line) - 1 != 0 \
+					&& ft_strncmp(get_line, curr->arr, ft_strlen(curr->arr)) == 0 \
+					&& (ft_strlen(get_line) - 1 == ft_strlen(curr->arr)))
+					break ;
+				write(temp_fd, get_line, ft_strlen(get_line));
+				free (get_line);
+			}
+			free (get_line);
+			close (temp_fd);
+			temp_fd = open("*&$@^857sdf{}.:<<12#@", O_RDONLY);
+			*check_error += dup2(temp_fd, STDIN_FILENO);
+			unlink("*&$@^857sdf{}.:<<12#@");
+			close(temp_fd);
+			if (in == false)
+				in = true;
+		}
+		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
+		{
+			fd = open(curr->arr, O_APPEND | O_WRONLY);
+			if (fd == -1)
+				print_errno_in_child(curr->arr);
+			*check_error += dup2(fd, STDOUT_FILENO);
+			close(fd);
+			// close(child.fd[child.launch_cnt][P_WRITE]);
+			if (out == false)
+				out = true;
+		}
 		curr->is_file = 0;
 		curr = is_redirection(child);
-		// heredoc
 	}
+	if (in == true)
+		close(child.fd[child.launch_cnt][P_READ]);
+	if (out == true)
+		close(child.fd[child.launch_cnt][P_WRITE]);
 	if (in == false)
 	{
-		*check_error += \
-			dup2(child.fd[child.launch_cnt - 1][P_READ], STDIN_FILENO);
-		close(child.fd[child.launch_cnt - 1][P_READ]);
+		if (child.launch_cnt > 0)
+		{
+			*check_error += \
+				dup2(child.fd[child.launch_cnt - 1][P_READ], STDIN_FILENO);
+			close(child.fd[child.launch_cnt - 1][P_READ]);
+		}
 	}
-	if (out == false)
+	if (out == false && child.cmd[child.launch_cnt + 1] != 0)
 	{
 		*check_error += \
 			dup2(child.fd[child.launch_cnt][P_WRITE], STDOUT_FILENO);

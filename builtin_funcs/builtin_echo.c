@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 00:26:22 by segan             #+#    #+#             */
-/*   Updated: 2023/01/30 16:11:24 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/01 14:49:48 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ void	builtin_echo(t_node_inf *node_inf)
 	}
 	if (new_line)
 		printf("\n");
-	node_inf->vars->stat = 0;
+	*node_inf->vars->stat = 0;
 }

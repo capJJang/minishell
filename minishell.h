@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/01/31 22:36:28 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/01 18:37:31 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <stdbool.h>
+# include "get_next_line/get_next_line.h"
+# include <signal.h>
+# include <termios.h>
 
 # define IS_NOT_COMMAND 1
 # define IS_COMMAND 0
@@ -100,6 +103,7 @@ int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
 char		*ft_strjoin2(char const *s1, char const *s2, int s1_f, int s2_f);
+char		*ft_getcwd(int *stat);
 
 void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
@@ -129,16 +133,16 @@ void		print_cmd_nfound(int error, char *cmd);
 void		print_error(int error, char *cmd);
 void		print_invalid_id(t_node_inf *node_inf, char *key, char *arg);
 void		ft_free(t_node_inf *node_inf);
+int			check_parse_error(t_node_inf *node_inf);
 
 //builtin funcs start
 void		exe_builtin(t_node_inf *node_inf);
 int			is_builtin(char **cmd);
 void		builtin_cd(t_node_inf *node_inf);
-int			check_argc(t_node_inf *node_inf);
 void		builtin_exit(t_node_inf *node_inf);
 void		builtin_echo(t_node_inf *node_inf);
-void		builtin_pwd(void);
-void		builtin_env(char **environ);
+void		builtin_pwd(int	*stat);
+void		builtin_env(t_vars *vars);
 void		builtin_export(t_node_inf *node_inf);
 void		builtin_unset(t_node_inf *node_inf);
 //builtin funcs end

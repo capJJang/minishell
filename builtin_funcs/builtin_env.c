@@ -6,14 +6,15 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:14:10 by segan             #+#    #+#             */
-/*   Updated: 2023/01/25 18:18:07 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/01 14:49:35 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	builtin_env(char **environ)
+void	builtin_env(t_vars *vars)
 {
-	print_environ(environ);
+	print_environ(vars->env);
+	*vars->stat = 0;
 }
 //exit status
