@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exe_builtin.c                                      :+:      :+:    :+:   */
@@ -16,7 +16,8 @@ void	exe_builtin(t_node_inf *node_inf)
 {
 	char	*cmd;
 
-	cmd = node_inf->head->arr;
+	ft_overwrite_env(node_inf->vars, "_", node_inf->cmd[ft_strlen_2d(node_inf->cmd) - 1]);
+	cmd = node_inf->cmd[0];
 	if (!ft_strncmp(cmd, "echo", 5))
 		builtin_echo(node_inf);
 	else if (!ft_strncmp(cmd, "cd", 3))
