@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/02/02 17:44:40 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/05 22:57:43 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	control_process(t_vars *vars)
 		input = readline("minishell $ ");
 		if (input == EMPTY_LINE)
 		{
-			printf("\b\bexit\n");
+			printf("exit\n");
 			exit(0);
 		}
 		if (is_empty_line(input))
@@ -106,8 +106,8 @@ int	main(void)
 {
 	t_vars	*vars;
 
-	init_signal();
 	vars = init_var();
+	init_signal();
 	control_process(vars);
 	ft_free_vars(vars);
 }

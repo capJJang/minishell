@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/02/02 17:49:32 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/06 01:24:29 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,14 @@
 
 void	sigint()
 {
-	printf("\n");
-	return ;
+	rl_replace_line("", 1);
+	printf("\b\b  \n");
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void	sigquit()
-{
-	write(1, "\b\b", 2);
-	return ;
-}
-
-void	init_signal(void)
+void	init_signal()
 {
 	signal(SIGINT, sigint);
-	signal(SIGQUIT, sigquit);
+	signal(SIGQUIT, SIG_IGN);
 }
