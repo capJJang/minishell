@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/02 17:30:48 by segan            ###   ########.fr        #
+#    Updated: 2023/02/06 18:47:53 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,11 @@ CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror -o
 
 LIBS = -lreadline -L ./libft -l ft
 
+CLIBS = -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+
 all :
 	make bonus -C libft
-	$(CC)  $(SRCS) $(LIBS) $(CFLAGS) $(NAME)
+	$(CC) $(SRCS) $(CLIBS) $(LIBS) $(CFLAGS) $(NAME)
 clean :
 	make clean -C ./libft
 
