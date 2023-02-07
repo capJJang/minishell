@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/06 18:47:53 by segan            ###   ########.fr        #
+#    Updated: 2023/02/07 16:34:22 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ SRCS =	main.c ft_fork.c path.c check_process.c read_line.c \
 
 CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror -o
 
-LIBS = -lreadline -L ./libft -l ft
+LIBS = -lft -L./libft
 
-CLIBS = -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+CLIBS = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 all :
 	make bonus -C libft

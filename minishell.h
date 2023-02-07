@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/06 01:03:09 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/07 19:09:36 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ struct s_child {
 	char		***cmd;
 	int			launch_cnt;
 	int			**fd;
+	pid_t		pid;
 	t_node_inf	*node_inf;
 } ;
 
@@ -167,8 +168,9 @@ int			check_valid_key(char *key);
 //env_funcs end
 
 //signal start
-void		init_signal(void);
+void		init_signal();
 void		sigint();
+void		set_siganl(pid_t pid);
 //signal end
 
 void		print_errno_in_child(char *cmd);
