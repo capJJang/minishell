@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/02/05 22:57:43 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/08 18:30:21 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	control_process(t_vars *vars)
 	// set_signal();
 	while (1)
 	{
+		init_signal();
 		input = readline("minishell $ ");
 		if (input == EMPTY_LINE)
 		{
@@ -107,7 +108,6 @@ int	main(void)
 	t_vars	*vars;
 
 	vars = init_var();
-	init_signal();
 	control_process(vars);
 	ft_free_vars(vars);
 }

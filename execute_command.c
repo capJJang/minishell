@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/31 22:36:34 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/08 18:30:14 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void	is_parent(pid_t pid)
 {
 	int	status;
 
+	set_parent_signal();
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) != 0)
 	{
