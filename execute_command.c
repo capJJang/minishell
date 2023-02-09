@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/09 21:35:31 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/09 21:45:42 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	redirect_pipe(t_child child, t_node *curr, int *check_error)
 	}
 }
 
-void	is_child(t_child child, int size)
+void	is_child(t_child child)
 {
 	t_node		*curr;
 	int			check_error;
@@ -162,13 +162,13 @@ void	is_child(t_child child, int size)
 		{
 			check_error += \
 				dup2(child.fd[child.launch_cnt - 1][P_READ], STDIN_FILENO);
-			close(child.fd[size - child.launch_cnt - 1][P_READ]);
+			close(child.fd[child.launch_cnt - 1][P_READ]);
 			check_error += \
 				dup2(child.fd[child.launch_cnt][P_WRITE], STDOUT_FILENO);
 			close(child.fd[child.launch_cnt][P_WRITE]);
 		}
 	}
-	if (check_error > 0 || is_builtin(child.cmd[child.launch_cnt]))
+	if (!(check_error < 0) && is_builtin(child.cmd[child.launch_cnt]))
 		exe_builtin(child.node_inf);
 	else if (check_error < 0 || execve(child.path, \
 		child.cmd[child.launch_cnt], child.node_inf->vars->env) == -1)
@@ -276,7 +276,7 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 			if (pid[child.launch_cnt] == -1)
 				exit (-1);
 			if (pid[child.launch_cnt] == 0 && temp != size)
-				is_child(child, size);
+				is_child(child);
 			else
 				is_parent(pid, size);
 		}
