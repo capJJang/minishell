@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/08 16:19:30 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/09 19:26:04 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,12 @@ int			check_valid_key(char *key);
 
 //signal start
 void		init_signal();
-void		sigint();
+void		sigint_readline();
 void		set_parent_signal();
+void		set_child_signal();
+void		sigint_child();
+void		sigquit_child();
+void		restore_signal();
 //signal end
 
 void		print_errno_in_child(char *cmd);

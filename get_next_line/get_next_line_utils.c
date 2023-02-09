@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 23:45:15 by segan             #+#    #+#             */
-/*   Updated: 2022/09/28 23:51:27 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/08 20:17:20 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
-	if (s == NULL)
+	if (s == NULL || s[0] == 0)
 		return (0);
 	i = 0;
 	while (s[i])

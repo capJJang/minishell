@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 00:26:22 by segan             #+#    #+#             */
-/*   Updated: 2023/02/01 14:49:48 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/08 20:39:47 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	builtin_echo(t_node_inf *node_inf)
 
 	i = 1;
 	new_line = 1;
+	printf("test: %s\n", node_inf->cmd[i]);
 	if (!ft_strncmp(node_inf->cmd[i], "-n", ft_strlen(node_inf->cmd[i])))
 	{
 		i = 2;

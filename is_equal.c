@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fork.c                                          :+:      :+:    :+:   */
+/*   is_equal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/12 16:05:58 by segan             #+#    #+#             */
-/*   Updated: 2023/02/09 21:29:47 by segan            ###   ########.fr       */
+/*   Created: 2023/01/26 12:41:45 by segan             #+#    #+#             */
+/*   Updated: 2023/01/27 13:40:17 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-pid_t	ft_fork(void)
-{
-	pid_t	pid;
-
-		printf("parent: %d\n", getpid());
-	pid = fork();
-	if (pid == 0)
-		printf("child: %d\n", getpid());
-	if (pid == -1)
-		exit(-1);
-	return (pid);
+int	is_equal(const char *s1, const char *s2)
+{	
+	while (*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			return (0);
+		s1++;
+		s2++;
+	}
+	if (*s1 != *s2)
+		return (0);
+	return (1);
 }

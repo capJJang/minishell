@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/02/08 18:30:21 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/09 19:27:21 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	control_process(t_vars *vars)
 		}
 		if (is_empty_line(input))
 			continue ;
+		restore_signal();
 		node_inf = parsing(input);
 		if (check_parse_error(node_inf) == 1)
 		{

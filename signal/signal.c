@@ -6,35 +6,73 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/02/08 20:47:45 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/09 19:44:12 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	sigint()
+//void	sigint_readline()
+//{
+//	rl_replace_line("", 0);
+//	printf("\n");
+//	rl_on_new_line();
+//	rl_redisplay();
+//}
+
+void	sigint_readline()
 {
-	struct termios    new_settings;
+	struct termios	term;
 
-	if
-	if (tcgetattr(0, &new_settings))
-		perror("minishell: tcsetattr");
-	new_settings.c_lflag &= ~ECHOCTL;
-	if (tcsetattr(0, 0, &new_settings))
-		perror("minishell: tcsetattr");
+	if (isatty(STDIN_FILENO))
+	{
+		tcgetattr(STDIN_FILENO, &term);
+		term.c_lflag &= ~ECHOCTL;
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		rl_replace_line("", 0);
+		printf("\n");
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
 
-	rl_replace_line("", 0);
-	//printf("\b\b  \n");
-	//printf("\033[2K\rminishell $ \n");
-	//printf("\033[999G  ");
-	//printf("\033[K\033[Gminishell $ \n");
-	rl_on_new_line();
-	rl_redisplay();
+void	sigint_child()
+{
+	struct termios	term;
+
+	if (isatty(STDIN_FILENO))
+	{
+		tcgetattr(STDIN_FILENO, &term);
+		term.c_lflag &= ECHOCTL;
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		//rl_replace_line("", 0);
+		//printf("\n");
+		//rl_on_new_line();
+		//rl_redisplay();
+	}
+	printf("\n");
+}
+
+void	sigquit_child()
+{
+	struct termios	term;
+
+	if (isatty(STDIN_FILENO))
+	{
+		tcgetattr(STDIN_FILENO, &term);
+		term.c_lflag &= ECHOCTL;
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		//rl_replace_line("", 0);
+		//printf("\n");
+		//rl_on_new_line();
+		//rl_redisplay();
+	}
+	printf("QUIT : %d\n", SIGQUIT);
 }
 
 void	init_signal()
 {
-	signal(SIGINT, sigint);
+	signal(SIGINT, sigint_readline);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -42,6 +80,12 @@ void	restore_signal()
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+void	set_child_signal()
+{
+	signal(SIGINT, sigint_child);
+	signal(SIGQUIT, sigquit_child);
 }
 
 void	set_parent_signal()

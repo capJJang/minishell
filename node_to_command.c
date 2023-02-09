@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_to_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:49:41 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/08 20:21:50 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	new_command2(t_node_inf *node_inf, char ***cmd)
 				break ;
 			curr = curr->next;
 		}
-		cmd[i] = ft_malloc(sizeof(char *) * (size + 2));
-		cmd[i++][size] = 0;
+		cmd[i] = ft_calloc(sizeof(char *), (size + 2));
+		cmd[i++][size + 1] = 0;
 		if (curr == node_inf->tail)
 			break ;
 		curr = curr->next;
