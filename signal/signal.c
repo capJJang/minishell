@@ -6,86 +6,42 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/02/09 19:44:12 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/14 08:18:07 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//void	sigint_readline()
-//{
-//	rl_replace_line("", 0);
-//	printf("\n");
-//	rl_on_new_line();
-//	rl_redisplay();
-//}
-
 void	sigint_readline()
 {
-	struct termios	term;
-
-	if (isatty(STDIN_FILENO))
-	{
-		tcgetattr(STDIN_FILENO, &term);
-		term.c_lflag &= ~ECHOCTL;
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		rl_replace_line("", 0);
-		printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-void	sigint_child()
-{
-	struct termios	term;
-
-	if (isatty(STDIN_FILENO))
-	{
-		tcgetattr(STDIN_FILENO, &term);
-		term.c_lflag &= ECHOCTL;
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		//rl_replace_line("", 0);
-		//printf("\n");
-		//rl_on_new_line();
-		//rl_redisplay();
-	}
+	rl_replace_line("", 0);
 	printf("\n");
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void	sigquit_child()
+void	sigint_heredoc()
 {
-	struct termios	term;
-
-	if (isatty(STDIN_FILENO))
-	{
-		tcgetattr(STDIN_FILENO, &term);
-		term.c_lflag &= ECHOCTL;
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		//rl_replace_line("", 0);
-		//printf("\n");
-		//rl_on_new_line();
-		//rl_redisplay();
-	}
-	printf("QUIT : %d\n", SIGQUIT);
+	printf("\n");
+	exit(128 + SIGINT);
 }
 
-void	init_signal()
+void	set_readline_signal()
 {
+	extern int	rl_catch_signals;
+
+	rl_catch_signals = 0;
 	signal(SIGINT, sigint_readline);
 	signal(SIGQUIT, SIG_IGN);
 }
 
 void	restore_signal()
 {
+	extern int	rl_catch_signals;
+
+	rl_catch_signals = 1;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-}
-
-void	set_child_signal()
-{
-	signal(SIGINT, sigint_child);
-	signal(SIGQUIT, sigquit_child);
 }
 
 void	set_parent_signal()
@@ -94,15 +50,16 @@ void	set_parent_signal()
 	signal(SIGQUIT, SIG_IGN);
 }
 
-//void	set_signal_heredoc(pid_t pid)
-//{
-//	if (pid == 0)
-//		interactive_signal();
-//	else
-//		set_parent_signal();
-//}
+void	set_heredoc_signal()
+{
+	struct termios term;
 
-//void	set_signal_
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	signal(SIGINT, sigint_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 /*
 부모는 sigquit, sigint 무시

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/09 21:45:42 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/14 08:18:05 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,14 @@ void	redirect_pipe(t_child child, t_node *curr, int *check_error)
 		}
 		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0)
 		{
+			set_heredoc_signal();
 			int	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			while (1)
 			{
 				write(STDOUT_FILENO, "> ", 2);
 				get_line = get_next_line(STDIN_FILENO);
+				if (get_line == EMPTY_LINE)
+					break ;
 				if (ft_strlen(get_line) - 1 != 0 \
 					&& ft_strncmp(get_line, curr->arr, ft_strlen(curr->arr)) == 0 \
 					&& (ft_strlen(get_line) - 1 == ft_strlen(curr->arr)))
@@ -125,10 +128,7 @@ void	is_child(t_child child)
 	t_node		*curr;
 	int			check_error;
 
-// printf("%s\n", "child:");
-	sleep(100);
 	curr = is_redirection(child);
-	set_child_signal();
 	check_error = 0;
 	if (child.launch_cnt == 0)
 	{
@@ -187,6 +187,14 @@ void	is_parent(pid_t *pid, int size)
 			i = -1;
 		i++ ;
 	}
+	//stat = statatus;
+	if (WIFSIGNALED(status))
+	{
+		if (status == 3)
+			printf("Quit : %d", status);
+		printf("\n");
+		//stat = 128 + status;
+	}
 	if (WEXITSTATUS(status) != 0)
 	{
 	}
@@ -200,7 +208,7 @@ int	**new_pipe(char ***cmd)
 	n = 0;
 	while (cmd[n])
 		n++;
-	n--;
+	//n--;
 	fd = ft_malloc(sizeof(int *) * (n + 1));
 	fd[n] = 0;
 	while (n > 0)
