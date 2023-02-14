@@ -6,25 +6,12 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/02/14 08:18:07 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/14 12:21:37 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	sigint_readline()
-{
-	rl_replace_line("", 0);
-	printf("\n");
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-void	sigint_heredoc()
-{
-	printf("\n");
-	exit(128 + SIGINT);
-}
 
 void	set_readline_signal()
 {

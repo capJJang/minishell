@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/14 08:18:05 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/14 12:46:45 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,6 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 			else
 				is_parent(pid, size);
 		}
-
 	}
 	close_pipe(child.fd);
 	ft_free_2d((char **)child.fd);
