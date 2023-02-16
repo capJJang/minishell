@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exe_builtin.c                                      :+:      :+:    :+:   */
@@ -6,11 +6,25 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/02/01 14:47:29 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 17:34:47 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+
+int	is_redirection2(t_node_inf *node_inf)
+{
+	if (!ft_node_strncmp(node_inf, ">"))
+		return (1);
+	if (!ft_node_strncmp(node_inf, ">>"))
+		return (1);
+	if (!ft_node_strncmp(node_inf, "<"))
+		return (1);
+	if (!ft_node_strncmp(node_inf, "<<"))
+		return (1);
+	return (0);
+}
 
 void	exe_builtin(t_node_inf *node_inf)
 {
@@ -32,6 +46,7 @@ void	exe_builtin(t_node_inf *node_inf)
 		builtin_env(node_inf->vars);
 	else if (!ft_strncmp(cmd, "exit", 5))
 		builtin_exit(node_inf);
-	if (ft_node_strncmp(node_inf, "|"))
+	if (!ft_node_strncmp(node_inf, "|") || is_redirection2(node_inf))
 		exit(*node_inf->vars->stat);
 }
+

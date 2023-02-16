@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:50:26 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/25 19:23:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/15 16:13:26 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_node(t_node_inf *node_inf)
 	printf("%s", "\n\n_________intput_________\n\n");
 	while (1)
 	{
-		printf("%s %d\n", curr->arr, curr->command_num);
+		printf("%s %d\n", curr->arr, curr->is_file);
 		if (curr == node_inf->tail)
 			break ;
 		curr = curr->next;

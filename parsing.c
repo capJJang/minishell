@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/01 15:16:28 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 19:51:41 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,8 +206,7 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	if (init_set_env(curr, &arr, temp, &start) == 1)
 		return ;
 	end = start + 1;
-	while (arr[end] && (('a' <= arr[end] && arr[end] <= 'z') \
-		|| ('A' <= arr[end] && arr[end] <= 'Z')))
+	while (arr[end] && (ft_isalpha(arr[end]) || arr[end] == '?'))
 		end++;
 	if (start != 0)
 		add_prev_node(node_inf, curr, new_node(ft_substr(arr, 0, start)));
@@ -216,7 +215,7 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	if (arr[end] != 0)
 		add_next_node(node_inf, curr, \
 			new_node(ft_substr(arr, end + 1, arr_end - end)));
-	curr->arr = ft_strdup(getenv(env)); // ft_getenv
+	curr->arr = ft_strdup(ft_getenv(node_inf->vars, env));
 	if (curr->arr == NULL)
 		curr->arr = ft_strdup("");
 	curr->check_malloc = 0;
@@ -400,12 +399,12 @@ int	check_parse_error(t_node_inf *node_inf)
 	return (0);
 }
 
-t_node_inf	*parsing(char *read_line)
+t_node_inf	*parsing(t_vars *vars, char *read_line)
 {
 	t_node_inf	*node_inf;
 
-	add_history(read_line);
 	node_inf = new_node_inf();
+	node_inf->vars = vars;
 	line_to_node(node_inf, read_line);
 	free(read_line);
 	return (node_inf);

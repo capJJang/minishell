@@ -6,14 +6,13 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/02/14 12:21:37 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/15 14:36:07 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-void	set_readline_signal()
+void	set_readline_signal(void)
 {
 	extern int	rl_catch_signals;
 
@@ -22,7 +21,7 @@ void	set_readline_signal()
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	restore_signal()
+void	restore_signal(void)
 {
 	extern int	rl_catch_signals;
 
@@ -31,15 +30,15 @@ void	restore_signal()
 	signal(SIGQUIT, SIG_DFL);
 }
 
-void	set_parent_signal()
+void	set_parent_signal(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	set_heredoc_signal()
+void	set_heredoc_signal(void)
 {
-	struct termios term;
+	struct termios	term;
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;

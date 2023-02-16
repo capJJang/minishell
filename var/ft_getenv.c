@@ -6,13 +6,11 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:54:00 by segan             #+#    #+#             */
-/*   Updated: 2023/01/30 17:33:25 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 19:44:41 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// int	ft_get_keyidx(t_vars *vars)
 
 char	*ft_getkey(char *var)
 {
@@ -29,16 +27,25 @@ char	*ft_getkey(char *var)
 	return (key);
 }
 
-char	*ft_getenv(char **env, const char *str)
+char	*ft_getenv(t_vars *vars, const char *str)
 {
 	int		i;
+	int		ncmp_ret;
+	char	*key;
 
 	i = 0;
-	while (env[i])
+	while (vars->env[i])
 	{
-		if (!ft_strncmp(env[i], str, ft_strlen(str)))
-			return ((ft_strchr(env[i], '=') + 1));
+		key = ft_strjoin(str, "=");
+		ncmp_ret = 0;
+		ncmp_ret = ft_strncmp(vars->env[i], key, ft_strlen(key));
+		free(key);
+		if (!ncmp_ret)
+			return ((ft_strchr(vars->env[i], '=') + 1));
+
 		i++;
 	}
+	if (!ft_strncmp(str, "?", 2))
+		return (ft_itoa(*vars->stat));
 	return (NULL);
 }

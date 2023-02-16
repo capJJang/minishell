@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/14 12:22:33 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 17:58:19 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int			ft_isalnum(int c);
 int			ft_isalpha(int c);
+char		*ft_itoa(int n);
 
 
 void		*ft_malloc(size_t size);
@@ -109,7 +110,7 @@ char		*ft_getcwd(int *stat);
 void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
 
-char		**get_path_env(char **env);
+char		**get_path_env(t_vars *vars);
 char		*get_path(char **path_env, char *cmd);
 char		**get_readline(void);
 // int			is_parent_1(pid_t pid, char *path, char *cmd);
@@ -125,7 +126,7 @@ void		add_next_node(t_node_inf *node_inf, \
 void		delete_node(t_node_inf *node_inf, t_node *dst_node);
 t_node		*find_node(t_node_inf *node_inf, int command_num);
 
-t_node_inf	*parsing(char *read_line);
+t_node_inf	*parsing(t_vars *vars, char *read_line);
 int			is_empty_line(char *read_line);
 char		***node_to_command(t_node_inf *node_inf);
 void		execute_command(char **path_env, \
@@ -135,6 +136,8 @@ void		print_error(int error, char *cmd);
 void		print_invalid_id(t_node_inf *node_inf, char *key, char *arg);
 void		ft_free(t_node_inf *node_inf);
 int			check_parse_error(t_node_inf *node_inf);
+t_node		*is_redirection(t_child child);
+int			is_redirection2(t_node_inf *node_inf);
 
 //builtin funcs start
 void		exe_builtin(t_node_inf *node_inf);
@@ -155,7 +158,7 @@ char		**init_env(void);
 void		print_environ(char **environ);
 int			ft_strlen_2d(char **arr);
 char		**ft_strdup_2d(char **src);
-char		*ft_getenv(char **env, const char *str);
+char		*ft_getenv(t_vars *vars, const char *str);
 void		ft_addenv(t_vars *var, char *key, char *val);
 void		ft_unsetenv(t_vars *var, char *val);
 void		ft_unset_sh_var(t_vars *vars, char *key);

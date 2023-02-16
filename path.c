@@ -6,17 +6,17 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/27 18:01:36 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 16:59:36 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_path_env(char **env)
+char	**get_path_env(t_vars *vars)
 {
 	char	**path_env;
 
-	path_env = ft_split(ft_getenv(env, "PATH"), ':');
+	path_env = ft_split(ft_getenv(vars, "PATH"), ':');
 	if (errno == ENOMEM)
 		exit(-1);
 	return (path_env);

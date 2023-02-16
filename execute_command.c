@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/14 12:46:45 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 19:55:31 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	redirect_pipe(t_child child, t_node *curr, int *check_error)
 			free (get_line);
 			close (temp_fd);
 			temp_fd = open("*&$@^857sdf{}.:<<12#@", O_RDONLY);
-			*check_error += dup2(temp_fd, STDIN_FILENO);
+			if (!is_builtin(child.cmd[child.launch_cnt]))
+				*check_error += dup2(temp_fd, STDIN_FILENO);
 			unlink("*&$@^857sdf{}.:<<12#@");
 			close(temp_fd);
 			if (in == false)
@@ -168,6 +169,8 @@ void	is_child(t_child child)
 			close(child.fd[child.launch_cnt][P_WRITE]);
 		}
 	}
+	static int i = 0;
+	printf("c: %d\n", i++);
 	if (!(check_error < 0) && is_builtin(child.cmd[child.launch_cnt]))
 		exe_builtin(child.node_inf);
 	else if (check_error < 0 || execve(child.path, \
@@ -175,25 +178,24 @@ void	is_child(t_child child)
 		print_errno_in_child(0);
 }
 
-void	is_parent(pid_t *pid, int size)
+void	is_parent(t_node_inf *node_inf, pid_t *pid, int size)
 {
-	int	status;
+	int	*status;
 	int	i = 0;
 
 	set_parent_signal();
+	status = (int *)ft_calloc(size, sizeof(int));
 	while(i < size)
 	{
-		if (waitpid(pid[i], &status, 0) != -1)
-			i = -1;
+		waitpid(pid[i], &status[i], 0);
 		i++ ;
 	}
-	//stat = statatus;
-	if (WIFSIGNALED(status))
+	*node_inf->vars->stat = status[size - 1] % 255;
+	if (WIFSIGNALED(status[i - 1]))
 	{
-		if (status == 3)
-			printf("Quit : %d", status);
+		if (status[i - 1] == 3)
+			printf("Quit : %d", status[i - 1]);
 		printf("\n");
-		//stat = 128 + status;
 	}
 	if (WEXITSTATUS(status) != 0)
 	{
@@ -252,42 +254,51 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 		child.path = get_path(path_env, cmd[child.launch_cnt][0]);
 		// if (child.launch_cnt != 0)
 		// 	close(child.fd[child.launch_cnt - 1][P_WRITE]);
-		if (is_builtin(cmd[child.launch_cnt]) && !ft_node_strncmp(node_inf, "|"))
+		if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")) \
+			&& !is_redirection2(node_inf))
 		{
 			exe_builtin(node_inf);
 			child.launch_cnt++;
 		}
 		else
-		{
-			if (child.path == IS_NOT_FOUND && !is_builtin(cmd[child.launch_cnt]))
-			{
-				print_cmd_nfound(IS_NOT_FOUND, cmd[child.launch_cnt][0]);
-				break ;
-			}
-			while (temp < size)
-			{
-				pid[temp] = ft_fork();
-				node_inf->cmd = cmd[child.launch_cnt];
-				child.path = get_path(path_env, cmd[child.launch_cnt][0]);
-				if (child.launch_cnt != 0)
-					close(child.fd[child.launch_cnt - 1][P_WRITE]);
-				// if (temp + 1 == size)
-				// 	close(child.fd[child.launch_cnt][P_READ]);
-				if (pid[temp] == 0)
-					break ;
-				temp++;
-				free(child.path);
-				child.launch_cnt++;
-				child.path = NULL;
-			}
-			// pid = ft_fork();
-			if (pid[child.launch_cnt] == -1)
-				exit (-1);
-			if (pid[child.launch_cnt] == 0 && temp != size)
-				is_child(child);
-			else
-				is_parent(pid, size);
-		}
+{
+            if (child.path == IS_NOT_FOUND && !is_builtin(cmd[child.launch_cnt]))
+            {
+                print_cmd_nfound(IS_NOT_FOUND, cmd[child.launch_cnt][0]);
+                break ;
+            }
+            while (temp < size)
+            {
+                pid[temp] = ft_fork();
+                node_inf->cmd = cmd[child.launch_cnt];
+                child.path = get_path(path_env, cmd[child.launch_cnt][0]);
+                // if (temp + 1 == size)
+                //  close(child.fd[child.launch_cnt][P_READ]);
+                if (pid[temp] == 0)
+                    break ;
+                // if (child.launch_cnt != 0)
+                //  close(child.fd[child.launch_cnt - 1][P_READ]);
+                temp++;
+                free(child.path);
+                child.launch_cnt++;
+                if (child.launch_cnt != 0 && temp != size)
+                {
+					static int i = 0;
+					printf("p: %d\n", i++);
+                    close(child.fd[child.launch_cnt - 1][P_WRITE]);
+                    //if (child.launch_cnt != 1)
+                    //    close(child.fd[child.launch_cnt - 2][P_READ]);
+                }
+                child.path = NULL;
+            }
+            // pid = ft_fork();
+            if (pid[child.launch_cnt] == -1)
+                exit (-1);
+            if (pid[child.launch_cnt] == 0 && temp != size)
+                is_child(child);
+            else
+                is_parent(node_inf, pid, size);
+        }
 	}
 	close_pipe(child.fd);
 	ft_free_2d((char **)child.fd);

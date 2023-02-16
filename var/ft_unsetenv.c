@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
-/*   Updated: 2023/01/31 17:53:36 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 17:19:14 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	ft_unsetenv(t_vars *vars, char *key)
 	}
 	free(temp_key);
 	free(vars->env[i]);
+	vars->env[i] = NULL;
 	vars->env[i] = vars->env[i + 1];
 	while (vars->env[i] && i > 1)
 	{

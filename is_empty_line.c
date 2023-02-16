@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 20:41:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/01/31 23:07:49 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 16:42:42 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ int	is_empty_line(char *read_line)
 
 	ret = 1;
 	i = 0;
+	if (read_line == EMPTY_LINE)
+	{
+		printf("exit\n");
+		exit(0);
+	}
 	if (read_line[0] == 0)
 	{
 		free(read_line);
@@ -30,6 +35,7 @@ int	is_empty_line(char *read_line)
 			ret = 0;
 		i++;
 	}
+	add_history(read_line);
 	if (ret)
 		free(read_line);
 	return (ret);

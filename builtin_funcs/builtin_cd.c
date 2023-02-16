@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/02/01 18:33:10 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/16 16:58:35 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	builtin_cd(t_node_inf *node_inf)
 
 	oldpwd = ft_getcwd(node_inf->vars->stat);
 	if (node_inf->cmd[1] == NULL || !ft_strncmp(node_inf->cmd[1], "~", 2))
-		pwd = ft_getenv(node_inf->vars->env, "HOME");
+		pwd = ft_getenv(node_inf->vars, "HOME");
 	else
 		pwd = node_inf->cmd[1];
 	if (!pwd)
