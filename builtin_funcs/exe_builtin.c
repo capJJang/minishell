@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exe_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/02/17 18:06:21 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/17 21:31:49 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int	is_redirection2(t_node_inf *node_inf)
 {
@@ -30,7 +29,6 @@ void	exe_builtin(t_node_inf *node_inf)
 {
 	char	*cmd;
 
-	//ft_overwrite_env(node_inf->vars, "_", node_inf->cmd[ft_strlen_2d(node_inf->cmd) - 1]); 파이프가 없을 때만 실행 되어야함ㄴ
 	cmd = node_inf->cmd[0];
 	if (!ft_strncmp(cmd, "echo", 5))
 		builtin_echo(node_inf);
@@ -49,4 +47,3 @@ void	exe_builtin(t_node_inf *node_inf)
 	if (!ft_node_strncmp(node_inf, "|") || is_redirection2(node_inf))
 		exit(*node_inf->vars->stat);
 }
-
