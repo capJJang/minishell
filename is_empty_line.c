@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_empty_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 20:41:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/16 16:42:42 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/17 18:09:31 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ int	is_empty_line(char *read_line)
 		free(read_line);
 		return (1);
 	}
+	add_history(read_line);
 	while (read_line[i])
 	{
 		if (read_line[i] != ' ')
 			ret = 0;
 		i++;
 	}
-	add_history(read_line);
 	if (ret)
 		free(read_line);
 	return (ret);
