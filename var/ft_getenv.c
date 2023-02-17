@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 17:54:00 by segan             #+#    #+#             */
-/*   Updated: 2023/02/16 19:44:41 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/17 21:25:34 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ char	*ft_getenv(t_vars *vars, const char *str)
 		free(key);
 		if (!ncmp_ret)
 			return ((ft_strchr(vars->env[i], '=') + 1));
-
 		i++;
 	}
 	if (!ft_strncmp(str, "?", 2))
