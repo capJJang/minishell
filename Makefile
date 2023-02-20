@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
+#    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/17 18:06:42 by seyang           ###   ########.fr        #
+#    Updated: 2023/02/20 11:17:50 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS =	main.c ft_fork.c path.c check_process.c read_line.c \
 		get_next_line/get_next_line.c get_next_line/get_next_line_utils.c\
 		signal/signal.c signal/sigint_handler.c
 
-CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror -o
+CFLAGS = -g -Wall -Wextra -Werror -o
 
 LIBS = -lft -L./libft
 

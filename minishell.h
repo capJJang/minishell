@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/17 19:00:07 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/20 12:00:19 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 
 # define IS_NOT_COMMAND 1
 # define IS_COMMAND 0
-
 # define IS_NOT_FOUND 0
 # define EMPTY_LINE 0
 # define P_READ 0
@@ -138,6 +137,7 @@ void		ft_free(t_node_inf *node_inf);
 int			check_parse_error(t_node_inf *node_inf);
 t_node		*is_redirection(t_child child);
 int			is_redirection2(t_node_inf *node_inf);
+void		update__(t_child child);
 
 //builtin funcs start
 void		exe_builtin(t_node_inf *node_inf);

@@ -6,11 +6,31 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 12:36:57 by segan             #+#    #+#             */
-/*   Updated: 2023/01/31 17:35:01 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/20 07:34:41 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	update__(t_child child)
+{
+	int		end;
+	char	*temp_key;
+
+	end = 0;
+	while (child.cmd[0][end])
+		end++;
+	if (!ft_node_strncmp(child.node_inf, "|"))
+		ft_overwrite_env(child.node_inf->vars, "_", "");
+	else if (!ft_strncmp(child.cmd[0][0], "export", 7))
+	{
+		temp_key = ft_getkey(child.cmd[0][end - 1]);
+		ft_overwrite_env(child.node_inf->vars, "_", temp_key);
+		free(temp_key);
+	}
+	else
+		ft_overwrite_env(child.node_inf->vars, "_", child.cmd[0][end - 1]);
+}
 
 void	ft_overwrite_env(t_vars *vars, char *key, char *val)
 {
