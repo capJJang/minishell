@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 20:00:05 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 14:29:52 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,14 @@ void	close_fd(bool in, bool out, t_child child)
 	}
 }
 
-void	redirect_pipe(t_child *child, t_node *curr)
+int	redirect_pipe(t_child *child, t_node *curr, bool is_parent)
 {
 	bool	in;
 	bool	out;
+	int		fd;
 
+	if (is_parent)
+		fd = dup(STDIN_FILENO);
 	while (curr != 0)
 	{
 		if (ft_strncmp(curr->prev->arr, ">", 2) == 0)
@@ -109,4 +112,7 @@ void	redirect_pipe(t_child *child, t_node *curr)
 		curr = is_redirection(*child);
 	}
 	close_fd(in, out, *child);
+	if (is_parent)
+		return (fd);
+	return (0);
 }

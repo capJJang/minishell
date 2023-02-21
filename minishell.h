@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 12:01:08 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 14:19:06 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include </Users/segan/.brew/opt/readline/include/readline/readline.h>
+# include </Users/seyang/.brew/opt/readline/include/readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -170,7 +170,7 @@ int			is_break(char *get_line, t_node *curr);
 void		heredoc(t_node *curr, t_child *child, bool *in);
 void		append_file(t_node *curr, bool *out);
 void		close_fd(bool in, bool out, t_child child);
-void		redirect_pipe(t_child *child, t_node *curr);
+int			redirect_pipe(t_child *child, t_node *curr, bool is_parent);
 
 void		set_first_pipe(t_child *child, t_node *curr);
 void		set_end_pipe(t_child *child, t_node *curr);

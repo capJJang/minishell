@@ -3,98 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/25 05:36:42 by segan             #+#    #+#             */
-/*   Updated: 2022/07/25 05:36:42 by segan            ###   ########.fr       */
+/*   Created: 2022/07/12 19:08:46 by seyang            #+#    #+#             */
+/*   Updated: 2022/09/13 15:41:23 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	count_word(char const *s, int c)
+void	error_free(char **arr)
 {
-	size_t	cnt;
-
-	cnt = 0;
-	while (*s)
-	{
-		if (*s != c)
-		{
-			cnt++;
-			while (*s != c && *s != 0)
-				s++;
-		}
-		else
-			s++;
-	}
-	return (cnt);
-}
-
-char	**free_all(char **s)
-{
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (s[i])
-		free(s[i++]);
-	free(s);
-	s = NULL;
-	return ((void *)0);
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 
-void	add_address_length(const char **s, size_t *temp_length)
+int	word_count(char const *s, char c)
 {
-	*s += 1;
-	*temp_length += 1;
+	int	wc;
+
+	wc = 0;
+	while (*s)
+	{
+		while (*s && *s == c)
+			s++;
+		if (*s == 0)
+			break ;
+		while (*s && *s != c)
+			s++;
+		wc++;
+	}
+	return (wc);
+}
+
+int	arr_memory_allocate(char const *s, char c, char **arr)
+{
+	int	size;
+
+	while (*s)
+	{
+		size = 0;
+		while (*s && *s == c)
+			s++;
+		if (*s == 0)
+			break ;
+		while (*s && *s != c)
+		{
+			size++;
+			s++;
+		}
+		*arr = malloc(sizeof(char) * (size + 1));
+		if (arr == NULL)
+			return (1);
+		arr++;
+	}
+	return (0);
+}
+
+void	string_to_arr(char const *s, char c, char **arr)
+{
+	int	size;
+
+	while (*s)
+	{
+		size = 0;
+		while (*s && *s == c)
+			s++;
+		if (*s == 0)
+			break ;
+		while (*s && *s != c)
+		{
+			*(*arr)++ = *s++;
+			size++;
+		}
+		**arr = 0;
+		*arr -= size;
+		arr++;
+	}
+	*arr = 0;
 }
 
 char	**ft_split(char const *s, char c)
 {
-	size_t	temp_length;
-	size_t	i;
-	char	**str;
+	char	**arr;
+	int		wc;
 
-	if (!s)
-		return (NULL);
-	str = (char **)malloc(sizeof(char *) * (count_word(s, c) + 1));
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	while (*s)
+	if (s == 0)
+		return (0);
+	arr = 0;
+	wc = word_count(s, c);
+	arr = (char **)malloc(sizeof(char *) * (wc + 1));
+	if (arr == 0)
+		return (0);
+	if (arr_memory_allocate(s, c, arr))
 	{
-		if (*s != c)
-		{
-			temp_length = 0;
-			while (*s != c && *s != 0)
-				add_address_length(&s, &temp_length);
-			str[i] = ft_substr((s - temp_length), 0, temp_length);
-			if (str[i++] == (void *)0)
-				return (free_all(str));
-		}
-		else
-			s++;
+		error_free(arr);
+		return (0);
 	}
-	str[i] = 0;
-	return (str);
+	string_to_arr(s, c, arr);
+	return (arr);
 }
-
-/*
-#include <stdio.h>
-
-int		main()
-{
-	char	**str;
-	int		i;
-
-	i = 0;
-	str = ft_split((void *)0, ' ');
-	while ( i < 2)
-	{
-		printf("%s", str[i]);
-		i++;
-	}
-	//free_all(str);
-	return (0);
-}
-*/

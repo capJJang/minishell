@@ -6,7 +6,7 @@
 #    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/20 19:58:31 by seyang           ###   ########.fr        #
+#    Updated: 2023/02/21 14:30:21 by seyang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ SRCS =	main.c ft_fork.c path.c set_node.c new_node.c\
 		builtin_funcs/builtin_unset.c\
 		var/init_env.c var/ft_getenv.c var/ft_addenv.c var/ft_unsetenv.c\
 		var/ft_overwrite_env.c \
-		redirection/set_redirection.c\
 		var/init_var.c var/ft_add_sh_var.c var/ft_append_env.c \
 		get_next_line/get_next_line.c get_next_line/get_next_line_utils.c\
 		signal/signal.c signal/sigint_handler.c

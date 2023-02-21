@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 11:57:51 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 14:29:34 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,7 @@ void	is_parent(t_node_inf *node_inf, pid_t *pid, int size, int **fd)
 		if (status[i - 1] == 3)
 			printf("Quit : %d", status[i - 1]);
 		printf("\n");
-		//stat = 128 + status;
-	}
-	else if (status[i - 1] == SIGPIPE)
-		printf("qqq\n");
-	if (WEXITSTATUS(status) != 0)
-	{
-		// ?
+		*node_inf->vars->stat = (status[size - 1] + 128) % 255;
 	}
 	free(status);
 }
@@ -109,11 +103,12 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 {
 	t_child	child;
 	int		size;
+	int		fd;
 
 	size = init_cmd_var(&child, cmd, node_inf);
 	update__(child);
 	if (is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|"))
-		redirect_pipe(&child, is_redirection(child));
+		fd = redirect_pipe(&child, is_redirection(child), true);
 	node_inf->cmd = cmd[child.launch_cnt];
 	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")))
 		exe_builtin(node_inf);
@@ -125,12 +120,10 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 		else
 			is_parent(node_inf, child.pid, size, child.fd);
 	}
+	if (is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|"))
+		dup2(fd, STDIN_FILENO);
 	close_pipe(child.fd);
 	free(child.pid);
 	ft_free_2d((char **)child.fd);
 	ft_free_2d(path_env);
-	/*
-	cd | cd << a  +  ctrl d		-> 개행안됨
-	unset PATH. +  ls			-> ~
-	*/
 }

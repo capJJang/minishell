@@ -3,18 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
-/*   Updated: 2023/02/16 17:19:14 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 14:25:27 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_unsetenv(t_vars *vars, char *key)
+void	ft_unsetenv2(t_vars *vars, int i)
 {
 	char	**old_env;
+
+	if (i < ft_strlen_2d(vars->env))
+	{
+		old_env = vars->env;
+		vars->env = ft_strdup_2d(old_env);
+		ft_free_2d(old_env);
+	}
+}
+
+void	ft_unsetenv(t_vars *vars, char *key)
+{
 	char	*temp_key;
 	int		i;
 
@@ -31,16 +42,13 @@ void	ft_unsetenv(t_vars *vars, char *key)
 	}
 	free(temp_key);
 	free(vars->env[i]);
-	vars->env[i] = NULL;
 	vars->env[i] = vars->env[i + 1];
 	while (vars->env[i] && i > 1)
 	{
 		vars->env[i] = vars->env[i + 1];
 		i++;
 	}
-	old_env = vars->env;
-	vars->env = ft_strdup_2d(old_env);
-	ft_free_2d(old_env);
+	ft_unsetenv2(vars, i);
 }
 
 void	ft_unset_sh_var(t_vars *vars, char *key)

@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:26 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 20:00:31 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 14:05:26 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	set_first_pipe(t_child *child, t_node *curr)
 {
 	if (curr != 0)
-		redirect_pipe(child, curr);
+		redirect_pipe(child, curr, false);
 	else if (child->cmd[child->launch_cnt + 1] != 0)
 	{
 		if (dup2(child->fd[child->launch_cnt][P_WRITE], STDOUT_FILENO) \
@@ -29,7 +29,7 @@ void	set_first_pipe(t_child *child, t_node *curr)
 void	set_end_pipe(t_child *child, t_node *curr)
 {
 	if (curr != 0)
-		redirect_pipe(child, curr);
+		redirect_pipe(child, curr, false);
 	else
 	{
 		if (dup2(child->fd[child->launch_cnt - 1][P_READ], STDIN_FILENO) \
@@ -44,7 +44,7 @@ void	set_end_pipe(t_child *child, t_node *curr)
 void	set_middle_pipe(t_child *child, t_node *curr)
 {
 	if (curr != 0)
-		redirect_pipe(child, curr);
+		redirect_pipe(child, curr, false);
 	else
 	{
 		if (dup2(child->fd[child->launch_cnt - 1][P_READ], STDIN_FILENO) \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:24:08 by segan             #+#    #+#             */
-/*   Updated: 2023/01/31 17:15:21 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 13:04:33 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	check_valid_key(char *key)
 	check = 1;
 	i = 0;
 	len = ft_strlen(key);
-	if (!ft_isalpha(*key))
+	if (!ft_isalpha(*key) && *key != '_')
 		return (0);
 	while (i < len - 1)
 	{
-		if (!ft_isalnum(key[i]) || key[i] == '_')
+		if (!ft_isalnum(key[i]) && key[i] != '_')
 			check = 0;
 		i++;
 	}
-	if (!ft_isalnum(key[i]) || key[i] == '_' || key[i] == '+')
+	if (!ft_isalnum(key[i]) && key[i] != '_' && key[i] != '+')
 		check = 0;
 	return (check);
 }

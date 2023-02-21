@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/02/20 15:01:50 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 13:06:37 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ void	exe_builtin(t_node_inf *node_inf)
 		builtin_env(node_inf->vars);
 	else if (!ft_strncmp(cmd, "exit", 5))
 		builtin_exit(node_inf);
-	if (!ft_node_strncmp(node_inf, "|") && is_redirection2(node_inf))
+	if (!ft_node_strncmp(node_inf, "|"))
 		exit(*node_inf->vars->stat);
 }
