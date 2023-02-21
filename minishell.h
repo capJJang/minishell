@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/20 12:00:19 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 12:01:08 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define PERMISSION_DENIED 13
 # define BREAK 1
 # define CONTINUE 2
+# define R_RETURN 3
 
 typedef struct s_node		t_node;
 typedef struct s_node_inf	t_node_inf;
@@ -49,7 +50,7 @@ struct s_child {
 	char		***cmd;
 	int			launch_cnt;
 	int			**fd;
-	pid_t		pid;
+	pid_t		*pid;
 	t_node_inf	*node_inf;
 } ;
 
@@ -94,7 +95,6 @@ int			ft_isalnum(int c);
 int			ft_isalpha(int c);
 char		*ft_itoa(int n);
 
-
 void		*ft_malloc(size_t size);
 pid_t		ft_fork(void);
 int			ft_find_after_chr(char *arr, int start, char c);
@@ -110,10 +110,8 @@ void		ft_free(t_node_inf *node_inf);
 void		ft_free_vars(t_vars *vars);
 
 char		**get_path_env(t_vars *vars);
-char		*get_path(char **path_env, char *cmd);
+char		*get_path(char **path_env, char *cmd, int *stat);
 char		**get_readline(void);
-// int			is_parent_1(pid_t pid, char *path, char *cmd);
-// void		is_child_1(char *path, char **cmd);
 
 t_node_inf	*new_node_inf(void);
 t_node		*new_node(char *arr);
@@ -138,6 +136,51 @@ int			check_parse_error(t_node_inf *node_inf);
 t_node		*is_redirection(t_child child);
 int			is_redirection2(t_node_inf *node_inf);
 void		update__(t_child child);
+
+//parsing funcs start
+void		parsing_pipe(t_node_inf *node_inf, char *read_line);
+void		parsing_space(t_node_inf *node_inf);
+void		parsing_command(t_node_inf *node_inf);
+void		check_adhere(t_node *curr, int end);
+
+int			parsing2_quito(t_node_inf *node_inf, t_node *curr, int start);
+void		parsing_quote(t_node_inf *node_inf);
+void		set_normal_arr(t_node_inf *node_inf, t_node **curr, char *arr);
+void		parsing_normal_arr(t_node_inf *node_inf);
+
+int			init_set_env(t_node *curr, char **arr, char *temp, int *start);
+void		set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp);
+void		replace_env(t_node_inf *node_inf);
+void		adhere_some_node(t_node_inf *node_inf);
+
+int			cut_front(t_node_inf *node_inf, t_node *curr, int start);
+int			parsing_redirection3(t_node_inf *node_inf, \
+	t_node *curr, int end, int start);
+int			parsing_redirection2(t_node_inf *node_inf, t_node *curr);
+void		parsing_redirection(t_node_inf *node_inf);
+void		set_command_num(t_node_inf *node_inf);
+//parsing funcs end
+
+//execute command funcs start
+t_node		*is_redirection(t_child child);
+void		redirect_outfile(t_node *curr, bool *out);
+void		redirect_infile(t_node *curr, bool *in);
+
+int			is_break(char *get_line, t_node *curr);
+void		heredoc(t_node *curr, t_child *child, bool *in);
+void		append_file(t_node *curr, bool *out);
+void		close_fd(bool in, bool out, t_child child);
+void		redirect_pipe(t_child *child, t_node *curr);
+
+void		set_first_pipe(t_child *child, t_node *curr);
+void		set_end_pipe(t_child *child, t_node *curr);
+void		set_middle_pipe(t_child *child, t_node *curr);
+
+int			**new_pipe(char ***cmd);
+void		close_pipe(int **fd);
+int			init_cmd_var(t_child *child, char ***cmd, t_node_inf *node_inf);
+
+//execute command funcs end
 
 //builtin funcs start
 void		exe_builtin(t_node_inf *node_inf);

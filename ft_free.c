@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/15 14:29:29 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/20 16:30:14 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void	ft_free(t_node_inf *node_inf)
 	while (curr)
 	{
 		next = curr->next;
-		// if (curr->check_malloc == 1)
-		// 	free(curr->arr);
 		free(curr);
 		curr = next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/02/20 12:09:43 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/20 16:34:01 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ void	control_process(t_vars *vars)
 			printf("%s", "bash: syntax error near unexpected token `newline'\n");
 			continue ;
 		}
-		// print_node(node_inf);	// print_test
 		cmd = node_to_command(node_inf);
-		//print_command(cmd);	// print_test
 		execute_command(get_path_env(vars), cmd, node_inf);
 		ft_free_3d(cmd);
 		ft_free(node_inf);

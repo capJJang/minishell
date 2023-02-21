@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/02/16 16:58:35 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 11:59:23 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,8 @@ void	builtin_cd(t_node_inf *node_inf)
 	{
 		perror(strerror(errno));
 		*node_inf->vars->stat = 1;
-		exit(1);
 	}
 	pwd = ft_getcwd(node_inf->vars->stat);
 	update_wd(node_inf->vars, pwd, oldpwd);
 	*node_inf->vars->stat = 0;
 }
-// 예외처리 고민해야함,,,,

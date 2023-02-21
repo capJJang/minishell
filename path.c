@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 12:15:27 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/21 11:58:19 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,19 @@ char	**get_path_env(t_vars *vars)
 	return (path_env);
 }
 
-char	*get_path(char **path_env, char *cmd)
+char	*get_path(char **path_env, char *cmd, int *stat)
 {
 	char	*path;
 	int		i;
 
+	*stat = 0;
 	if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
+	if (!path_env)
+	{
+		*stat = 2;
+		return (NULL);
+	}
 	i = 0;
 	while (path_env[i])
 	{
@@ -40,5 +46,6 @@ char	*get_path(char **path_env, char *cmd)
 		i++;
 		free(path);
 	}
+	*stat = 1;
 	return (IS_NOT_FOUND);
 }
