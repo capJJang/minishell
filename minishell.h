@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 18:44:08 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/22 12:03:04 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include </Users/seyang/.brew/opt/readline/include/readline/readline.h>
-# include <readline/history.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <errno.h>
