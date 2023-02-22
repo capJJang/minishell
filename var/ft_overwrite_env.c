@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 12:36:57 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 13:21:11 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:36:14 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	update__(t_child child)
 	int		end;
 	char	*temp_key;
 
+	if (child.cmd[0][0] == 0)
+		return ;
 	end = 0;
 	while (child.cmd[0][end])
 		end++;

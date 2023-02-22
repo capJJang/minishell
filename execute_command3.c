@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 14:29:52 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:48:48 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	append_file(t_node *curr, bool *out)
 {
 	int	fd;
 
-	fd = open(curr->arr, O_APPEND | O_WRONLY);
+	fd = open(curr->arr, O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (fd == -1)
 		print_errno_in_child(curr->arr);
 	if (dup2(fd, STDOUT_FILENO) == -1)
@@ -90,20 +90,22 @@ void	close_fd(bool in, bool out, t_child child)
 	}
 }
 
-int	redirect_pipe(t_child *child, t_node *curr, bool is_parent)
+void	redirect_pipe(t_child *child, t_node *curr, int *fd_in, int *fd_out)
 {
 	bool	in;
 	bool	out;
-	int		fd;
 
-	if (is_parent)
-		fd = dup(STDIN_FILENO);
+	if (fd_in != 0 && fd_out != 0)
+	{
+		*fd_in = dup(STDIN_FILENO);
+		*fd_out = dup(STDOUT_FILENO);
+	}
 	while (curr != 0)
 	{
 		if (ft_strncmp(curr->prev->arr, ">", 2) == 0)
 			redirect_outfile(curr, &out);
 		else if (ft_strncmp(curr->prev->arr, "<", 2) == 0)
-			redirect_infile(curr, &in);
+			redirect_infile(curr, &in, child->node_inf);
 		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0)
 			heredoc(curr, child, &in);
 		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
@@ -112,7 +114,4 @@ int	redirect_pipe(t_child *child, t_node *curr, bool is_parent)
 		curr = is_redirection(*child);
 	}
 	close_fd(in, out, *child);
-	if (is_parent)
-		return (fd);
-	return (0);
 }

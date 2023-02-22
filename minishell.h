@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 14:19:06 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:44:08 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,13 +164,15 @@ void		set_command_num(t_node_inf *node_inf);
 //execute command funcs start
 t_node		*is_redirection(t_child child);
 void		redirect_outfile(t_node *curr, bool *out);
-void		redirect_infile(t_node *curr, bool *in);
+void		redirect_infile(t_node *curr, bool *in, t_node_inf *node_inf);
+void		rollback_std_fd(t_node_inf *node_inf, int *fd_in, int *fd_out);
 
 int			is_break(char *get_line, t_node *curr);
 void		heredoc(t_node *curr, t_child *child, bool *in);
 void		append_file(t_node *curr, bool *out);
 void		close_fd(bool in, bool out, t_child child);
-int			redirect_pipe(t_child *child, t_node *curr, bool is_parent);
+void		redirect_pipe(t_child *child, \
+	t_node *curr, int *fd_in, int *fd_out);
 
 void		set_first_pipe(t_child *child, t_node *curr);
 void		set_end_pipe(t_child *child, t_node *curr);

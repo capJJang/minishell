@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 14:29:34 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/21 18:37:42 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,13 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 {
 	t_child	child;
 	int		size;
-	int		fd;
+	int		fd_in;
+	int		fd_out;
 
 	size = init_cmd_var(&child, cmd, node_inf);
 	update__(child);
 	if (is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|"))
-		fd = redirect_pipe(&child, is_redirection(child), true);
+		redirect_pipe(&child, is_redirection(child), &fd_in, &fd_out);
 	node_inf->cmd = cmd[child.launch_cnt];
 	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")))
 		exe_builtin(node_inf);
@@ -120,8 +121,7 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 		else
 			is_parent(node_inf, child.pid, size, child.fd);
 	}
-	if (is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|"))
-		dup2(fd, STDIN_FILENO);
+	rollback_std_fd(node_inf, &fd_in, &fd_out);
 	close_pipe(child.fd);
 	free(child.pid);
 	ft_free_2d((char **)child.fd);
