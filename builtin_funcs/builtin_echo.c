@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 00:26:22 by segan             #+#    #+#             */
-/*   Updated: 2023/02/17 19:13:01 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/22 13:51:17 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	builtin_echo(t_node_inf *node_inf)
 	}
 	while (node_inf->cmd[i])
 	{
-		printf("%s", node_inf->cmd[i++]);
+		if (printf("%s", node_inf->cmd[i++]))
+			printf(" ");
 		if (node_inf->cmd[i] == 0)
 			break ;
 		printf(" ");
