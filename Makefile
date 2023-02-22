@@ -3,12 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
+#    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/21 18:12:30 by seyang           ###   ########.fr        #
+#    Updated: 2023/02/22 13:25:53 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+CC = cc
 
 NAME = minishell
 
@@ -30,20 +32,30 @@ SRCS =	main.c ft_fork.c path.c set_node.c new_node.c\
 		get_next_line/get_next_line.c get_next_line/get_next_line_utils.c\
 		signal/signal.c signal/sigint_handler.c
 
-CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror -o
+OBJS = $(SRCS:.c=.o)
 
-LIBS = -lft -L./libft
+CFLAGS = -Wall -Wextra -Werror
 
-CLIBS = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+LIBS = -lft -L./libft -lreadline -L/Users/segan/.brew/opt/readline/lib
 
-all :
+INCS = -I/Users/segan/.brew/opt/readline/include
+
+all : $(NAME)
+
+$(NAME) : $(OBJS)
 	make bonus -C libft
-	$(CC) $(SRCS) $(CLIBS) $(LIBS) $(CFLAGS) $(NAME)
+	$(CC) -g -fsanitize=address $(LIBS) -o $(NAME) $(OBJS)
+
+%.o : %.c
+	$(CC) -g -fsanitize=address $(INCS) $(CFLAGS) -c $< -o $@
+
 clean :
 	make clean -C ./libft
+	rm -rf $(OBJS)
 
 fclean:
 	make fclean -C ./libft
+	make clean
 	rm $(NAME)
 	rm -rf $(NAME).dSYM
 
