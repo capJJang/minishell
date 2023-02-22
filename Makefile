@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/22 13:25:53 by segan            ###   ########.fr        #
+#    Updated: 2023/02/23 07:49:52 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,14 +40,16 @@ LIBS = -lft -L./libft -lreadline -L/Users/segan/.brew/opt/readline/lib
 
 INCS = -I/Users/segan/.brew/opt/readline/include
 
+DEBUG = -g -fsanitize=address
+
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make bonus -C libft
-	$(CC) -g -fsanitize=address $(LIBS) -o $(NAME) $(OBJS)
+	$(CC) $(DEBUG) $(LIBS) -o $(NAME) $(OBJS)
 
 %.o : %.c
-	$(CC) -g -fsanitize=address $(INCS) $(CFLAGS) -c $< -o $@
+	$(CC) $(DEBUG) $(INCS) $(CFLAGS) -c $< -o $@
 
 clean :
 	make clean -C ./libft
