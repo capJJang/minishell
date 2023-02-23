@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 18:37:42 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/23 15:31:26 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	is_child(t_child child, char **path_env)
+void	is_child(t_child child, char **path_env, int size)
 {
 	t_node		*curr;
 	int			path_stat;
@@ -25,11 +25,11 @@ void	is_child(t_child child, char **path_env)
 	}
 	curr = is_redirection(child);
 	if (child.launch_cnt == 0)
-		set_first_pipe(&child, curr);
+		set_first_pipe(&child, curr, size);
 	else if (child.cmd[child.launch_cnt + 1] == 0)
-		set_end_pipe(&child, curr);
+		set_end_pipe(&child, curr, size);
 	else
-		set_middle_pipe(&child, curr);
+		set_middle_pipe(&child, curr, size);
 	if (is_builtin(child.cmd[child.launch_cnt]))
 		exe_builtin(child.node_inf);
 	else if (execve(child.path, \
@@ -44,6 +44,7 @@ int	wait_child(pid_t *pid, int *status, int size, int **fd)
 
 	i = 0;
 	temp = size;
+	close_pipe(fd);
 	while (0 < temp)
 	{
 		if (waitpid(pid[temp - 1], &status[temp - 1], 0) != -1)
@@ -53,8 +54,6 @@ int	wait_child(pid_t *pid, int *status, int size, int **fd)
 		}
 		temp--;
 		i++;
-		if (temp - 1 >= 0)
-			close(fd[temp - 1][P_READ]);
 	}
 	return (i);
 }
@@ -90,12 +89,6 @@ void	fork_child(t_child *child, int size, t_node_inf *node_inf, char ***cmd)
 			exit (-1);
 		node_inf->cmd = cmd[child->launch_cnt];
 		child->launch_cnt++;
-		if (child->launch_cnt != size)
-		{
-			close(child->fd[child->launch_cnt - 1][P_WRITE]);
-			if (child->launch_cnt != 1)
-				close(child->fd[child->launch_cnt - 2][P_READ]);
-		}
 	}
 }
 
@@ -117,12 +110,11 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 	{
 		fork_child(&child, size, node_inf, cmd);
 		if (child.pid[child.launch_cnt] == 0 && child.launch_cnt != size)
-			is_child(child, path_env);
+			is_child(child, path_env, size);
 		else
 			is_parent(node_inf, child.pid, size, child.fd);
 	}
 	rollback_std_fd(node_inf, &fd_in, &fd_out);
-	close_pipe(child.fd);
 	free(child.pid);
 	ft_free_2d((char **)child.fd);
 	ft_free_2d(path_env);

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/22 12:03:04 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/23 15:03:39 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,9 +174,9 @@ void		close_fd(bool in, bool out, t_child child);
 void		redirect_pipe(t_child *child, \
 	t_node *curr, int *fd_in, int *fd_out);
 
-void		set_first_pipe(t_child *child, t_node *curr);
-void		set_end_pipe(t_child *child, t_node *curr);
-void		set_middle_pipe(t_child *child, t_node *curr);
+void		set_first_pipe(t_child *child, t_node *curr, int size);
+void		set_end_pipe(t_child *child, t_node *curr, int size);
+void		set_middle_pipe(t_child *child, t_node *curr, int size);
 
 int			**new_pipe(char ***cmd);
 void		close_pipe(int **fd);

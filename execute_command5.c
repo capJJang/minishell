@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:31 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 18:38:45 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/23 15:47:09 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	**new_pipe(char ***cmd)
 	n = 0;
 	while (cmd[n])
 		n++;
+	n--;
 	fd = ft_malloc(sizeof(int *) * (n + 1));
 	fd[n] = 0;
 	while (n > 0)

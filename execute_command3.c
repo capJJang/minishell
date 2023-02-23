@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 18:48:48 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/23 15:36:29 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	close_fd(bool in, bool out, t_child child)
 				== -1)
 				exit(-1);
 			close(child.fd[child.launch_cnt - 1][P_READ]);
-			close(child.fd[child.launch_cnt][P_READ]);
+			//close(child.fd[child.launch_cnt][P_READ]);
 		}
 	}
 	if (out == false && child.cmd[child.launch_cnt + 1] != 0)
