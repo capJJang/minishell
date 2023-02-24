@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:26 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/23 15:50:38 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/24 18:39:49 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ void	set_first_pipe(t_child *child, t_node *curr, int size)
 
 	i = 0;
 	if (curr != 0)
-		redirect_pipe(child, curr, 0, 0);
+		redirect_pipe(child, curr, false);
 	else if (child->cmd[child->launch_cnt + 1] != 0)
 	{
 		if (dup2(child->fd[child->launch_cnt][P_WRITE], STDOUT_FILENO) \
 			== -1)
 			exit(-1);
-		while (i < size - 1)
-		{
-			close(child->fd[i][P_READ]);
-			if (i != 0)
-				close(child->fd[i][P_WRITE]);
-			i++;
-		}
+	}
+	while (i < size - 1)
+	{
+		close(child->fd[i][P_READ]);
+		if (i != 0)
+			close(child->fd[i][P_WRITE]);
+		i++;
 	}
 }
 
@@ -40,19 +40,19 @@ void	set_end_pipe(t_child *child, t_node *curr, int size)
 
 	i = 0;
 	if (curr != 0)
-		redirect_pipe(child, curr, 0, 0);
+		redirect_pipe(child, curr, false);
 	else
 	{
 		if (dup2(child->fd[child->launch_cnt - 1][P_READ], STDIN_FILENO) \
 			== -1)
 			exit (-1);
-		while (i < size - 1)
-		{
-			if (i != child->launch_cnt - 1)
-				close(child->fd[i][P_READ]);
-			close(child->fd[i][P_WRITE]);
-			i++;
-		}
+	}
+	while (i < size - 1)
+	{
+		if (i != child->launch_cnt - 1)
+			close(child->fd[i][P_READ]);
+		close(child->fd[i][P_WRITE]);
+		i++;
 	}
 }
 
@@ -62,7 +62,7 @@ void	set_middle_pipe(t_child *child, t_node *curr, int size)
 
 	i = 0;
 	if (curr != 0)
-		redirect_pipe(child, curr, 0, 0);
+		redirect_pipe(child, curr, false);
 	else
 	{
 		if (dup2(child->fd[child->launch_cnt - 1][P_READ], STDIN_FILENO) \
@@ -73,16 +73,24 @@ void	set_middle_pipe(t_child *child, t_node *curr, int size)
 			== -1)
 			exit(-1);
 		close(child->fd[child->launch_cnt][P_READ]);
-		while (i < size - 1)
-		{
-			if (i != child->launch_cnt - 1)
-				close(child->fd[i][P_READ]);
-			if (i != child->launch_cnt)
-				close(child->fd[i][P_WRITE]);
-			i++;
-		}
+	}
+	while (i < size - 1)
+	{
+		if (i != child->launch_cnt - 1)
+			close(child->fd[i][P_READ]);
+		if (i != child->launch_cnt)
+			close(child->fd[i][P_WRITE]);
+		i++;
 	}
 }
-//			0				1
-// cat		|		cat		|		ls
-//0				1				2
+
+void	child_heredoc(t_child *child)
+{
+	int	temp_fd;
+
+	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_RDONLY);
+	if (!is_builtin(child->cmd[child->launch_cnt]))
+		if (dup2(temp_fd, STDIN_FILENO) == -1)
+			exit (-1);
+	close(temp_fd);
+}

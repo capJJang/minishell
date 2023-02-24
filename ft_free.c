@@ -6,11 +6,18 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 16:30:14 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/24 18:24:41 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free_runtime(pid_t *pid, int **fd, char **path_env)
+{
+	free(pid);
+	ft_free_2d((char **)fd);
+	ft_free_2d(path_env);
+}
 
 void	ft_free_vars(t_vars *vars)
 {

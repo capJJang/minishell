@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/23 15:03:39 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/24 18:39:55 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ pid_t		ft_fork(void);
 int			ft_find_after_chr(char *arr, int start, char c);
 void		ft_free_2d(char **arr);
 void		ft_free_3d(char ***arr);
+void		ft_free_runtime(pid_t *pid, int **fd, char **path_env);
 int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
 int			ft_node_strncmp(t_node_inf *node_inf, const char *s2);
@@ -135,6 +136,7 @@ void		ft_free(t_node_inf *node_inf);
 int			check_parse_error(t_node_inf *node_inf);
 t_node		*is_redirection(t_child child);
 int			is_redirection2(t_node_inf *node_inf);
+int			is_redirection3(t_node_inf *node_inf);
 void		update__(t_child child);
 
 //parsing funcs start
@@ -163,20 +165,22 @@ void		set_command_num(t_node_inf *node_inf);
 
 //execute command funcs start
 t_node		*is_redirection(t_child child);
+t_node		*is_all_redirection(t_child child);
 void		redirect_outfile(t_node *curr, bool *out);
 void		redirect_infile(t_node *curr, bool *in, t_node_inf *node_inf);
-void		rollback_std_fd(t_node_inf *node_inf, int *fd_in, int *fd_out);
+void		rollback_std_fd(t_node_inf *node_inf, int *std_fd);
 
 int			is_break(char *get_line, t_node *curr);
-void		heredoc(t_node *curr, t_child *child, bool *in);
+void		heredoc(t_node *curr, bool *in);
 void		append_file(t_node *curr, bool *out);
 void		close_fd(bool in, bool out, t_child child);
 void		redirect_pipe(t_child *child, \
-	t_node *curr, int *fd_in, int *fd_out);
+	t_node *curr, bool check);
 
 void		set_first_pipe(t_child *child, t_node *curr, int size);
 void		set_end_pipe(t_child *child, t_node *curr, int size);
 void		set_middle_pipe(t_child *child, t_node *curr, int size);
+void		child_heredoc(t_child *child);
 
 int			**new_pipe(char ***cmd);
 void		close_pipe(int **fd);

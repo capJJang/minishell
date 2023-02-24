@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/23 15:31:26 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/24 18:42:11 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,15 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 {
 	t_child	child;
 	int		size;
-	int		fd_in;
-	int		fd_out;
+	int		std_fd[2];
 
 	size = init_cmd_var(&child, cmd, node_inf);
+	std_fd[0] = dup(STDIN_FILENO);
+	std_fd[1] = dup(STDOUT_FILENO);
 	update__(child);
-	if (is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|"))
-		redirect_pipe(&child, is_redirection(child), &fd_in, &fd_out);
+	if ((is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|")) \
+		|| is_redirection3(node_inf))
+		redirect_pipe(&child, is_all_redirection(child), true);
 	node_inf->cmd = cmd[child.launch_cnt];
 	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")))
 		exe_builtin(node_inf);
@@ -114,8 +116,7 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 		else
 			is_parent(node_inf, child.pid, size, child.fd);
 	}
-	rollback_std_fd(node_inf, &fd_in, &fd_out);
-	free(child.pid);
-	ft_free_2d((char **)child.fd);
-	ft_free_2d(path_env);
+	rollback_std_fd(node_inf, std_fd);
+	ft_free_runtime(child.pid, child.fd, path_env);
+	unlink("*&$@^857sdf{}.:<<12#@");
 }

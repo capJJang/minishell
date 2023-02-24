@@ -6,11 +6,27 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:18 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 18:47:17 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/24 18:41:20 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_node	*is_all_redirection(t_child child)
+{
+	t_node	*curr;
+
+	curr = child.node_inf->head;
+	while (1)
+	{
+		if (curr->is_file == 1)
+			return (curr);
+		if (curr == child.node_inf->tail)
+			break ;
+		curr = curr->next;
+	}
+	return (0);
+}
 
 t_node	*is_redirection(t_child child)
 {
@@ -67,15 +83,15 @@ void	redirect_infile(t_node *curr, bool *in, t_node_inf *node_inf)
 		*in = true;
 }
 
-void	rollback_std_fd(t_node_inf *node_inf, int *fd_in, int *fd_out)
+void	rollback_std_fd(t_node_inf *node_inf, int *std_fd)
 {
 	if (is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|"))
 	{
-		if (dup2(*fd_in, STDIN_FILENO) == -1)
+		if (dup2(std_fd[0], STDIN_FILENO) == -1)
 			exit (-1);
-		close(*fd_in);
-		if (dup2(*fd_out, STDOUT_FILENO) == -1)
+		close(std_fd[0]);
+		if (dup2(std_fd[1], STDOUT_FILENO) == -1)
 			exit (-1);
-		close(*fd_out);
+		close(std_fd[1]);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/23 15:36:29 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/24 18:39:41 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_break(char *get_line, t_node *curr)
 	return (0);
 }
 
-void	heredoc(t_node *curr, t_child *child, bool *in)
+void	heredoc(t_node *curr, bool *in)
 {
 	int		temp_fd;
 	char	*get_line;
@@ -41,12 +41,6 @@ void	heredoc(t_node *curr, t_child *child, bool *in)
 	}
 	free (get_line);
 	close (temp_fd);
-	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_RDONLY);
-	if (!is_builtin(child->cmd[child->launch_cnt]))
-		if (dup2(temp_fd, STDIN_FILENO) == -1)
-			exit (-1);
-	unlink("*&$@^857sdf{}.:<<12#@");
-	close(temp_fd);
 	if (*in == false)
 		*in = true;
 }
@@ -67,10 +61,6 @@ void	append_file(t_node *curr, bool *out)
 
 void	close_fd(bool in, bool out, t_child child)
 {
-	if (in == true)
-		close(child.fd[child.launch_cnt][P_READ]);
-	if (out == true)
-		close(child.fd[child.launch_cnt][P_WRITE]);
 	if (in == false)
 	{
 		if (child.launch_cnt > 0)
@@ -79,7 +69,6 @@ void	close_fd(bool in, bool out, t_child child)
 				== -1)
 				exit(-1);
 			close(child.fd[child.launch_cnt - 1][P_READ]);
-			//close(child.fd[child.launch_cnt][P_READ]);
 		}
 	}
 	if (out == false && child.cmd[child.launch_cnt + 1] != 0)
@@ -90,28 +79,26 @@ void	close_fd(bool in, bool out, t_child child)
 	}
 }
 
-void	redirect_pipe(t_child *child, t_node *curr, int *fd_in, int *fd_out)
+void	redirect_pipe(t_child *child, t_node *curr, bool check)
 {
 	bool	in;
 	bool	out;
 
-	if (fd_in != 0 && fd_out != 0)
-	{
-		*fd_in = dup(STDIN_FILENO);
-		*fd_out = dup(STDOUT_FILENO);
-	}
 	while (curr != 0)
 	{
 		if (ft_strncmp(curr->prev->arr, ">", 2) == 0)
 			redirect_outfile(curr, &out);
 		else if (ft_strncmp(curr->prev->arr, "<", 2) == 0)
 			redirect_infile(curr, &in, child->node_inf);
+		else if (check == true)
+			heredoc(curr, &in);
 		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0)
-			heredoc(curr, child, &in);
+			child_heredoc(child);
 		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
 			append_file(curr, &out);
 		curr->is_file = 0;
 		curr = is_redirection(*child);
 	}
-	close_fd(in, out, *child);
+	if (check == false)
+		close_fd(in, out, *child);
 }

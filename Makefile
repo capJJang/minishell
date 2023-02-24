@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
+#    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/02/23 07:49:52 by segan            ###   ########.fr        #
+#    Updated: 2023/02/23 16:37:13 by seyang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,9 @@ OBJS = $(SRCS:.c=.o)
 
 CFLAGS = -Wall -Wextra -Werror
 
-LIBS = -lft -L./libft -lreadline -L/Users/segan/.brew/opt/readline/lib
+LIBS = -lft -L./libft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 
-INCS = -I/Users/segan/.brew/opt/readline/include
+INCS = -I/Users/$(USER)/.brew/opt/readline/include
 
 DEBUG = -g -fsanitize=address
 

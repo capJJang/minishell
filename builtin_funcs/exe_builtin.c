@@ -6,11 +6,18 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 13:06:37 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/24 17:56:14 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_redirection3(t_node_inf *node_inf)
+{
+	if (!ft_node_strncmp(node_inf, "<<"))
+		return (1);
+	return (0);
+}
 
 int	is_redirection2(t_node_inf *node_inf)
 {
