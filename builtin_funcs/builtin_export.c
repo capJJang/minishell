@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 17:24:08 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 13:04:33 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/28 16:57:53 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	builtin_export(t_node_inf *node_inf)
 		ft_strlen(node_inf->cmd[i])))
 			ft_append_env(node_inf->vars, key, val);
 		else
-			ft_addenv(node_inf->vars, key, val);
+			ft_overwrite_env(node_inf->vars, key, val + 1);
 		i++;
 		free(key);
 	}
