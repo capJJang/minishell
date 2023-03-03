@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:23:04 by segan             #+#    #+#             */
-/*   Updated: 2022/09/29 03:35:57 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/03 18:13:17 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		read_count = read(fd, buff, BUFFER_SIZE);
+		printf("%d	%s", read_count, buff);
 		if ((read_count == 0 || read_count == -1))
 			break ;
 		ret = concat_line(ret, buff, read_count);

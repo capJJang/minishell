@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/24 18:39:41 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/03 19:00:28 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	is_break(char *get_line, t_node *curr)
 {
-	if (get_line == EMPTY_LINE)
-		return (BREAK);
 	if (ft_strlen(get_line) - 1 != 0 \
 		&& ft_strncmp(get_line, curr->arr, ft_strlen(curr->arr)) == 0 \
 		&& (ft_strlen(get_line) - 1 == ft_strlen(curr->arr)))
@@ -27,22 +25,42 @@ void	heredoc(t_node *curr, bool *in)
 {
 	int		temp_fd;
 	char	*get_line;
+	bool	print_gt;
 
-	set_heredoc_signal();
+
+	print_gt = true;
 	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	while (1)
+	int	pid = fork();
+
+	if (pid > 0)
+		set_parent_heredoc_signal();
+	while (pid == 0)
 	{
-		write(STDOUT_FILENO, "> ", 2);
+		extern int rl_catch_signals;
+
+		rl_catch_signals = 0;
+		set_heredoc_signal();
+		if (print_gt)
+			write(STDOUT_FILENO, "> ", 2);
 		get_line = get_next_line(STDIN_FILENO);
+		if (get_line == EMPTY_LINE)
+			print_gt = false;
+		else
+			print_gt = true;
 		if (is_break(get_line, curr) == BREAK)
 			break ;
 		write(temp_fd, get_line, ft_strlen(get_line));
 		free (get_line);
 	}
+	if (pid > 0)
+		wait(NULL);
 	free (get_line);
 	close (temp_fd);
 	if (*in == false)
 		*in = true;
+	if (pid == 0)
+		exit(0);
+	restore_signal();
 }
 
 void	append_file(t_node *curr, bool *out)
@@ -96,7 +114,7 @@ void	redirect_pipe(t_child *child, t_node *curr, bool check)
 			child_heredoc(child);
 		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
 			append_file(curr, &out);
-		curr->is_file = 0;
+		curr->is_file = 2;
 		curr = is_redirection(*child);
 	}
 	if (check == false)

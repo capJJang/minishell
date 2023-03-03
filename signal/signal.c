@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/02/15 14:36:07 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/03 18:56:41 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,18 @@ void	set_parent_signal(void)
 
 void	set_heredoc_signal(void)
 {
-	struct termios	term;
+	extern int	rl_catch_signals;
 
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	rl_catch_signals = 0;
 	signal(SIGINT, sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-/*
-부모는 sigquit, sigint 무시
-자식은 디폭트로 돌림
-case : cat
-	\ : ^\Quit :3		exit status : 131
-	c : ^C				exit status : 130
-	d :					exit status : 0
+void	set_parent_heredoc_signal(void)
+{
+	extern int	rl_catch_signals;
 
-case : <<
-	\ : (SIG_IGN)
-	c : ^C				exit status : 1
-	d :	(no newline)	exit status : 0
-
-		자식	부모
-isatty			시그널 무시
-!isatty
-*/
+	rl_catch_signals = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}

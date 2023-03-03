@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/24 18:42:11 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/24 19:45:01 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	is_child(t_child child, char **path_env, int size)
 		print_cmd_nfound(path_stat, child.cmd[child.launch_cnt][0]);
 		exit(127);
 	}
-	curr = is_redirection(child);
+	curr = is_redirection22(child);
 	if (child.launch_cnt == 0)
 		set_first_pipe(&child, curr, size);
 	else if (child.cmd[child.launch_cnt + 1] == 0)
@@ -102,8 +102,8 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 	std_fd[0] = dup(STDIN_FILENO);
 	std_fd[1] = dup(STDOUT_FILENO);
 	update__(child);
-	if ((is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|")) \
-		|| is_redirection3(node_inf))
+	while (((is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|")) \
+		|| is_redirection3(node_inf)) && check_is_file(node_inf))
 		redirect_pipe(&child, is_all_redirection(child), true);
 	node_inf->cmd = cmd[child.launch_cnt];
 	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")))

@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:26 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/24 18:39:49 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/24 19:35:10 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,23 @@ void	child_heredoc(t_child *child)
 		if (dup2(temp_fd, STDIN_FILENO) == -1)
 			exit (-1);
 	close(temp_fd);
+}
+
+t_node	*is_redirection22(t_child child)
+{
+	t_node	*curr;
+
+	curr = find_node(child.node_inf, child.launch_cnt + 1);
+	if (curr == NULL)
+		return (NULL);
+	while (1)
+	{
+		if (curr->is_file == 1 || curr->is_file == 2)
+			return (curr);
+		if (curr->command_num != curr->next->command_num \
+			|| curr == child.node_inf->tail)
+			break ;
+		curr = curr->next;
+	}
+	return (0);
 }

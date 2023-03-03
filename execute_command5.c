@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:31 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/23 15:47:09 by segan            ###   ########.fr       */
+/*   Updated: 2023/02/24 19:45:17 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,20 @@ int	init_cmd_var(t_child *child, char ***cmd, t_node_inf *node_inf)
 	child->path = NULL;
 	child->pid = ft_calloc(sizeof(pid_t), (size + 1));
 	return (size);
+}
+
+int	check_is_file(t_node_inf *node_inf)
+{
+	t_node	*curr;
+
+	curr = node_inf->head;
+	while (1)
+	{
+		if (curr->is_file == 1)
+			return (1);
+		if (curr == node_inf->tail)
+			break ;
+		curr = curr->next;
+	}
+	return (0);
 }

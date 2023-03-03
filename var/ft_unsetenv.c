@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 14:25:27 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/03 17:49:29 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@ void	ft_unsetenv2(t_vars *vars, int i)
 {
 	char	**old_env;
 
-	if (i < ft_strlen_2d(vars->env))
+	while (vars->env[i])
+	{
+		vars->env[i] = vars->env[i + 1];
+		i++;
+	}
+	*vars->stat = 0;
+	if (i != ft_strlen_2d(vars->env))
 	{
 		old_env = vars->env;
 		vars->env = ft_strdup_2d(old_env);
@@ -28,6 +34,7 @@ void	ft_unsetenv(t_vars *vars, char *key)
 {
 	char	*temp_key;
 	int		i;
+	int		strncmp_ret;
 
 	if (!vars->env)
 		return ;
@@ -35,21 +42,20 @@ void	ft_unsetenv(t_vars *vars, char *key)
 	while (vars->env[i])
 	{
 		temp_key = ft_getkey(vars->env[i]);
-		if (!ft_strncmp(temp_key, key, ft_strlen(key) + 1))
-			break ;
+		strncmp_ret = ft_strncmp(temp_key, key, ft_strlen(key) + 1);
 		free(temp_key);
-		i++;
-	}
-	free(temp_key);
-	free(vars->env[i]);
-	vars->env[i] = vars->env[i + 1];
-	while (vars->env[i] && i > 1)
-	{
-		vars->env[i] = vars->env[i + 1];
+		temp_key = NULL;
+		if (strncmp_ret == 0)
+		{
+			free(vars->env[i]);
+			break ;
+		}
 		i++;
 	}
 	ft_unsetenv2(vars, i);
 }
+
+//키 값이 있는 경우, 키 값이 없는 경우
 
 void	ft_unset_sh_var(t_vars *vars, char *key)
 {

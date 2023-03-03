@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/02/24 18:39:55 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/03 19:00:07 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,10 +181,12 @@ void		set_first_pipe(t_child *child, t_node *curr, int size);
 void		set_end_pipe(t_child *child, t_node *curr, int size);
 void		set_middle_pipe(t_child *child, t_node *curr, int size);
 void		child_heredoc(t_child *child);
+t_node		*is_redirection22(t_child child);
 
 int			**new_pipe(char ***cmd);
 void		close_pipe(int **fd);
 int			init_cmd_var(t_child *child, char ***cmd, t_node_inf *node_inf);
+int			check_is_file(t_node_inf *node_inf);
 
 //execute command funcs end
 
@@ -226,6 +228,7 @@ void		set_parent_signal(void);
 void		restore_signal(void);
 void		set_heredoc_signal(void);
 void		sigint_heredoc(int signo);
+void		set_parent_heredoc_signal(void);
 //signal end
 
 void		print_errno_in_child(char *cmd);

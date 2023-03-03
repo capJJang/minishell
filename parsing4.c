@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:42:09 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 17:41:13 by seyang           ###   ########.fr       */
+/*   Updated: 2023/02/28 12:50:47 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 		e++;
 	if (start != 0)
 		add_prev_node(node_inf, curr, new_node(ft_substr(arr, 0, start)));
-	curr->prev->check_adhere_back = (start != 0);
+	curr->prev->check_adhere_back = \
+		(start != 0 || curr->prev->check_adhere_back);
 	env = ft_substr(arr, start + 1, e - start - 1);
 	arr_end = ft_strlen(arr);
 	if (arr[e] != 0)
 		add_next_node(node_inf, curr, new_node(ft_substr(arr, e, arr_end - e)));
-	curr->check_adhere_back = (arr[e] != 0);
+	curr->check_adhere_back = (arr[e] != 0 || curr->check_adhere_back);
 	curr->arr = ft_strdup(ft_getenv(node_inf->vars, env));
 	if (curr->arr == NULL)
 		curr->arr = ft_strdup("");
