@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:09:05 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 14:29:59 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/05 01:55:18 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_path(char **path_env, char *cmd, int *stat)
 	*stat = 0;
 	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
-	if (!path_env)
+	if (!path_env || !cmd)
 	{
 		*stat = 2;
 		return (NULL);

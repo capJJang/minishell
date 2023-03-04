@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/03 19:00:28 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/05 01:39:39 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_break(char *get_line, t_node *curr)
 {
+	if (get_line == EMPTY_LINE)
+		return (BREAK);
 	if (ft_strlen(get_line) - 1 != 0 \
 		&& ft_strncmp(get_line, curr->arr, ft_strlen(curr->arr)) == 0 \
 		&& (ft_strlen(get_line) - 1 == ft_strlen(curr->arr)))
@@ -29,6 +31,7 @@ void	heredoc(t_node *curr, bool *in)
 
 
 	print_gt = true;
+	get_line = NULL;
 	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	int	pid = fork();
 
@@ -36,10 +39,7 @@ void	heredoc(t_node *curr, bool *in)
 		set_parent_heredoc_signal();
 	while (pid == 0)
 	{
-		extern int rl_catch_signals;
-
-		rl_catch_signals = 0;
-		set_heredoc_signal();
+		set_child_heredoc_signal();
 		if (print_gt)
 			write(STDOUT_FILENO, "> ", 2);
 		get_line = get_next_line(STDIN_FILENO);

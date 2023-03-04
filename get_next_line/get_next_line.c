@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:23:04 by segan             #+#    #+#             */
-/*   Updated: 2023/03/03 18:42:49 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/05 01:18:17 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char	*concat_line(char *ret, char *buff, int read_count)
 	free_arr(&ret);
 	return (new_ret);
 }
-#include <stdio.h>
 char	*get_next_line(int fd)
 {
 	static char	*leftover;
@@ -81,7 +80,6 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		read_count = read(fd, buff, BUFFER_SIZE);
-		printf("%d\n", read_count);
 		if ((read_count == 0 || read_count == -1))
 			break ;
 		ret = concat_line(ret, buff, read_count);

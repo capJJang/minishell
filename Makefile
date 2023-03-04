@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/03/03 16:17:03 by segan            ###   ########.fr        #
+#    Updated: 2023/03/05 01:54:02 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,10 +46,10 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make bonus -C libft
-	$(CC) $(DEBUG) $(LIBS) -o $(NAME) $(OBJS)
+	$(CC) $(DEBUG) -o $(NAME) $(OBJS) $(LIBS)
 
 %.o : %.c
-	$(CC) $(DEBUG) $(INCS) $(CFLAGS) -c $< -o $@
+	$(CC) $(DEBUG) $(LIBS) $(INCS) $(CFLAGS) -c $< -o $@
 
 clean :
 	make clean -C ./libft

@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/03/03 19:00:07 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/04 22:32:07 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ void		set_parent_signal(void);
 void		restore_signal(void);
 void		set_heredoc_signal(void);
 void		sigint_heredoc(int signo);
+void		set_child_heredoc_signal(void);
 void		set_parent_heredoc_signal(void);
 //signal end
 

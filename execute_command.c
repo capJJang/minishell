@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/24 19:45:01 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/05 01:56:54 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	is_child(t_child child, char **path_env, int size)
 	child.path = get_path(path_env, child.cmd[child.launch_cnt][0], &path_stat);
 	if (path_stat > 0 && !is_builtin(child.cmd[child.launch_cnt]))
 	{
-		print_cmd_nfound(path_stat, child.cmd[child.launch_cnt][0]);
+		if (child.cmd[child.launch_cnt][0])
+			print_cmd_nfound(path_stat, child.cmd[child.launch_cnt][0]);
 		exit(127);
 	}
 	curr = is_redirection22(child);
