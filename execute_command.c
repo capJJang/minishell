@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/05 01:56:54 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 04:18:19 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,21 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 	t_child	child;
 	int		size;
 	int		std_fd[2];
+	extern int	heredoc_stat;
 
 	size = init_cmd_var(&child, cmd, node_inf);
 	std_fd[0] = dup(STDIN_FILENO);
 	std_fd[1] = dup(STDOUT_FILENO);
 	update__(child);
+	heredoc_stat = 1;
 	while (((is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|")) \
-		|| is_redirection3(node_inf)) && check_is_file(node_inf))
+		|| is_redirection3(node_inf)) && check_is_file(node_inf)\
+		&& heredoc_stat == 1)
 		redirect_pipe(&child, is_all_redirection(child), true);
 	node_inf->cmd = cmd[child.launch_cnt];
 	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")))
 		exe_builtin(node_inf);
-	else
+	else if (heredoc_stat == 0)
 	{
 		fork_child(&child, size, node_inf, cmd);
 		if (child.pid[child.launch_cnt] == 0 && child.launch_cnt != size)

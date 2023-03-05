@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:20:37 by segan             #+#    #+#             */
-/*   Updated: 2023/03/05 01:15:47 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 04:18:02 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,8 @@ void	sigint_readline(int signo)
 
 void	sigint_heredoc(int signo)
 {
-	(void) signo;
-	//int	temp_fd;
+	extern int	heredoc_stat;
 
-	printf("\b\b  ");
-	//exit(0);
-	//temp_fd = open("*&$@^857sdf{}.:<<12#@", O_CREAT | O_WRONLY, 0644);
-	//printf("test\n");
-	//write(temp_fd, "teset", 1);
-	//close(temp_fd);
+	(void) signo;
+	heredoc_stat = 0;
 }

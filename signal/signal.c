@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/03/05 01:29:20 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/05 22:08:24 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,12 @@ void	set_parent_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	set_child_heredoc_signal(void)
+void	set_heredoc_signal(void)
 {
 	extern int	rl_catch_signals;
-	// struct termios	term;
-	
-	// tcgetattr(STDIN_FILENO, &term);
-	// term.c_lflag &= ~ECHO;
-	// tcsetattr(STDIN_FILENO, TCSANOW, &term);
+
 	rl_catch_signals = 0;
 	signal(SIGINT, sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	set_parent_heredoc_signal(void)
-{
-	extern int	rl_catch_signals;
-
-	rl_catch_signals = 0;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}

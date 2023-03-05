@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/03/04 22:32:07 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 04:17:00 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_node		t_node;
 typedef struct s_node_inf	t_node_inf;
 typedef struct s_child		t_child;
 typedef struct s_vars		t_vars;
+
+int	heredoc_stat;
 
 struct s_child {
 	char		*path;
@@ -228,8 +230,7 @@ void		set_parent_signal(void);
 void		restore_signal(void);
 void		set_heredoc_signal(void);
 void		sigint_heredoc(int signo);
-void		set_child_heredoc_signal(void);
-void		set_parent_heredoc_signal(void);
+void		set_heredoc_signal(void);
 //signal end
 
 void		print_errno_in_child(char *cmd);
