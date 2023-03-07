@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_addenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:11:53 by segan             #+#    #+#             */
-/*   Updated: 2023/01/24 13:59:27 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 20:55:20 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_addenv(t_vars *var, char *key, char *val)
 		i++;
 	}
 	new_env[len - 1] = ft_strjoin(key, val);
+	free(val);
 	new_env[len] = 0;
 	ft_free_2d(var->env);
 	var->env = new_env;

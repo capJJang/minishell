@@ -6,34 +6,38 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:33:42 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 19:36:59 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/06 19:55:11 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing_pipe(t_node_inf *node_inf, char *read_line)
+void	parsing_pipe(t_node_inf *node_inf)
 {
-	int		start;
 	int		finish;
-	char	*arr;
+	char	*temp;
+	t_node	*curr;
 
-	start = 0;
-	finish = 0;
-	while (read_line[finish])
+	curr = node_inf->head;
+	while (1)
 	{
-		finish = ft_find_after_chr(read_line, start, '|');
-		if (finish - start == 0)
+		finish = 0;
+		if (curr->arr[0] != '\'' && curr->arr[0] != '\"')
 		{
-			arr = ft_calloc(sizeof(char), 2);
-			arr[0] = '|';
-			add_back_node(node_inf, new_node(arr));
-			finish = ++start;
-			continue ;
+			while (curr->arr[finish])
+			{
+				finish = ft_find_after_chr(curr->arr, 0, '|');
+				finish += (finish == 0);
+				add_next_node(node_inf, curr, new_node(ft_substr(curr->arr, \
+					finish, strlen(curr->arr) - finish)));
+				temp = curr->arr;
+				curr->arr = ft_substr(curr->arr, 0, finish);
+				free(temp);
+			}
 		}
-		arr = ft_substr(read_line, start, finish - start);
-		add_back_node(node_inf, new_node(arr));
-		start = finish;
+		if (curr == node_inf->tail)
+			break ;
+		curr = curr->next;
 	}
 }
 

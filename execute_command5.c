@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:31 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/24 19:45:17 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/06 21:33:07 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	close_pipe(int **fd)
 
 int	init_cmd_var(t_child *child, char ***cmd, t_node_inf *node_inf)
 {
-	int	size;
+	int					size;
+	extern sig_atomic_t	g_heredoc_stat;
 
 	size = 0;
 	while (cmd[size])
@@ -57,6 +58,9 @@ int	init_cmd_var(t_child *child, char ***cmd, t_node_inf *node_inf)
 	child->node_inf = node_inf;
 	child->path = NULL;
 	child->pid = ft_calloc(sizeof(pid_t), (size + 1));
+	update__(*child);
+	g_heredoc_stat = 1;
+	node_inf->cmd = cmd[child->launch_cnt];
 	return (size);
 }
 
@@ -74,4 +78,12 @@ int	check_is_file(t_node_inf *node_inf)
 		curr = curr->next;
 	}
 	return (0);
+}
+
+void	end_execute(t_node_inf *node_inf, int std_fd[2], \
+	t_child *child, char ***path_env)
+{
+	rollback_std_fd(node_inf, std_fd);
+	ft_free_runtime(child->pid, child->fd, *path_env);
+	unlink("*&$@^857sdf{}.:<<12#@");
 }

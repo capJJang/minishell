@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:18 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/24 19:34:32 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/06 21:33:22 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,25 @@ void	redirect_outfile(t_node *curr, bool *out)
 
 void	redirect_infile(t_node *curr, bool *in, t_node_inf *node_inf)
 {
-	int	fd;
+	int					fd;
+	extern sig_atomic_t	g_heredoc_stat;
 
 	fd = open(curr->arr, O_RDONLY);
 	if (fd == -1)
 	{
+		g_heredoc_stat = 0;
 		if (!(is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|")))
 			print_errno_in_child(curr->arr);
 		else
 		{
 			print_cmd_nfound(2, curr->arr);
-			return ;
+			if (is_builtin(node_inf->cmd) == 0)
+				exit (0);
+			else
+				return ;
 		}
+		if (is_builtin(node_inf->cmd) == 0)
+			exit (0);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 		exit(-1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/03/06 04:17:00 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 21:29:54 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <stdbool.h>
-# include "get_next_line/get_next_line.h"
 # include <signal.h>
 # include <termios.h>
 
@@ -44,8 +43,6 @@ typedef struct s_node		t_node;
 typedef struct s_node_inf	t_node_inf;
 typedef struct s_child		t_child;
 typedef struct s_vars		t_vars;
-
-int	heredoc_stat;
 
 struct s_child {
 	char		*path;
@@ -142,7 +139,7 @@ int			is_redirection3(t_node_inf *node_inf);
 void		update__(t_child child);
 
 //parsing funcs start
-void		parsing_pipe(t_node_inf *node_inf, char *read_line);
+void		parsing_pipe(t_node_inf *node_inf);
 void		parsing_space(t_node_inf *node_inf);
 void		parsing_command(t_node_inf *node_inf);
 void		check_adhere(t_node *curr, int end);
@@ -189,6 +186,11 @@ int			**new_pipe(char ***cmd);
 void		close_pipe(int **fd);
 int			init_cmd_var(t_child *child, char ***cmd, t_node_inf *node_inf);
 int			check_is_file(t_node_inf *node_inf);
+void		end_execute(t_node_inf *node_inf, int std_fd[2], \
+	t_child *child, char ***path_env);
+
+void		reset_stat(void);
+void		heredoc_child(char *get_line, t_node *curr, int temp_fd);
 
 //execute command funcs end
 

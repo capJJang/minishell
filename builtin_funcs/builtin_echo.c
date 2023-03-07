@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 00:26:22 by segan             #+#    #+#             */
-/*   Updated: 2023/02/28 16:55:42 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 19:47:59 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,14 @@ void	builtin_echo(t_node_inf *node_inf)
 	}
 	while (node_inf->cmd[i])
 	{
-		if (printf("%s", node_inf->cmd[i++]) && node_inf->cmd[i])
-			printf(" ");
+		if (write(STDOUT_FILENO, node_inf->cmd[i], \
+			strlen(node_inf->cmd[i])) && node_inf->cmd[i + 1] != 0)
+			write(STDOUT_FILENO, " ", 1);
+		i++;
 		if (node_inf->cmd[i] == 0)
 			break ;
 	}
 	if (new_line)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	*node_inf->vars->stat = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 16:12:54 by segan             #+#    #+#             */
-/*   Updated: 2023/03/05 22:08:24 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 21:02:29 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ void	set_heredoc_signal(void)
 	signal(SIGINT, sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
-

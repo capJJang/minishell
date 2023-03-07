@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/05 22:08:32 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 21:31:25 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern sig_atomic_t	g_heredoc_stat;
+
 int	is_break(char *get_line, t_node *curr)
 {
-	if (get_line == EMPTY_LINE)
-		return (BREAK);
 	if (ft_strlen(get_line) - 1 != 0 \
 		&& ft_strncmp(get_line, curr->arr, ft_strlen(curr->arr)) == 0 \
 		&& (ft_strlen(get_line) - 1 == ft_strlen(curr->arr)))
@@ -25,55 +25,30 @@ int	is_break(char *get_line, t_node *curr)
 
 void	heredoc(t_node *curr, bool *in)
 {
-	int		temp_fd;
-	char	*get_line;
-	// bool	print_gt;
+	int					temp_fd;
+	char				*get_line;
+	int					child_status;
+	pid_t				pid;
 
-
-	// print_gt = true;
 	get_line = NULL;
 	temp_fd = open("*&$@^857sdf{}.:<<12#@", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	while (1)
+	pid = ft_fork();
+	while (pid == 0)
+		heredoc_child(get_line, curr, temp_fd);
+	if (pid > 0)
 	{
-		set_heredoc_signal();
-		get_line = readline("> ");
-		get_line = ft_strjoin2(get_line, "\n", 1, 0);
-		if (is_break(get_line, curr) == BREAK)
-	 		break ;
-		write(temp_fd, get_line, ft_strlen(get_line));
-		free(get_line);
+		set_parent_signal();
+		wait(&child_status);
+		if (WEXITSTATUS(child_status) == 1)
+			g_heredoc_stat = 0;
+		else if (WEXITSTATUS(child_status) == 2)
+			g_heredoc_stat = 2;
 	}
-	
-	// int	pid = fork();
-	// struct termios	term;
-	// tcgetattr(STDIN_FILENO, &term);
-	// if (pid > 0)
-	// 	set_parent_signal();
-	// while (pid == 0)
-	// {
-	// 	set_child_heredoc_signal();
-	// 	if (print_gt)
-	// 		write(STDOUT_FILENO, "> ", 2);
-	// 	get_line = get_next_line(STDIN_FILENO);
-	// 	if (get_line == EMPTY_LINE)
-	// 		print_gt = false;
-	// 	else
-	// 		print_gt = true;
-	// 	if (is_break(get_line, curr) == BREAK)
-	// 		break ;
-	// 	write(temp_fd, get_line, ft_strlen(get_line));
-	// 	free (get_line);
-	// }
-	// if (pid > 0)
-	// 	wait(NULL);
+	reset_stat();
 	free (get_line);
 	close (temp_fd);
 	if (*in == false)
 		*in = true;
-	// if (pid == 0)
-	// 	exit(0);
-	// tcsetattr(0, TCSANOW, &term);
-	restore_signal();
 }
 
 void	append_file(t_node *curr, bool *out)
@@ -112,21 +87,22 @@ void	close_fd(bool in, bool out, t_child child)
 
 void	redirect_pipe(t_child *child, t_node *curr, bool check)
 {
-	bool	in;
-	bool	out;
+	bool				in;
+	bool				out;
+	extern sig_atomic_t	g_heredoc_stat;
 
-	while (curr != 0)
+	while (curr != 0 && g_heredoc_stat == 1)
 	{
 		if (ft_strncmp(curr->prev->arr, ">", 2) == 0)
 			redirect_outfile(curr, &out);
 		else if (ft_strncmp(curr->prev->arr, "<", 2) == 0)
 			redirect_infile(curr, &in, child->node_inf);
+		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
+			append_file(curr, &out);
 		else if (check == true)
 			heredoc(curr, &in);
 		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0)
 			child_heredoc(child);
-		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
-			append_file(curr, &out);
 		curr->is_file = 2;
 		curr = is_redirection(*child);
 	}

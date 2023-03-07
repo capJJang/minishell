@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:42:09 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/04 21:17:45 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 19:55:55 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	if (init_set_env(curr, &arr, temp, &start) == 1)
 		return ;
 	e = start + 1;
-	while (arr[e] && ((ft_isalpha(arr[e]) || arr[e] == '?' || arr[e] == '_')))
-		e++;
+	while (arr[e++] && ((ft_isalpha(arr[e]) || \
+		(arr[e - 1] == '$' && arr[e] == '?') || arr[e] == '_')))
+		;
 	if (start != 0)
 		add_prev_node(node_inf, curr, new_node(ft_substr(arr, 0, start)));
 	curr->prev->check_adhere_back = \

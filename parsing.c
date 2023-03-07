@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 19:44:46 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/06 19:55:02 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	line_to_node(t_node_inf *node_inf, char *read_line)
 {
-	parsing_pipe(node_inf, read_line);
-	parsing_space(node_inf);
+	add_back_node(node_inf, new_node(read_line));
 	parsing_quote(node_inf);
+	parsing_space(node_inf);
+	parsing_pipe(node_inf);
 	parsing_space(node_inf);
 	parsing_redirection(node_inf);
 	parsing_space(node_inf);
@@ -52,6 +53,5 @@ t_node_inf	*parsing(t_vars *vars, char *read_line)
 	node_inf = new_node_inf();
 	node_inf->vars = vars;
 	line_to_node(node_inf, read_line);
-	free(read_line);
 	return (node_inf);
 }

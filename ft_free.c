@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:52:24 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/28 18:36:10 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 21:41:24 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_free_vars(t_vars *vars)
 	ft_free_2d(vars->env);
 	ft_free_2d(vars->sh_var);
 	free(vars);
+	exit (0);
 }
 
 void	ft_free_2d(char **arr)

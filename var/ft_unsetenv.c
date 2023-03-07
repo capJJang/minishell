@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
-/*   Updated: 2023/03/03 17:49:29 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 19:49:57 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	ft_unsetenv(t_vars *vars, char *key)
 	}
 	ft_unsetenv2(vars, i);
 }
-
-//키 값이 있는 경우, 키 값이 없는 경우
 
 void	ft_unset_sh_var(t_vars *vars, char *key)
 {

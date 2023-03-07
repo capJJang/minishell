@@ -3,28 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 04:18:19 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 21:22:22 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern sig_atomic_t	g_heredoc_stat;
+
 void	is_child(t_child child, char **path_env, int size)
 {
-	t_node		*curr;
-	int			path_stat;
+	t_node				*curr;
+	int					path_stat;
 
+	curr = is_redirection22(child);
 	child.path = get_path(path_env, child.cmd[child.launch_cnt][0], &path_stat);
 	if (path_stat > 0 && !is_builtin(child.cmd[child.launch_cnt]))
 	{
 		if (child.cmd[child.launch_cnt][0])
 			print_cmd_nfound(path_stat, child.cmd[child.launch_cnt][0]);
+		else if (g_heredoc_stat == 1 && !is_redirection3(child.node_inf))
+			print_cmd_nfound(2, curr->arr);
 		exit(127);
 	}
-	curr = is_redirection22(child);
 	if (child.launch_cnt == 0)
 		set_first_pipe(&child, curr, size);
 	else if (child.cmd[child.launch_cnt + 1] == 0)
@@ -88,39 +92,36 @@ void	fork_child(t_child *child, int size, t_node_inf *node_inf, char ***cmd)
 			break ;
 		if (child->pid[child->launch_cnt] == -1)
 			exit (-1);
-		node_inf->cmd = cmd[child->launch_cnt];
 		child->launch_cnt++;
+		node_inf->cmd = cmd[child->launch_cnt];
 	}
 }
 
 void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 {
-	t_child	child;
-	int		size;
-	int		std_fd[2];
-	extern int	heredoc_stat;
+	t_child				child;
+	int					size;
+	int					std_fd[2];
 
 	size = init_cmd_var(&child, cmd, node_inf);
 	std_fd[0] = dup(STDIN_FILENO);
 	std_fd[1] = dup(STDOUT_FILENO);
-	update__(child);
-	heredoc_stat = 1;
-	while (((is_redirection2(node_inf) && ft_node_strncmp(node_inf, "|")) \
-		|| is_redirection3(node_inf)) && check_is_file(node_inf)\
-		&& heredoc_stat == 1)
+	while (((is_builtin(cmd[child.launch_cnt]) && is_redirection2(node_inf) \
+		&& ft_node_strncmp(node_inf, "|")) \
+		|| is_redirection3(node_inf)) && check_is_file(node_inf) \
+		&& g_heredoc_stat != 0)
 		redirect_pipe(&child, is_all_redirection(child), true);
-	node_inf->cmd = cmd[child.launch_cnt];
-	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")))
+	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")) \
+		&& g_heredoc_stat != 0)
 		exe_builtin(node_inf);
-	else if (heredoc_stat == 0)
+	else if (g_heredoc_stat != 0)
 	{
+		restore_signal();
 		fork_child(&child, size, node_inf, cmd);
 		if (child.pid[child.launch_cnt] == 0 && child.launch_cnt != size)
 			is_child(child, path_env, size);
 		else
 			is_parent(node_inf, child.pid, size, child.fd);
 	}
-	rollback_std_fd(node_inf, std_fd);
-	ft_free_runtime(child.pid, child.fd, path_env);
-	unlink("*&$@^857sdf{}.:<<12#@");
+	end_execute(node_inf, std_fd, &child, &path_env);
 }

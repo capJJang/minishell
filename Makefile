@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
+#    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/03/05 01:54:02 by segan            ###   ########.fr        #
+#    Updated: 2023/03/06 21:35:08 by seyang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS =	main.c ft_fork.c path.c set_node.c new_node.c\
 		parsing.c parsing2.c parsing3.c parsing4.c parsing5.c\
 		is_empty_line.c ft_malloc.c set_single_or_double.c node_to_command.c\
 		execute_command.c execute_command2.c execute_command3.c \
-		execute_command4.c execute_command5.c \
+		execute_command4.c execute_command5.c execute_command6.c\
 		print_error.c ft_node_strncmp.c ft_strjoin2.c\
 		ft_free.c ft_getcwd.c print.c ft_find.c read_line.c\
 		builtin_funcs/is_builtin.c builtin_funcs/exe_builtin.c\
@@ -29,7 +29,6 @@ SRCS =	main.c ft_fork.c path.c set_node.c new_node.c\
 		var/init_env.c var/ft_getenv.c var/ft_addenv.c var/ft_unsetenv.c\
 		var/ft_overwrite_env.c \
 		var/init_var.c var/ft_add_sh_var.c var/ft_append_env.c \
-		get_next_line/get_next_line.c get_next_line/get_next_line_utils.c\
 		signal/signal.c signal/sigint_handler.c
 
 OBJS = $(SRCS:.c=.o)
@@ -40,16 +39,16 @@ LIBS = -lft -L./libft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 
 INCS = -I/Users/$(USER)/.brew/opt/readline/include
 
-DEBUG = -g -fsanitize=address
+# DEBUG = -g -fsanitize=address
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make bonus -C libft
-	$(CC) $(DEBUG) -o $(NAME) $(OBJS) $(LIBS)
+	$(CC) $(DEBUG) $(LIBS) -o $(NAME) $(OBJS)
 
 %.o : %.c
-	$(CC) $(DEBUG) $(LIBS) $(INCS) $(CFLAGS) -c $< -o $@
+	$(CC) $(DEBUG) $(INCS) $(CFLAGS) -c $< -o $@
 
 clean :
 	make clean -C ./libft

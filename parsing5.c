@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:44:19 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 19:44:44 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/06 19:56:10 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,16 @@ void	parsing_redirection(t_node_inf *node_inf)
 	curr = node_inf->head;
 	while (1)
 	{
-		while (1)
+		if (curr->arr[0] != '\'' && curr->arr[0] != '\"')
 		{
-			ret = parsing_redirection2(node_inf, curr);
-			if (ret == BREAK)
-				break ;
-			else if (ret == CONTINUE)
-				continue ;
+			while (1)
+			{
+				ret = parsing_redirection2(node_inf, curr);
+				if (ret == BREAK)
+					break ;
+				else if (ret == CONTINUE)
+					continue ;
+			}
 		}
 		curr = curr->next;
 		if (curr->prev->arr[0] == 0)

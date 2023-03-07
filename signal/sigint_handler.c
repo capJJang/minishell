@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sigint_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:20:37 by segan             #+#    #+#             */
-/*   Updated: 2023/03/06 04:18:02 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/06 19:48:59 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+volatile sig_atomic_t	g_heredoc_stat = 1;
 
 void	sigint_readline(int signo)
 {
@@ -23,8 +25,8 @@ void	sigint_readline(int signo)
 
 void	sigint_heredoc(int signo)
 {
-	extern int	heredoc_stat;
-
 	(void) signo;
-	heredoc_stat = 0;
+	g_heredoc_stat = 0;
+	printf("\n");
+	exit(1);
 }
