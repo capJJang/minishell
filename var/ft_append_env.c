@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:00:34 by segan             #+#    #+#             */
-/*   Updated: 2023/01/26 11:56:05 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/08 17:26:07 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ void	ft_append_env(t_vars *vars, char *key, char *val)
 		vars->env[i] = ft_strjoin2(vars->env[i], val, 1, 0);
 		return ;
 	}
-	ft_addenv(vars, key, val);
+	ft_addenv(vars, key, ft_strdup(val));
 	ft_unset_sh_var(vars, key);
 }

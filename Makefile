@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
+#    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/03/06 21:35:08 by seyang           ###   ########.fr        #
+#    Updated: 2023/03/08 17:29:06 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ LIBS = -lft -L./libft -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 
 INCS = -I/Users/$(USER)/.brew/opt/readline/include
 
-# DEBUG = -g -fsanitize=address
+DEBUG = -g -fsanitize=address
 
 all : $(NAME)
 

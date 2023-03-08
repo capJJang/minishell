@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/03/06 21:29:54 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 17:31:05 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void		builtin_echo(t_node_inf *node_inf);
 void		builtin_pwd(int	*stat);
 void		builtin_env(t_vars *vars);
 void		builtin_export(t_node_inf *node_inf);
+void		builtin_export2(t_node_inf *node_inf, char *key, char *val, int i);
 void		builtin_unset(t_node_inf *node_inf);
 //builtin funcs end
 
@@ -223,6 +224,7 @@ void		ft_append_env(t_vars *vars, char *key, char *value);
 void		ft_overwrite_env(t_vars *vars, char *key, char *val);
 void		print_sh_var(t_vars *vars);
 int			check_valid_key(char *key);
+bool		check_duplication_var(t_vars *var, char *val);
 //env_funcs end
 
 //signal start

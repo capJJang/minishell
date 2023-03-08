@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unsetenv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:43:59 by segan             #+#    #+#             */
-/*   Updated: 2023/03/06 19:49:57 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 15:50:13 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void	ft_unset_sh_var(t_vars *vars, char *key)
 		}
 		i++;
 	}
-	while (vars->sh_var[i] && i > 1)
+	while (vars->sh_var[i])
 	{
-		vars->sh_var[i - 1] = vars->sh_var[i];
+		vars->sh_var[i] = vars->sh_var[i + 1];
 		i++;
 	}
 	old_sh_var = vars->sh_var;
