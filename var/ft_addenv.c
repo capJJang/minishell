@@ -6,7 +6,7 @@
 /*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 18:11:53 by segan             #+#    #+#             */
-/*   Updated: 2023/03/08 17:12:32 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/08 17:50:34 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	ft_addenv(t_vars *var, char *key, char *val)
 		i++;
 	}
 	new_env[len - 1] = ft_strjoin(key, val);
-	printf("%p	%s\n", val, val);
 	free(val);
 	new_env[len] = 0;
 	ft_free_2d(var->env);
