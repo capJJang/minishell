@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 19:55:02 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:55:07 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ int	check_parse_error(t_node_inf *node_inf)
 	t_node	*curr;
 	int		cmd_cnt;
 
+	if (node_inf->head == NULL)
+	{
+		add_back_node(node_inf, new_node(ft_strdup("")));
+		return (0);
+	}
 	curr = node_inf->head;
 	cmd_cnt = 1;
 	while (1)

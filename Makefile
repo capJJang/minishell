@@ -6,7 +6,7 @@
 #    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/03/08 17:29:06 by segan            ###   ########.fr        #
+#    Updated: 2023/03/10 21:49:15 by segan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,10 @@ CC = cc
 NAME = minishell
 
 SRCS =	main.c ft_fork.c path.c set_node.c new_node.c\
-		parsing.c parsing2.c parsing3.c parsing4.c parsing5.c\
-		is_empty_line.c ft_malloc.c set_single_or_double.c node_to_command.c\
+		parsing.c parsing2.c parsing3.c \
+		parsing4.c parsing5.c parsing6.c\
+		is_empty_line.c ft_malloc.c set_single_or_double.c \
+		node_to_command.c node_to_command2.c\
 		execute_command.c execute_command2.c execute_command3.c \
 		execute_command4.c execute_command5.c execute_command6.c\
 		print_error.c ft_node_strncmp.c ft_strjoin2.c\
@@ -45,10 +47,10 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make bonus -C libft
-	$(CC) $(DEBUG) $(LIBS) -o $(NAME) $(OBJS)
+	$(CC) $(DEBUG) -o $(NAME) $(OBJS) $(LIBS)
 
 %.o : %.c
-	$(CC) $(DEBUG) $(INCS) $(CFLAGS) -c $< -o $@
+	$(CC) $(DEBUG) $(LIBS) $(INCS) $(CFLAGS) -c $< -o $@
 
 clean :
 	make clean -C ./libft

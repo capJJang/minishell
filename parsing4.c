@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:42:09 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 19:55:55 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/09 19:55:03 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 
 	if (init_set_env(curr, &arr, temp, &start) == 1)
 		return ;
-	e = start + 1;
-	while (arr[e++] && ((ft_isalpha(arr[e]) || \
-		(arr[e - 1] == '$' && arr[e] == '?') || arr[e] == '_')))
-		;
+	extract_key(arr, &e, start);
+	if (arr[e] == 0 && arr[e - 1] == '$')
+	{
+		curr->arr = arr;
+		return ;
+	}
 	if (start != 0)
 		add_prev_node(node_inf, curr, new_node(ft_substr(arr, 0, start)));
 	curr->prev->check_adhere_back = \
@@ -47,11 +49,15 @@ void	set_env(t_node_inf *node_inf, t_node *curr, char *arr, char *temp)
 	if (arr[e] != 0)
 		add_next_node(node_inf, curr, new_node(ft_substr(arr, e, arr_end - e)));
 	curr->check_adhere_back = (arr[e] != 0 || curr->check_adhere_back);
-	curr->arr = ft_strdup(ft_getenv(node_inf->vars, env));
-	if (curr->arr == NULL)
-		curr->arr = ft_strdup("");
+	expand_env(curr, node_inf, env);
 	free(env);
 	free(arr);
+}
+
+void	rep_init_var(int *end, char **temp, t_node *curr)
+{
+	*end = 0;
+	*temp = curr->arr;
 }
 
 void	replace_env(t_node_inf *node_inf)
@@ -63,20 +69,20 @@ void	replace_env(t_node_inf *node_inf)
 	curr = node_inf->head;
 	while (1)
 	{
-		end = 0;
-		temp = curr->arr;
+		rep_init_var(&end, &temp, curr);
 		while (curr->arr[end])
 			end++;
-		if (end >= 2 && curr->arr[0] == '\'' && curr->arr[end - 1] == '\'')
+		if (end >= 2 && curr->arr[0] == '\'' && curr->arr[end - 1] == '\'' \
+			&& str_redirection_pipe(curr) == 0)
 		{
 			curr->arr = ft_strtrim(curr->arr, "\'");
 			free(temp);
 		}
-		else
-		{
-			if (ft_strncmp(curr->prev->arr, "<<", 3) != 0)
-				set_env(node_inf, curr, curr->arr, temp);
-		}
+		else if (str_redirection_pipe(curr) == 0 && \
+			ft_strncmp(curr->prev->arr, "<<", 3) != 0)
+			set_env(node_inf, curr, curr->arr, temp);
+		else if (str_redirection_pipe(curr) && curr->arr[0] != '|')
+			curr->is_quote_include_pipe = 1;
 		if (curr == node_inf->tail)
 			break ;
 		curr = curr->next;

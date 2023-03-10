@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/03/06 21:41:26 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:53:37 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_free_file(t_node_inf *node_inf)
 	curr = node_inf->head;
 	while (1)
 	{
-		if (curr->arr[0] == '|')
+		if (curr->arr[0] == '|' && curr->is_quote_include_pipe != 1)
 			free(curr->arr);
 		if (ft_strncmp(curr->arr, ">", 2) == 0)
 			free(curr->arr);
@@ -37,6 +37,16 @@ void	ft_free_file(t_node_inf *node_inf)
 	}
 }
 
+int	syntax_error(t_node_inf *node_inf, bool check)
+{
+	if (check == 0)
+		return (0);
+	printf("%s", "bash: syntax error near unexpected token `newline'\n");
+	ft_free_file(node_inf);
+	ft_free(node_inf);
+	return (1);
+}
+
 void	control_process(t_vars *vars)
 {
 	t_node_inf	*node_inf;
@@ -51,15 +61,13 @@ void	control_process(t_vars *vars)
 			continue ;
 		restore_signal();
 		node_inf = parsing(vars, input);
-		if (check_parse_error(node_inf) == 1)
-		{
-			printf("%s", "bash: syntax error near unexpected token `newline'\n");
-			ft_free_file(node_inf);
-			ft_free(node_inf);
+		if (syntax_error(node_inf, check_parse_error(node_inf) == 1))
 			continue ;
-		}
 		cmd = node_to_command(node_inf);
-		execute_command(get_path_env(vars), cmd, node_inf);
+		if (node_inf->head->arr[0] == 0 || node_inf->head->arr[0] == 0)
+			print_cmd_nfound(1, node_inf->head->arr);
+		else
+			execute_command(get_path_env(vars), cmd, node_inf);
 		ft_free_file(node_inf);
 		ft_free_3d(cmd);
 		ft_free(node_inf);

@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   exe_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/02/24 19:29:03 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/10 22:57:10 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	str_redirection_pipe(t_node *curr)
+{
+	if (ft_strchr(curr->arr, '|') == 0)
+		if (ft_strchr(curr->arr, '>') == 0)
+			if (ft_strchr(curr->arr, '<') == 0)
+				return (0);
+	return (1);
+}
 
 int	is_redirection3(t_node_inf *node_inf)
 {

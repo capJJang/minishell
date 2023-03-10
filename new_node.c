@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:46:35 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 19:46:53 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:54:09 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_node	*new_node(char *arr)
 	new_node->check_malloc = 1;
 	new_node->check_adhere_back = 0;
 	new_node->is_file = 0;
+	new_node->is_quote_include_pipe = 0;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

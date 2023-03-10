@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_empty_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 20:41:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/21 13:44:55 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/10 23:04:57 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	is_empty_line(char *read_line)
 	i = 0;
 	if (read_line == EMPTY_LINE)
 	{
+		free(readline("exit"));
+		// write(STDIN_FILENO, "\n", 1);
 		printf("exit\n");
 		exit(0);
 	}
@@ -32,7 +34,7 @@ int	is_empty_line(char *read_line)
 	add_history(read_line);
 	while (read_line[i])
 	{
-		if (read_line[i] != ' ')
+		if (read_line[i] != ' ' && read_line[i] != '\t')
 			ret = 0;
 		i++;
 	}

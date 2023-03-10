@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/02/21 11:59:23 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/08 18:57:58 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// int	check_argc(t_node_inf *node_inf)
-// {
-// 	if (node_inf->cmd[2])
-// 	{
-// 		printf("bash: cd: %s:No such file of directory\n", node_inf->cmd[1]);
-// 		*node_inf->vars->stat = 1;
-// 		return (0);
-// 	}
-// 	return (1);
-// }
 
 void	update_wd(t_vars *vars, char *pwd, char *oldpwd)
 {
@@ -38,7 +27,7 @@ void	builtin_cd(t_node_inf *node_inf)
 	char	*pwd;
 
 	oldpwd = ft_getcwd(node_inf->vars->stat);
-	if (node_inf->cmd[1] == NULL || !ft_strncmp(node_inf->cmd[1], "~", 2))
+	if (node_inf->cmd[1] == NULL)
 		pwd = ft_getenv(node_inf->vars, "HOME");
 	else
 		pwd = node_inf->cmd[1];

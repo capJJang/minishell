@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 21:22:22 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/10 22:59:19 by segan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ extern sig_atomic_t	g_heredoc_stat;
 
 void	is_child(t_child child, char **path_env, int size)
 {
-	t_node				*curr;
-	int					path_stat;
+	t_node	*curr;
+	int		path_stat;
 
 	curr = is_redirection22(child);
 	child.path = get_path(path_env, child.cmd[child.launch_cnt][0], &path_stat);
-	if (path_stat > 0 && !is_builtin(child.cmd[child.launch_cnt]))
+	if ((path_stat > 0 && !is_builtin(child.cmd[child.launch_cnt])) && **child.cmd)
 	{
 		if (child.cmd[child.launch_cnt][0])
 			print_cmd_nfound(path_stat, child.cmd[child.launch_cnt][0]);
@@ -35,11 +35,12 @@ void	is_child(t_child child, char **path_env, int size)
 		set_end_pipe(&child, curr, size);
 	else
 		set_middle_pipe(&child, curr, size);
-	if (is_builtin(child.cmd[child.launch_cnt]))
+	if (is_builtin(child.cmd[child.launch_cnt]) && **child.cmd)	//?
 		exe_builtin(child.node_inf);
-	else if (execve(child.path, \
+	else if (**child.cmd && execve(child.path, \
 		child.cmd[child.launch_cnt], child.node_inf->vars->env) == -1)
 		print_errno_in_child(0);
+	exit(0);
 }
 
 int	wait_child(pid_t *pid, int *status, int size, int **fd)
@@ -99,9 +100,9 @@ void	fork_child(t_child *child, int size, t_node_inf *node_inf, char ***cmd)
 
 void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 {
-	t_child				child;
-	int					size;
-	int					std_fd[2];
+	t_child	child;
+	int		size;
+	int		std_fd[2];
 
 	size = init_cmd_var(&child, cmd, node_inf);
 	std_fd[0] = dup(STDIN_FILENO);

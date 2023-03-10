@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:44:19 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 19:56:10 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:55:51 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	set_command_num(t_node_inf *node_inf)
 
 	command_num = 1;
 	curr = node_inf->head;
+	if (curr == NULL)
+		return ;
 	while (1)
 	{
 		curr->command_num = command_num;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/03/08 17:31:05 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/09 19:57:45 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ struct s_node {
 	int		check_malloc;
 	int		check_adhere_back;
 	int		is_file;
+	bool	is_quote_include_pipe;
 	t_node	*next;
 	t_node	*prev;
 } ;
@@ -136,6 +137,7 @@ int			check_parse_error(t_node_inf *node_inf);
 t_node		*is_redirection(t_child child);
 int			is_redirection2(t_node_inf *node_inf);
 int			is_redirection3(t_node_inf *node_inf);
+int			str_redirection_pipe(t_node *curr);
 void		update__(t_child child);
 
 //parsing funcs start
@@ -160,7 +162,14 @@ int			parsing_redirection3(t_node_inf *node_inf, \
 int			parsing_redirection2(t_node_inf *node_inf, t_node *curr);
 void		parsing_redirection(t_node_inf *node_inf);
 void		set_command_num(t_node_inf *node_inf);
+
+void		extract_key(char *arr, int *e, int start);
+void		expand_env(t_node *curr, t_node_inf *node_inf, char *env);
 //parsing funcs end
+
+//node to command start
+void		set_command(char ***cmd, t_node_inf *node_inf);
+//node to command end
 
 //execute command funcs start
 t_node		*is_redirection(t_child child);

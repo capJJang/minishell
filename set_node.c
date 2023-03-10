@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 17:37:25 by seyang            #+#    #+#             */
-/*   Updated: 2023/02/20 19:46:48 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/08 18:56:16 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ void	delete_node(t_node_inf *node_inf, t_node *dst_node)
 	{
 		node_inf->tail = dst_node->prev;
 	}
-	if (dst_node->check_malloc == 1)
-		free(dst_node->arr);
+	free(dst_node->arr);
 	free(dst_node);
 }
 
