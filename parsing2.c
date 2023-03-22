@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:33:42 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 19:55:11 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/19 16:03:28 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,8 @@ void	check_adhere(t_node *curr, int end)
 		if (curr->arr[end + 1] != ' ')
 			curr->prev->check_adhere_back = 1;
 	}
+	while (end != 0 && curr->arr[end] == ' ')
+		end--;
+	if (curr->arr[end] == '<' || curr->arr[end] == '>')
+		curr->is_file = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:22 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/09 19:56:25 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/19 16:56:22 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_break(char *get_line, t_node *curr)
 	return (0);
 }
 
-void	heredoc(t_node *curr, bool *in)
+void	heredoc(t_node *curr, bool *in, struct termios original_term)
 {
 	int		temp_fd;
 	char	*get_line;
@@ -44,7 +44,7 @@ void	heredoc(t_node *curr, bool *in)
 		else if (WEXITSTATUS(child_status) == 2)
 			g_heredoc_stat = 2;
 	}
-	reset_stat();
+	reset_stat(original_term);
 	free (get_line);
 	close (temp_fd);
 	if (*in == false)
@@ -90,20 +90,22 @@ void	redirect_pipe(t_child *child, t_node *curr, bool check)
 	bool				in;
 	bool				out;
 	extern sig_atomic_t	g_heredoc_stat;
+	struct termios		original_term;
 
+	tcgetattr(0, &original_term);
 	while (curr != 0 && g_heredoc_stat >= 1)
 	{
-		if (ft_strncmp(curr->prev->arr, ">", 2) == 0)
+		if (ft_strncmp(curr->prev->arr, ">", 2) == 0 && !check)
 			redirect_outfile(curr, &out);
-		else if (ft_strncmp(curr->prev->arr, "<", 2) == 0)
+		else if (ft_strncmp(curr->prev->arr, "<", 2) == 0 && !check)
 			redirect_infile(curr, &in, child->node_inf);
-		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0)
+		else if (ft_strncmp(curr->prev->arr, ">>", 3) == 0 && !check)
 			append_file(curr, &out);
-		else if (check == true)
-			heredoc(curr, &in);
-		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0)
+		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0 && check)
+			heredoc(curr, &in, original_term);
+		else if (ft_strncmp(curr->prev->arr, "<<", 3) == 0 && !check)
 			child_heredoc(child);
-		curr->is_file = 2;
+		curr->is_file = 3;
 		curr = is_redirection(*child);
 	}
 	if (check == false)

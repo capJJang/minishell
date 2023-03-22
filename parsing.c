@@ -6,11 +6,31 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:53:12 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/08 18:55:07 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/19 15:28:10 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	remove_some_quote(t_node_inf *node_inf)
+{
+	t_node	*curr;
+	char	*temp;
+
+	curr = node_inf->head;
+	while (1)
+	{
+		if (curr->is_quote_include_pipe != 0)
+		{
+			temp = curr->arr;
+			curr->arr = ft_strtrim(curr->arr, "\'\"");
+			free(temp);
+		}
+		if (curr == node_inf->tail)
+			break ;
+		curr = curr->next;
+	}
+}
 
 void	line_to_node(t_node_inf *node_inf, char *read_line)
 {
@@ -23,6 +43,7 @@ void	line_to_node(t_node_inf *node_inf, char *read_line)
 	parsing_space(node_inf);
 	parsing_normal_arr(node_inf);
 	replace_env(node_inf);
+	remove_some_quote(node_inf);
 	adhere_some_node(node_inf);
 	set_command_num(node_inf);
 }
@@ -31,7 +52,9 @@ int	check_parse_error(t_node_inf *node_inf)
 {
 	t_node	*curr;
 	int		cmd_cnt;
+	int		ret;
 
+	ret = 0;
 	if (node_inf->head == NULL)
 	{
 		add_back_node(node_inf, new_node(ft_strdup("")));
@@ -43,12 +66,15 @@ int	check_parse_error(t_node_inf *node_inf)
 	{
 		while (curr->next->command_num != cmd_cnt || curr != node_inf->tail)
 			curr = curr->next;
-		if (curr->arr[0] == '<' || curr->arr[0] == '>')
-			return (1);
-		if (curr == node_inf->tail)
+		if (curr->is_quote_include_pipe == 0 && \
+			(curr->arr[0] == '<' || curr->arr[0] == '>'))
+			ret = 1;
+		else if (curr->is_quote_include_pipe == 0 && curr->arr[0] == '|')
+			ret = 2;
+		if (curr == node_inf->tail || ret)
 			break ;
 	}
-	return (0);
+	return (ret);
 }
 
 t_node_inf	*parsing(t_vars *vars, char *read_line)

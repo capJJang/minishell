@@ -1,49 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   ft_free2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/16 17:50:26 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/19 17:05:06 by seyang           ###   ########.fr       */
+/*   Created: 2023/03/16 14:15:35 by seyang            #+#    #+#             */
+/*   Updated: 2023/03/16 16:42:33 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_node(t_node_inf *node_inf)
+void	parsing_env_free(char *env, char *arr)
 {
-	t_node	*curr;
-
-	curr = node_inf->head;
-	printf("%s", "\n\n_________intput_________\n\n");
-	while (1)
-	{
-		printf("%s %d\n", curr->arr, curr->is_quote_include_pipe);
-		if (curr == node_inf->tail)
-			break ;
-		curr = curr->next;
-	}
+	free(env);
+	free(arr);
 }
 
-void	print_command(char ***cmd)
+void	ft_syntax_free(t_node_inf *node_inf)
 {
-	int	i;
-	int	j;
+	t_node	*curr;
+	t_node	*next;
 
-	i = 0;
-	printf("%s", "\n\n_________third level command_________\n\n");
-	while (cmd[i])
+	curr = node_inf->head;
+	while (1)
 	{
-		j = 0;
-		while (cmd[i][j])
-		{
-			printf("%s\n", cmd[i][j]);
-			printf("%d%s", i, "______________\n");
-			j++;
-		}
-		printf("\n");
-		i++;
+		next = curr->next;
+		free(curr->arr);
+		free(curr);
+		curr = next;
+		if (curr == node_inf->head)
+			break ;
 	}
+	free(node_inf);
 }

@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:44:19 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/08 18:55:51 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/16 12:54:43 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	set_command_num(t_node_inf *node_inf)
 	while (1)
 	{
 		curr->command_num = command_num;
-		if (curr->arr[0] == '|')
+		if (curr->arr[0] == '|' && curr->is_quote_include_pipe == 0)
 			command_num++;
 		curr = curr->next;
 		if (curr == node_inf->head)

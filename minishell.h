@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:06:20 by segan             #+#    #+#             */
-/*   Updated: 2023/03/09 19:57:45 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/19 17:49:39 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ pid_t		ft_fork(void);
 int			ft_find_after_chr(char *arr, int start, char c);
 void		ft_free_2d(char **arr);
 void		ft_free_3d(char ***arr);
+void		ft_syntax_free(t_node_inf *node_inf);
 void		ft_free_runtime(pid_t *pid, int **fd, char **path_env);
 int			ft_find_redirection(char *arr, int start);
 char		set_single_or_double(char *arr, int start);
@@ -137,7 +138,8 @@ int			check_parse_error(t_node_inf *node_inf);
 t_node		*is_redirection(t_child child);
 int			is_redirection2(t_node_inf *node_inf);
 int			is_redirection3(t_node_inf *node_inf);
-int			str_redirection_pipe(t_node *curr);
+int			str_redirection_pipe(t_node_inf *node_inf, t_node *curr);
+int			str_redirection_pipe2(t_node *curr);
 void		update__(t_child child);
 
 //parsing funcs start
@@ -164,7 +166,12 @@ void		parsing_redirection(t_node_inf *node_inf);
 void		set_command_num(t_node_inf *node_inf);
 
 void		extract_key(char *arr, int *e, int start);
-void		expand_env(t_node *curr, t_node_inf *node_inf, char *env);
+void		expand_env(t_node *curr, t_node_inf *node_inf, \
+	char *env, char *arr);
+int			is_redirection23(t_node_inf *node_inf);
+void		redirect_pipe2(t_child *child, t_node *curr, bool check);
+void		trim_quote(t_node_inf *node_inf, t_node *curr, \
+	char *set, char *temp);
 //parsing funcs end
 
 //node to command start
@@ -179,7 +186,7 @@ void		redirect_infile(t_node *curr, bool *in, t_node_inf *node_inf);
 void		rollback_std_fd(t_node_inf *node_inf, int *std_fd);
 
 int			is_break(char *get_line, t_node *curr);
-void		heredoc(t_node *curr, bool *in);
+void		heredoc(t_node *curr, bool *in, struct termios original_term);
 void		append_file(t_node *curr, bool *out);
 void		close_fd(bool in, bool out, t_child child);
 void		redirect_pipe(t_child *child, \
@@ -198,9 +205,12 @@ int			check_is_file(t_node_inf *node_inf);
 void		end_execute(t_node_inf *node_inf, int std_fd[2], \
 	t_child *child, char ***path_env);
 
-void		reset_stat(void);
+void		reset_stat(struct termios original_term);
 void		heredoc_child(char *get_line, t_node *curr, int temp_fd);
+void		split_node(t_node_inf *node_inf, t_node *curr, \
+	int start, char *arr);
 
+t_node		*is_all_redirection2(t_child child);
 //execute command funcs end
 
 //builtin funcs start
@@ -234,6 +244,9 @@ void		ft_overwrite_env(t_vars *vars, char *key, char *val);
 void		print_sh_var(t_vars *vars);
 int			check_valid_key(char *key);
 bool		check_duplication_var(t_vars *var, char *val);
+void		sc_free_2(t_node **curr);
+void		parsing_env_free(char *env, char *arr);
+
 //env_funcs end
 
 //signal start

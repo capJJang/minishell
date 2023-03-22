@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 02:18:59 by segan             #+#    #+#             */
-/*   Updated: 2023/03/08 18:57:58 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/16 15:04:04 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	builtin_cd(t_node_inf *node_inf)
 	char	*oldpwd;
 	char	*pwd;
 
+	*node_inf->vars->stat = 0;
 	oldpwd = ft_getcwd(node_inf->vars->stat);
 	if (node_inf->cmd[1] == NULL)
 		pwd = ft_getenv(node_inf->vars, "HOME");
@@ -40,10 +41,9 @@ void	builtin_cd(t_node_inf *node_inf)
 	cd_ret = chdir(pwd);
 	if (cd_ret == -1)
 	{
-		perror(strerror(errno));
+		printf("bash: cd: %s: %s\n", pwd, (strerror(errno)));
 		*node_inf->vars->stat = 1;
 	}
 	pwd = ft_getcwd(node_inf->vars->stat);
 	update_wd(node_inf->vars, pwd, oldpwd);
-	*node_inf->vars->stat = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:59:18 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/06 21:33:22 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/19 17:47:42 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_node	*is_all_redirection(t_child child)
 	curr = child.node_inf->head;
 	while (1)
 	{
-		if (curr->is_file == 1)
+		if (curr->is_file >= 1)
 			return (curr);
 		if (curr == child.node_inf->tail)
 			break ;
@@ -75,10 +75,10 @@ void	redirect_infile(t_node *curr, bool *in, t_node_inf *node_inf)
 		else
 		{
 			print_cmd_nfound(2, curr->arr);
-			if (is_builtin(node_inf->cmd) == 0)
+			if (is_builtin(node_inf->cmd) == 0 && \
+				!ft_node_strncmp(node_inf, "|"))
 				exit (0);
-			else
-				return ;
+			return ;
 		}
 		if (is_builtin(node_inf->cmd) == 0)
 			exit (0);

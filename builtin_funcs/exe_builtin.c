@@ -3,17 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   exe_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 23:50:41 by segan             #+#    #+#             */
-/*   Updated: 2023/03/10 22:57:10 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/16 20:14:12 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	str_redirection_pipe(t_node *curr)
+int	str_redirection_pipe2(t_node *curr)
 {
+	if (ft_strchr(curr->arr, '|') == 0)
+		if (ft_strchr(curr->arr, '>') == 0)
+			if (ft_strchr(curr->arr, '<') == 0)
+				return (0);
+	return (1);
+}
+
+int	str_redirection_pipe(t_node_inf *node_inf, t_node *curr)
+{
+	(void) node_inf;
+	if (ft_strncmp(curr->arr, "|", 2) == 0 || \
+		ft_strncmp(curr->arr, "<", 2) == 0 || \
+		ft_strncmp(curr->arr, ">", 2) == 0 || \
+		ft_strncmp(curr->arr, "<<", 3) == 0 || \
+		ft_strncmp(curr->arr, ">>", 3) == 0)
+		return (0);
 	if (ft_strchr(curr->arr, '|') == 0)
 		if (ft_strchr(curr->arr, '>') == 0)
 			if (ft_strchr(curr->arr, '<') == 0)

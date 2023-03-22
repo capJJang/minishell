@@ -6,7 +6,7 @@
 /*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:05:57 by segan             #+#    #+#             */
-/*   Updated: 2023/03/08 18:53:37 by seyang           ###   ########.fr       */
+/*   Updated: 2023/03/19 17:24:25 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,19 @@ void	ft_free_file(t_node_inf *node_inf)
 	{
 		if (curr->arr[0] == '|' && curr->is_quote_include_pipe != 1)
 			free(curr->arr);
-		if (ft_strncmp(curr->arr, ">", 2) == 0)
+		if (ft_strncmp(curr->arr, ">", 2) == 0 \
+			&& curr->is_quote_include_pipe != 1)
 			free(curr->arr);
-		if (ft_strncmp(curr->arr, ">>", 3) == 0)
+		if (ft_strncmp(curr->arr, ">>", 3) == 0 \
+			&& curr->is_quote_include_pipe != 1)
 			free(curr->arr);
-		if (ft_strncmp(curr->arr, "<", 2) == 0)
+		if (ft_strncmp(curr->arr, "<", 2) == 0 \
+			&& curr->is_quote_include_pipe != 1)
 			free(curr->arr);
-		if (ft_strncmp(curr->arr, "<<", 3) == 0)
+		if (ft_strncmp(curr->arr, "<<", 3) == 0 \
+			&& curr->is_quote_include_pipe != 1)
 			free(curr->arr);
-		if (curr->is_file)
+		if (curr->is_file && curr->is_quote_include_pipe != 1)
 			free(curr->arr);
 		if (curr == node_inf->tail)
 			break ;
@@ -37,13 +41,15 @@ void	ft_free_file(t_node_inf *node_inf)
 	}
 }
 
-int	syntax_error(t_node_inf *node_inf, bool check)
+int	syntax_error(t_node_inf *node_inf, int check)
 {
 	if (check == 0)
 		return (0);
-	printf("%s", "bash: syntax error near unexpected token `newline'\n");
-	ft_free_file(node_inf);
-	ft_free(node_inf);
+	else if (check == 1)
+		printf("%s", "bash: syntax error near unexpected token `newline'\n");
+	else if (check == 2)
+		printf("%s", "bash: syntax error near unexpected token `|'\n");
+	ft_syntax_free(node_inf);
 	return (1);
 }
 
@@ -61,7 +67,7 @@ void	control_process(t_vars *vars)
 			continue ;
 		restore_signal();
 		node_inf = parsing(vars, input);
-		if (syntax_error(node_inf, check_parse_error(node_inf) == 1))
+		if (syntax_error(node_inf, check_parse_error(node_inf)))
 			continue ;
 		cmd = node_to_command(node_inf);
 		if (node_inf->head->arr[0] == 0 || node_inf->head->arr[0] == 0)

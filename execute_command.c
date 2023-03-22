@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: segan <segan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seyang <seyang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 20:29:50 by seyang            #+#    #+#             */
-/*   Updated: 2023/03/10 22:59:19 by segan            ###   ########.fr       */
+/*   Updated: 2023/03/19 17:48:25 by seyang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 extern sig_atomic_t	g_heredoc_stat;
 
-void	is_child(t_child child, char **path_env, int size)
+void	is_child(t_child child, char **path_env, int size, t_node *curr)
 {
-	t_node	*curr;
 	int		path_stat;
 
-	curr = is_redirection22(child);
 	child.path = get_path(path_env, child.cmd[child.launch_cnt][0], &path_stat);
-	if ((path_stat > 0 && !is_builtin(child.cmd[child.launch_cnt])) && **child.cmd)
+	if ((path_stat > 0 && !is_builtin(child.cmd[child.launch_cnt])) \
+		&& **child.cmd)
 	{
 		if (child.cmd[child.launch_cnt][0])
 			print_cmd_nfound(path_stat, child.cmd[child.launch_cnt][0]);
@@ -35,7 +34,7 @@ void	is_child(t_child child, char **path_env, int size)
 		set_end_pipe(&child, curr, size);
 	else
 		set_middle_pipe(&child, curr, size);
-	if (is_builtin(child.cmd[child.launch_cnt]) && **child.cmd)	//?
+	if (is_builtin(child.cmd[child.launch_cnt]) && !**child.cmd)
 		exe_builtin(child.node_inf);
 	else if (**child.cmd && execve(child.path, \
 		child.cmd[child.launch_cnt], child.node_inf->vars->env) == -1)
@@ -86,6 +85,7 @@ void	is_parent(t_node_inf *node_inf, pid_t *pid, int size, int **fd)
 
 void	fork_child(t_child *child, int size, t_node_inf *node_inf, char ***cmd)
 {
+	restore_signal();
 	while (child->launch_cnt < size)
 	{
 		child->pid[child->launch_cnt] = ft_fork();
@@ -107,20 +107,20 @@ void	execute_command(char **path_env, char ***cmd, t_node_inf *node_inf)
 	size = init_cmd_var(&child, cmd, node_inf);
 	std_fd[0] = dup(STDIN_FILENO);
 	std_fd[1] = dup(STDOUT_FILENO);
-	while (((is_builtin(cmd[child.launch_cnt]) && is_redirection2(node_inf) \
-		&& ft_node_strncmp(node_inf, "|")) \
-		|| is_redirection3(node_inf)) && check_is_file(node_inf) \
+	while ((is_redirection3(node_inf)) && check_is_file(node_inf) \
 		&& g_heredoc_stat != 0)
-		redirect_pipe(&child, is_all_redirection(child), true);
+		redirect_pipe(&child, is_all_redirection2(child), true);
+	if ((is_builtin(cmd[child.launch_cnt]) && is_redirection23(node_inf) \
+		&& ft_node_strncmp(node_inf, "|")) || ft_node_strncmp(node_inf, "|"))
+		redirect_pipe2(&child, is_all_redirection(child), false);
 	if ((is_builtin(cmd[child.launch_cnt]) && ft_node_strncmp(node_inf, "|")) \
 		&& g_heredoc_stat != 0)
 		exe_builtin(node_inf);
 	else if (g_heredoc_stat != 0)
 	{
-		restore_signal();
 		fork_child(&child, size, node_inf, cmd);
 		if (child.pid[child.launch_cnt] == 0 && child.launch_cnt != size)
-			is_child(child, path_env, size);
+			is_child (child, path_env, size, is_redirection22(child));
 		else
 			is_parent(node_inf, child.pid, size, child.fd);
 	}

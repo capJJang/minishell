@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: segan <segan@student.42.fr>                +#+  +:+       +#+         #
+#    By: seyang <seyang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/07 13:15:13 by segan             #+#    #+#              #
-#    Updated: 2023/03/10 21:49:15 by segan            ###   ########.fr        #
+#    Updated: 2023/03/19 17:50:06 by seyang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,10 @@ SRCS =	main.c ft_fork.c path.c set_node.c new_node.c\
 		is_empty_line.c ft_malloc.c set_single_or_double.c \
 		node_to_command.c node_to_command2.c\
 		execute_command.c execute_command2.c execute_command3.c \
-		execute_command4.c execute_command5.c execute_command6.c\
+		execute_command4.c execute_command5.c execute_command6.c \
+		execute_command7.c \
 		print_error.c ft_node_strncmp.c ft_strjoin2.c\
-		ft_free.c ft_getcwd.c print.c ft_find.c read_line.c\
+		ft_free.c ft_free2.c ft_getcwd.c print.c ft_find.c read_line.c\
 		builtin_funcs/is_builtin.c builtin_funcs/exe_builtin.c\
 		builtin_funcs/builtin_cd.c builtin_funcs/builtin_exit.c\
 		builtin_funcs/builtin_echo.c builtin_funcs/builtin_pwd.c\
@@ -47,10 +48,10 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make bonus -C libft
-	$(CC) $(DEBUG) -o $(NAME) $(OBJS) $(LIBS)
+	$(CC) $(DEBUG) $(LIBS) -o $(NAME) $(OBJS)
 
 %.o : %.c
-	$(CC) $(DEBUG) $(LIBS) $(INCS) $(CFLAGS) -c $< -o $@
+	$(CC) $(DEBUG) $(INCS) $(CFLAGS) -c $< -o $@
 
 clean :
 	make clean -C ./libft
@@ -59,7 +60,7 @@ clean :
 fclean:
 	make fclean -C ./libft
 	make clean
-	rm $(NAME)
+	rm -f $(NAME)
 	rm -rf $(NAME).dSYM
 
 re :
